@@ -10,9 +10,11 @@ import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.statement.SQLSelect;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlExecuteStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 
@@ -33,10 +35,15 @@ public class SqlInfoExtractor {
 		query.output(buf);
 		System.out.println(buf.toString());
 		MySqlSelectQueryBlock qb = (MySqlSelectQueryBlock) query;
-		
+		SQLTableSource tSource = qb.getFrom();
+		System.out.println(tSource.getAlias());
 		SQLObject object = query.getParent();
-		object.output(buf);
-		System.out.println(object.toString());
+		MySqlSchemaStatVisitor statVisitor = new MySqlSchemaStatVisitor();
+		select.accept(statVisitor);
+		System.out.println(statVisitor.getCurrentTable());
+		System.out.println(statVisitor.getDbType());
+		System.out.println(statVisitor.getColumns());
+		System.out.println(statVisitor.getConditions());
 		//SQLQueryParser sqp = new SQLQueryParser(sql, , factory)
 		//select.getSelect();
 		/*SQLStatement statement = parser.parseStatement();
