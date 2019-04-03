@@ -1,11 +1,9 @@
 package org.aztec.deadsea.sql;
 
-public interface ShardingSqlGenerator {
+import org.aztec.deadsea.sql.impl.GenerationParam;
 
-	public static enum SqlType{
-		QUERY,INSERT,UPDATE,CREAT_TABLE;
-	}
+public interface ShardingSqlGenerator {
 	
-	public String generate(GenerationParam param);
+	public String generate(GenerationParameter param);
 	
 }
