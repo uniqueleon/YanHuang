@@ -1,49 +1,32 @@
 package org.aztec.deadsea.sql.impl;
 
+import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.meta.SqlMetaData;
 
-public class GenerationParam {
-
-	public GenerationParam() {
-		// TODO Auto-generated constructor stub
-	}
-	private String rawSql;
-	private String dbName;
-	private String tableName;
-	private int generatedSize = 0;
+public class GenerationParam implements GenerationParameter{
+	
+	private SqlMetaData metaData;
 	private ShardingConfiguration conf;
-	public GenerationParam(String rawSql, String dbName, String tableName, String[] generatedDbNames,
-			String[] generatedTableNames,ShardingConfiguration conf) {
+
+	public GenerationParam(SqlMetaData metaData, ShardingConfiguration conf) {
 		super();
-		this.rawSql = rawSql;
-		this.dbName = dbName;
-		this.tableName = tableName;
-		generatedSize = generatedDbNames.length * generatedTableNames.length;
+		this.metaData = metaData;
 		this.conf = conf;
 	}
-	public int getGeneratedSize() {
-		return generatedSize;
+
+	public SqlMetaData getSqlMetaData() {
+		return metaData;
 	}
-	public void setGeneratedSize(int generatedSize) {
-		this.generatedSize = generatedSize;
+
+	public <T> T get(String key) {
+		return null;
 	}
-	public String getRawSql() {
-		return rawSql;
+
+
+	public ShardingConfiguration getShardingConf() {
+		return conf;
 	}
-	public void setRawSql(String rawSql) {
-		this.rawSql = rawSql;
-	}
-	public String getDbName() {
-		return dbName;
-	}
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
-	public String getTableName() {
-		return tableName;
-	}
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+
 	
 }

@@ -9,6 +9,7 @@ public interface SqlMetaData {
 
 	public String getRawSql();
 	public SqlType getSqlType();
+	public Table getTable();
 	public List<Table> fromTables();
 	public List<Condition> getWhereConditions();
 	public List<Condition> getHavingConditions();

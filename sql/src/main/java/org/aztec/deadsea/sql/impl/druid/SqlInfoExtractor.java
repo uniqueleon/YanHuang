@@ -12,7 +12,6 @@ public class SqlInfoExtractor {
 	}
 	
 	
-	
 	public static MySqlSchemaStatVisitor parseSql(String sql) {
 		MySqlStatementParser parser = new MySqlStatementParser(sql);
 		SQLSelectStatement select = (SQLSelectStatement) parser.parseStatement();

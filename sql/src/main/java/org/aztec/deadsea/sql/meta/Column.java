@@ -6,5 +6,6 @@ public interface Column {
 	public String name();
 	public String alias();
 	public Location location();
-	
+	public DataType type();
+	public void setType(DataType type);
 }
