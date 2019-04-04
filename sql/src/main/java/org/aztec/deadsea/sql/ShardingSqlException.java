@@ -8,6 +8,17 @@ public class ShardingSqlException extends Exception {
 		public static final int UNSUPPORT_OPERATION = 0x01;
 		public static final int SQL_FORMAT_ERROR = 0x02;
 		public static final int SHARDING_CONFIGURATION_UNAVAILABLE = 0x03;
+		public static final int NO_TABLE_SCHEME_FOUND = 0x04;
+		public static final int NO_DATABASE_SCHEME_FOUND = 0x05;
+	}
+	
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public ShardingSqlException(int errorCode) {

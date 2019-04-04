@@ -28,17 +28,18 @@ public class CreateTableSqlParser implements DruidSqlParser {
 		String tableExpr = ts.getExpr().toString();
 		DruidMetaData dmd = new DruidMetaData(sql.toString());
 		if(tableExpr.contains(".")) {
-			String dbName = tableExpr.split(".")[0].replaceAll("`", "");
-			String tablename = tableExpr.split(".")[1].replaceAll("`", "");
+			String dbName = tableExpr.split("\\.")[0].replaceAll("`", "");
+			String tablename = tableExpr.split("\\.")[1].replaceAll("`", "");
 			dmd.setDb(new Database(dbName, null, null, null));
 		}
 		else {
 
 			String tablename = tableExpr.replaceAll("`", "");
 			dmd.setDb(null);
+			SQLExprTableSource sets = new SQLExprTableSource();
 			//dmd.setTable(new Table(tableName));
 		}
-		return null;
+		return dmd;
 	}
 
 }

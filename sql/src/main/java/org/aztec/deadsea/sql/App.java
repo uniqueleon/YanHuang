@@ -32,11 +32,16 @@ public class App implements ApplicationRunner
     }
 
 	public void run(ApplicationArguments args) throws Exception {
-		String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
-		GenerationParameter gp = builder.getGenerationParam(sql);
-		ShardingSqlGenerator sqlGen = builder.build(gp);
-		System.out.println(sqlGen);
-		
-		System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
+		try {
+			String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
+			GenerationParameter gp = builder.getGenerationParam(sql);
+			ShardingSqlGenerator sqlGen = builder.build(gp);
+			System.out.println(sqlGen);
+			
+			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
