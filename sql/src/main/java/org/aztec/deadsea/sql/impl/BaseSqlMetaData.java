@@ -5,7 +5,7 @@ import java.util.List;
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.meta.Column;
 import org.aztec.deadsea.sql.meta.Condition;
-import org.aztec.deadsea.sql.meta.DataBase;
+import org.aztec.deadsea.sql.meta.Database;
 import org.aztec.deadsea.sql.meta.OrderByClause;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
@@ -14,7 +14,7 @@ public class BaseSqlMetaData implements SqlMetaData {
 	
 	protected SqlType type;
 	protected String rawSql;
-	protected DataBase db;
+	protected Database db;
 	protected Table table;
 	protected List<Condition> whereConditions;
 	protected List<Column> groupByColumns;
@@ -59,7 +59,7 @@ public class BaseSqlMetaData implements SqlMetaData {
 		return orderByClauses;
 	}
 
-	public DataBase getDatabase() {
+	public Database getDatabase() {
 		// TODO Auto-generated method stub
 		return db;
 	}
@@ -77,11 +77,11 @@ public class BaseSqlMetaData implements SqlMetaData {
 		this.type = type;
 	}
 
-	public DataBase getDb() {
+	public Database getDb() {
 		return db;
 	}
 
-	public void setDb(DataBase db) {
+	public void setDb(Database db) {
 		this.db = db;
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
+import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlGeneratorBuilder;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaDataBuilder;
@@ -26,7 +27,7 @@ public class DruidSqlGeneratorBuilder implements SqlGeneratorBuilder {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GenerationParameter getGenerationParam(String sql) {
+	public GenerationParameter getGenerationParam(String sql) throws ShardingSqlException {
 		SqlMetaData metaData = builder.getMetaData(sql);
 		ShardingConfiguration conf = confFactory.getConfiguration(metaData);
 		GenerationParam gp = new GenerationParam(metaData,conf);

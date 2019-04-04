@@ -1,21 +1,19 @@
-package org.aztec.deadsea.sql.meta.impl;
+package org.aztec.deadsea.sql.meta;
 
-import org.aztec.deadsea.sql.meta.DataBase;
-
-public class DatabaseImpl implements DataBase {
+public class Database{
 	
 	private String name;
 	private String alias;
 	private String charset;
 	private String collate;
 
-	public DatabaseImpl() {
+	public Database() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
-	public DatabaseImpl(String name, String alias, String charset, String collate) {
+	public Database(String name, String alias, String charset, String collate) {
 		super();
 		this.name = name;
 		this.alias = alias;

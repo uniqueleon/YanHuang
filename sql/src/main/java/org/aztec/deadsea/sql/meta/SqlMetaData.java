@@ -15,6 +15,6 @@ public interface SqlMetaData {
 	public List<Condition> getHavingConditions();
 	public List<Column> getGroupByColumns();
 	public List<OrderByClause> getOrderByClauses();
-	public DataBase getDatabase();
+	public Database getDatabase();
 	
 }

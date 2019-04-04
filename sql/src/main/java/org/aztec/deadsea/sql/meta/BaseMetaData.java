@@ -1,6 +1,4 @@
-package org.aztec.deadsea.sql.meta.impl;
-
-import org.aztec.deadsea.sql.meta.Location;
+package org.aztec.deadsea.sql.meta;
 
 public class BaseMetaData {
 	

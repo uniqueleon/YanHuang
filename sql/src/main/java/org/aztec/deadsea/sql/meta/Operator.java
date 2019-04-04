@@ -1,13 +1,64 @@
 package org.aztec.deadsea.sql.meta;
 
-public interface Operator {
-
-	public boolean isFunction();
-	public boolean isArithmetic();
-	public Function getFunction();
-	public SimpleOperator getSimpleOperator();
-	public LogisticConnector getLogisticConnector();
+public class Operator {
 	
+	private boolean isFunction;
+	private boolean arithmetic;
+	private Function function;
+	private SimpleOperator operator;
+	private LogisticConnector connector;
+	
+	public Operator(boolean function, boolean arithmetic, SimpleOperator operator, LogisticConnector connector) {
+		super();
+		this.isFunction = function;
+		this.arithmetic = arithmetic;
+		this.operator = operator;
+		this.connector = connector;
+	}
+
+	
+	public boolean isFunction() {
+		return isFunction;
+	}
+
+
+	public void setFunction(boolean isFunction) {
+		this.isFunction = isFunction;
+	}
+
+
+	public boolean isArithmetic() {
+		return arithmetic;
+	}
+
+	public void setArithmetic(boolean arithmetic) {
+		this.arithmetic = arithmetic;
+	}
+
+	public Function getFunction() {
+		return function;
+	}
+
+	public void setFunction(Function function) {
+		this.function = function;
+	}
+
+	public SimpleOperator getOperator() {
+		return operator;
+	}
+
+	public void setOperator(SimpleOperator operator) {
+		this.operator = operator;
+	}
+
+	public LogisticConnector getConnector() {
+		return connector;
+	}
+
+	public void setConnector(LogisticConnector connector) {
+		this.connector = connector;
+	}
+
 	public static enum SimpleOperator{
 		L("<"),G(">"),LE("<="),
 		GE(">="),EQUAL("="),BETWEEN("BETWEEN"),

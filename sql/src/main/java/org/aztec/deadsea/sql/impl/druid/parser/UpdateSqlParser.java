@@ -2,9 +2,11 @@ package org.aztec.deadsea.sql.impl.druid.parser;
 
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 
+@Component
 public class UpdateSqlParser implements DruidSqlParser {
 
 	public UpdateSqlParser() {

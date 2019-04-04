@@ -32,7 +32,7 @@ public class App implements ApplicationRunner
     }
 
 	public void run(ApplicationArguments args) throws Exception {
-		String sql = "create database lmTest";
+		String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
 		GenerationParameter gp = builder.getGenerationParam(sql);
 		ShardingSqlGenerator sqlGen = builder.build(gp);
 		System.out.println(sqlGen);
