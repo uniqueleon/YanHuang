@@ -2,5 +2,6 @@ package org.aztec.deadsea.common;
 
 public interface DataID {
 
-	public long getAsLong();
+	public long longValue();
+	
 }

@@ -3,16 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.aztec</groupId>
-  <artifactId>deadsea-meta-center</artifactId>
+  <artifactId>deadsea-server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-	<parent>
-		<groupId>org.aztec</groupId>
-		<artifactId>deadsea</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-  <name>deadsea-meta-center</name>
+  <name>deadsea-server</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -25,11 +20,6 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-		<groupId>org.aztec</groupId>
-		<artifactId>deadsea-common</artifactId>
-      	<version>${main-version}</version>
     </dependency>
   </dependencies>
 </project>

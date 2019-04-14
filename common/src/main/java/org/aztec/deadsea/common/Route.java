@@ -1,6 +1,8 @@
 package org.aztec.deadsea.common;
 
+import java.util.List;
+
 public interface Route {
 
-	public ShardData getData();
+	public List<ShardData> getDatas();
 }

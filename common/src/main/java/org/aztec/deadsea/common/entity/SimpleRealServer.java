@@ -2,7 +2,10 @@ package org.aztec.deadsea.common.entity;
 
 import java.util.List;
 
-public class RealServer {
+import org.aztec.deadsea.common.RealServer;
+import org.aztec.deadsea.common.VirtualServer;
+
+public class SimpleRealServer implements RealServer{
 	
 	private String host;
 	private Integer port;
@@ -10,7 +13,7 @@ public class RealServer {
 	private RealServerType type;
 	private List<VirtualServer> nodes;
 
-	public RealServer() {
+	public SimpleRealServer() {
 		// TODO Auto-generated constructor stub
 	}
 

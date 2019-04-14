@@ -1,6 +1,8 @@
 package org.aztec.deadsea.common;
 
+import java.util.List;
+
 public interface Router {
 
-	public Server find(Route route);
+	public List<RealServer> route(Route route);
 }
