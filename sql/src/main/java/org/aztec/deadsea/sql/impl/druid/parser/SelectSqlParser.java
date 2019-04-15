@@ -1,7 +1,11 @@
 package org.aztec.deadsea.sql.impl.druid.parser;
 
+import java.util.Map;
+
+import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
+import org.aztec.deadsea.sql.meta.Location;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +29,13 @@ public class SelectSqlParser implements DruidSqlParser {
 		SQLSelectStatement select = (SQLSelectStatement) sql;
 		MySqlSchemaStatVisitor statVisitor = new MySqlSchemaStatVisitor();
 		DruidMetaData dmd = new DruidMetaData(sql.toString());
-		//dmd.setTable(new TableImpl(statVisitor.getCurrentTable()));
-		return null;
+		String tablename = statVisitor.getCurrentTable();
+		//statVisitor.getTableStat(tablename).
+		Map<String,String> aliasMap = statVisitor.getAliasMap();
+		dmd.setTable(new Table(null,tablename,aliasMap.get(tablename),Location.FROM));
+		dmd.setType(SqlType.QUERY);
+		dmd.setDb(null);
+		return dmd;
 	}
 
 }

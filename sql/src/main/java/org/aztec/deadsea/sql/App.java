@@ -33,10 +33,11 @@ public class App implements ApplicationRunner
 
 	public void run(ApplicationArguments args) throws Exception {
 		try {
-			String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
+			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
+			String sql = "SELECT * FROM base_item_0001 WHERE id IN (4266266,4266264)";
 			GenerationParameter gp = builder.getGenerationParam(sql);
 			ShardingSqlGenerator sqlGen = builder.build(gp);
-			System.out.println(sqlGen);
+			System.out.println(sqlGen.generateSingle(gp));
 			
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
 		} catch (Exception e) {
