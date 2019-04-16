@@ -5,7 +5,6 @@ import java.util.List;
 public interface ServerRegistration {
 
 	public List<RealServer> getAllServers();
-	public int currentServerSize();
-	public int nextServerSize();
+	public ShardingInfoCalculator getCalculator();
 	public ShardingAge getLastAge();
 }

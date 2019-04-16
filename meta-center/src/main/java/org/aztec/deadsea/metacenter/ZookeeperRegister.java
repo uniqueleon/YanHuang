@@ -1,23 +1,31 @@
 package org.aztec.deadsea.metacenter;
 
-import java.io.IOException;
+import java.util.List;
 
-import org.apache.zookeeper.KeeperException;
-import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.autumn.common.zk.ZkNode;
-import org.aztec.autumn.common.zk.ZkConfig.ConfigFormat;
+import org.aztec.deadsea.common.RealServer;
+import org.aztec.deadsea.common.ServerRegister;
+import org.aztec.deadsea.common.ServerRegistration;
+import org.aztec.deadsea.metacenter.conf.BaseInfo;
 
-public class ZookeeperRegister {
+public class ZookeeperRegister implements ServerRegister{
 	
-	private ZkConfig baseConfig;
+	private static final BaseInfo baseInfo = BaseInfo.getInstance();
 
 	public ZookeeperRegister() {
 		// TODO Auto-generated constructor stub
 		
 	}
-
-	private void init() throws IOException, KeeperException, InterruptedException {
-		baseConfig = new ZkConfig(MetaCenterConst.ZkConfigPaths.BASE_INFO, ConfigFormat.JSON);
-		baseConfig = new ZkConfig(MetaCenterConst.ZkConfigPaths.REAL_SERVER_INFO ,ConfigFormat.JSON);
+	
+	public void loadMetaData() {
+		
 	}
+
+	public ServerRegistration regist(List<RealServer> newServers) {
+		// TODO Auto-generated method stub
+		//StringBuilder oriServers = new StringBuilder(realServers.getRealServers());
+		return null;
+	}
+	
+	
+
 }

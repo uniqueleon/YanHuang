@@ -1,5 +1,8 @@
 package org.aztec.deadsea.metacenter;
 
+import org.aztec.deadsea.metacenter.conf.ServerGeneralInfo;
+import org.aztec.deadsea.metacenter.conf.TableInfo;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -10,29 +13,18 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+	public static void main(String[] args) {
+		try {
+			ServerGeneralInfo rsi = ServerGeneralInfo.getSingleton();
+			//rsi.setTotalNum(1);
+			//rsi.setType("db");
+			//rsi.save();
+			System.out.println(rsi.getTotalNum());
+			System.out.println(String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {"lm_test",1}));
+			System.exit(0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
