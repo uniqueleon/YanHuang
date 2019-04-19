@@ -7,5 +7,6 @@ public interface RealServer {
 	public List<VirtualServer> getNodes();
 	public String getHost();
 	public Integer getPort();
-	
+	public Integer getProxyPort();
+	public Integer getNo();
 }

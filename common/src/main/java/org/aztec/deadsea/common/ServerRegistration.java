@@ -6,5 +6,4 @@ public interface ServerRegistration {
 
 	public List<RealServer> getAllServers();
 	public ShardingInfoCalculator getCalculator();
-	public ShardingAge getLastAge();
 }

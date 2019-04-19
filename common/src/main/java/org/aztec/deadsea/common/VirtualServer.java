@@ -1,7 +1,9 @@
 package org.aztec.deadsea.common;
 
+import java.util.List;
+
 public interface VirtualServer {
 
 	
-	public boolean accept(Route route);
+	public List<ShardData> find(Route route);
 }

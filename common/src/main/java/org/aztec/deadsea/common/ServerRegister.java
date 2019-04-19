@@ -5,5 +5,6 @@ import java.util.List;
 
 public interface ServerRegister {
 
-	public ServerRegistration regist(List<RealServer> newServers);
+	public void regist(List<RealServer> newServers) throws DeadSeaException;
+	public ServerRegistration getRegistration() throws DeadSeaException;
 }

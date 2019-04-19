@@ -1,11 +1,8 @@
 package org.aztec.deadsea.metacenter;
 
-import org.aztec.deadsea.metacenter.conf.ServerGeneralInfo;
-import org.aztec.deadsea.metacenter.conf.TableInfo;
+import org.aztec.deadsea.metacenter.conf.BaseInfo;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
@@ -15,13 +12,14 @@ public class AppTest
 {
 	public static void main(String[] args) {
 		try {
-			ServerGeneralInfo rsi = ServerGeneralInfo.getSingleton();
+			BaseInfo bi = BaseInfo.getInstance();
+			
 			//rsi.setTotalNum(1);
 			//rsi.setType("db");
 			//rsi.save();
-			System.out.println(rsi.getTotalNum());
+			System.out.println(bi.getDbSize());
 			System.out.println(String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {"lm_test",1}));
-			System.exit(0);
+			//System.exit(0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

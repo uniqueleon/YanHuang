@@ -26,12 +26,22 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>1.0.14</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.aztec</groupId>
+			<artifactId>deadsea-common</artifactId>
+			<version>${main-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aztec</groupId>
+			<artifactId>deadsea-meta-center</artifactId>
+			<version>${main-version}</version>
+		</dependency>
 	</dependencies>
 </project>

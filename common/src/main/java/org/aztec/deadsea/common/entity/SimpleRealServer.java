@@ -8,13 +8,22 @@ import org.aztec.deadsea.common.VirtualServer;
 public class SimpleRealServer implements RealServer{
 	
 	private String host;
+	private Integer no;
 	private Integer port;
-
+	private Integer proxyPort;
 	private RealServerType type;
 	private List<VirtualServer> nodes;
 
 	public SimpleRealServer() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public SimpleRealServer(String host, Integer no, Integer port, RealServerType type) {
+		super();
+		this.host = host;
+		this.no = no;
+		this.port = port;
+		this.type = type;
 	}
 
 	public String getHost() {
@@ -47,6 +56,18 @@ public class SimpleRealServer implements RealServer{
 
 	public void setNodes(List<VirtualServer> nodes) {
 		this.nodes = nodes;
+	}
+
+	public Integer getProxyPort() {
+		return proxyPort;
+	}
+
+	public void setProxyPort(Integer proxyPort) {
+		this.proxyPort = proxyPort;
+	}
+
+	public Integer getNo() {
+		return no;
 	}
 	
 	

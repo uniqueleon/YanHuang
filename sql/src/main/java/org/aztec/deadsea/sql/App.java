@@ -2,6 +2,7 @@ package org.aztec.deadsea.sql;
 
 import java.util.Formatter;
 
+import org.aztec.deadsea.common.sql.SQLTemplates;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaDataBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

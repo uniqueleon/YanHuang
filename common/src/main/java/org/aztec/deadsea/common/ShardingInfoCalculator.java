@@ -7,7 +7,5 @@ public interface ShardingInfoCalculator {
 	public long getCurrentSize();
 	public long getNextSize();
 	public long getBalanceValve();
-	public void updateCurrentSize();
-	public void updateSize();
-	public void updateDataSize();
+	public void update();
 }

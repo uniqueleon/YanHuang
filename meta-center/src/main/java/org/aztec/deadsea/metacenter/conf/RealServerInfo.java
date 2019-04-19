@@ -8,15 +8,26 @@ import org.aztec.deadsea.metacenter.MetaCenterConst;
 
 public class RealServerInfo extends ZkConfig {
 
+	private Integer no;
 	private String host;
 	private Integer port;
-	private Long upperLimit;
-	private Long lowerLimit;
+	private Integer proxyPort;
 
 	public RealServerInfo(int no)
 			throws IOException, KeeperException, InterruptedException {
 		super(MetaCenterConst.ZkConfigPaths.REAL_SERVER_INFO + "." + no, ConfigFormat.JSON);
+		this.no = no;
 	}
+	
+
+	public RealServerInfo(int no, String host, Integer port, Integer proxyPort) throws IOException, KeeperException, InterruptedException {
+		super(MetaCenterConst.ZkConfigPaths.REAL_SERVER_INFO + "." + no, ConfigFormat.JSON);
+		this.host = host;
+		this.port = port;
+		this.proxyPort = proxyPort;
+		this.no = no;
+	}
+
 
 	public String getHost() {
 		return host;
@@ -34,20 +45,23 @@ public class RealServerInfo extends ZkConfig {
 		this.port = port;
 	}
 
-	public Long getUpperLimit() {
-		return upperLimit;
+
+	public Integer getProxyPort() {
+		return proxyPort;
 	}
 
-	public void setUpperLimit(Long upperLimit) {
-		this.upperLimit = upperLimit;
+	public void setProxyPort(Integer proxyPort) {
+		this.proxyPort = proxyPort;
 	}
 
-	public Long getLowerLimit() {
-		return lowerLimit;
+
+	public Integer getNo() {
+		return no;
 	}
 
-	public void setLowerLimit(Long lowerLimit) {
-		this.lowerLimit = lowerLimit;
+
+	public void setNo(Integer no) {
+		this.no = no;
 	}
 
 }

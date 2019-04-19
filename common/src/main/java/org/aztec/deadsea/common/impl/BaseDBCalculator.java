@@ -11,6 +11,7 @@ public abstract class BaseDBCalculator implements ShardingInfoCalculator {
 	protected final AtomicLong databaseSize = new AtomicLong(0);
 	protected final AtomicLong tableSize = new AtomicLong(0);
 	protected final AtomicLong realSize = new AtomicLong(0);
+	protected final AtomicLong currentValve = new AtomicLong(0);
 
 	public BaseDBCalculator(int currentSize,int realSize,int databaseSize,int tableSize) {
 		this.currentSize.set(currentSize);
@@ -53,8 +54,8 @@ public abstract class BaseDBCalculator implements ShardingInfoCalculator {
 	}
 	
 	public boolean isRelativelyPrime(long curSize,long dbSize,long tableSize) {
-		return (GreatestCommonDivisor.calculate(new Long(curSize), new Long(dbSize)).getGcd() == 1)
-				&& (GreatestCommonDivisor.calculate(new Long(curSize), new Long(tableSize)).getGcd() == 1);
+		return (GreatestCommonDivisor.calculate(curSize, dbSize).getGcd() == 1)
+				&& (GreatestCommonDivisor.calculate(curSize, tableSize).getGcd() == 1);
 	}
 
 }

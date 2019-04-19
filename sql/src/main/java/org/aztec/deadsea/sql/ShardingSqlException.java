@@ -1,9 +1,15 @@
 package org.aztec.deadsea.sql;
 
-public class ShardingSqlException extends Exception {
+import org.aztec.deadsea.common.DeadSeaException;
+
+public class ShardingSqlException extends DeadSeaException {
 	
-	private int code;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -649035823118591799L;
+
 	public static interface ErrorCodes {
 		public static final int UNSUPPORT_OPERATION = 0x01;
 		public static final int SQL_FORMAT_ERROR = 0x02;
@@ -12,33 +18,8 @@ public class ShardingSqlException extends Exception {
 		public static final int NO_DATABASE_SCHEME_FOUND = 0x05;
 	}
 	
-
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
-
 	public ShardingSqlException(int errorCode) {
-		this.code = errorCode;
+		super(errorCode);
 	}
-
-	public ShardingSqlException(String message,int errorCode) {
-		super(message);
-		this.code = errorCode;
-	}
-
-	public ShardingSqlException(Throwable cause,int errorCode) {
-		super(cause);
-		this.code = errorCode;
-	}
-
-	public ShardingSqlException(String message, Throwable cause,int errorCode) {
-		super(message, cause);
-		this.code = errorCode;
-	}
-
 
 }
