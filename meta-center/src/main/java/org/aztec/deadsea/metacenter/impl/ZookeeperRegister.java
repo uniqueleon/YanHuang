@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
+import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
@@ -16,10 +17,10 @@ import org.aztec.deadsea.common.impl.BaseDBCalculator;
 import org.aztec.deadsea.common.MetaData.MetaType;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
-import org.aztec.deadsea.metacenter.conf.BaseInfo;
-import org.aztec.deadsea.metacenter.conf.RealServerInfo;
-import org.aztec.deadsea.metacenter.conf.ShardingAgeInfo;
-import org.aztec.deadsea.metacenter.conf.TableInfo;
+import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
+import org.aztec.deadsea.metacenter.conf.zk.ShardingAgeInfo;
+import org.aztec.deadsea.metacenter.conf.zk.TableInfo;
 
 import com.google.common.collect.Lists;
 
@@ -72,6 +73,18 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 	public List<MetaData> getRegistedMetaDatas() throws DeadSeaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Authentication addauth(String username, String password) throws DeadSeaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Authentication auth(String username, String password) throws DeadSeaException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,6 +1,6 @@
 package org.aztec.deadsea.metacenter;
 
-import org.aztec.deadsea.metacenter.conf.BaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 
 import junit.framework.TestCase;
 

@@ -2,8 +2,8 @@ package org.aztec.deadsea.metacenter.utils;
 
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.conf.BaseConfDefaultValues;
-import org.aztec.deadsea.metacenter.conf.BaseInfo;
-import org.aztec.deadsea.metacenter.conf.RealServerInfo;
+import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
 
 public class MetaDataInitiator {
 

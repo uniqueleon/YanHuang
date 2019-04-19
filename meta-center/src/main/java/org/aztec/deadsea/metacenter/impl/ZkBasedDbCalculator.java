@@ -1,7 +1,7 @@
 package org.aztec.deadsea.metacenter.impl;
 
 import org.aztec.deadsea.common.impl.BaseDBCalculator;
-import org.aztec.deadsea.metacenter.conf.BaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 
 public class ZkBasedDbCalculator extends BaseDBCalculator {
 	

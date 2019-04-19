@@ -1,4 +1,4 @@
-package org.aztec.deadsea.metacenter.conf;
+package org.aztec.deadsea.metacenter.conf.zk;
 
 import java.io.IOException;
 

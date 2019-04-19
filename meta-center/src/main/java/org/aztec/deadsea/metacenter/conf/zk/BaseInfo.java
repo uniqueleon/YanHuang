@@ -1,4 +1,4 @@
-package org.aztec.deadsea.metacenter.conf;
+package org.aztec.deadsea.metacenter.conf.zk;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +36,8 @@ public class BaseInfo extends ZkConfig {
 	private static BaseInfo instance;
 	@Ignored
 	private List<RealServerInfo> servers;
+	@Ignored
+	private List<Account> accounts;
 	@Ignored
 	private List<TimeLimitedCallable>  callBacks;
 	
