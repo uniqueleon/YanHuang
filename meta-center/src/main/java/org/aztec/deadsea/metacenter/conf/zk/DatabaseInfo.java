@@ -6,10 +6,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
+import org.aztec.autumn.common.GlobalConst;
+import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.deadsea.metacenter.MetaCenterConst;
+import org.aztec.deadsea.common.MetaData;
+import org.aztec.deadsea.common.entity.Database;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
@@ -18,18 +21,36 @@ import com.google.common.collect.Lists;
 
 public class DatabaseInfo extends ZkConfig{
 
+	private int no;
 	//数据库名称前缀  XXX_001
 	private String name;
 	//分库数
 	private Integer size;
 	
 	private Integer tableNum;
+	
+	private boolean shard;
 	@Ignored
 	private List<TableInfo> tables;
+	@Ignored
+	private List<TimeLimitedCallable> callbacks; 
 	
-	public DatabaseInfo(String uuid) throws IOException, KeeperException, InterruptedException {
+	public DatabaseInfo(String prefix,int no) throws IOException, KeeperException, InterruptedException {
 		// TODO Auto-generated constructor stub
-		super(MetaCenterConst.ZkConfigPaths.BASE_INFO, ConfigFormat.JSON);
+		super(prefix + GlobalConst.ZOOKEEPER_PATH_SPLITOR + no, ConfigFormat.JSON);
+		initDb();
+	}
+	
+	public DatabaseInfo(String path) throws IOException, KeeperException, InterruptedException {
+		// TODO Auto-generated constructor stub
+		super(path, ConfigFormat.JSON);
+		initDb();
+	}
+	
+	private void initDb() {
+
+		callbacks.add(new TableReloader());
+		appendWatcher(new CallableWatcher(callbacks, null));
 	}
 	
 	public List<TableInfo> getTables() {
@@ -64,7 +85,21 @@ public class DatabaseInfo extends ZkConfig{
 		this.tables = tables;
 	}
 
+	public boolean isShard() {
+		return shard;
+	}
 
+	public void setShard(boolean shard) {
+		this.shard = shard;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
 
 	private class TableReloader implements TimeLimitedCallable {
 
@@ -86,7 +121,7 @@ public class DatabaseInfo extends ZkConfig{
 				tableNum = 0;
 			}
 			for(int i = 0;i < tableNum ;i++) {
-				tables.add(new TableInfo(i));
+				tables.add(new TableInfo(znode,i));
 			}
 		}
 
@@ -104,6 +139,14 @@ public class DatabaseInfo extends ZkConfig{
 			
 		}
 		
+	}
+	
+	public MetaData toMetaData() {
+		Database db = new Database(no, name, size, tableNum, shard,Lists.newArrayList());
+		for(TableInfo t : tables) {
+			db.getChilds().add(t.toMetaData(db));
+		}
+		return db;
 	}
 	
 

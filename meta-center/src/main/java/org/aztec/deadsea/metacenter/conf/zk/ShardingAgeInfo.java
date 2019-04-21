@@ -3,27 +3,23 @@ package org.aztec.deadsea.metacenter.conf.zk;
 import java.io.IOException;
 
 import org.apache.zookeeper.KeeperException;
+import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.deadsea.metacenter.MetaCenterConst;
+import org.aztec.deadsea.common.MetaData;
+import org.aztec.deadsea.common.entity.ShardAge;
 
 public class ShardingAgeInfo extends ZkConfig {
 	
-	private Integer age;
+	private Integer no;
+	private Long lastValve;
 	private Long valve;
 	private Long modulus;
 	
 	public ShardingAgeInfo(String tableName,int ageNo)
 			throws IOException, KeeperException, InterruptedException {
-		super(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, ConfigFormat.JSON);
+		super(tableName + GlobalConst.ZOOKEEPER_PATH_SPLITOR + ageNo, ConfigFormat.JSON);
 		// TODO Auto-generated constructor stub
-	}
-
-	public Integer getAge() {
-		return age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
+		this.no = ageNo;
 	}
 
 	public Long getValve() {
@@ -42,5 +38,11 @@ public class ShardingAgeInfo extends ZkConfig {
 		this.modulus = modulus;
 	}
 
-	
+	public MetaData toMetaData() {
+		ShardAge age = new ShardAge(no);
+		age.setModulus(modulus);
+		age.setLastValve(lastValve);
+		age.setValve(valve);
+		return age;
+	}
 }

@@ -1,5 +1,8 @@
 package org.aztec.deadsea.metacenter;
 
+import java.util.UUID;
+
+import org.aztec.autumn.common.utils.security.CodeCipher;
 import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 
 import junit.framework.TestCase;
@@ -12,14 +15,15 @@ public class AppTest
 {
 	public static void main(String[] args) {
 		try {
-			BaseInfo bi = BaseInfo.getInstance();
 			
 			//rsi.setTotalNum(1);
 			//rsi.setType("db");
 			//rsi.save();
-			System.out.println(bi.getDbSize());
-			System.out.println(String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {"lm_test",1}));
+			//System.out.println(bi.getDbSize());
+			//System.out.println(String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {"lm_test",1}));
 			//System.exit(0);
+			CodeCipher cipher = new CodeCipher();
+			System.out.println(cipher.encodeBase64("liming3"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

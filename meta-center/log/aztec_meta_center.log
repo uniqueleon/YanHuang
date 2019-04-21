@@ -401,3 +401,145 @@ java.lang.NullPointerException
 java.lang.NullPointerException
 	at org.aztec.autumn.common.zk.BaseWatcher.process(BaseWatcher.java:77)
 	at org.apache.zookeeper.ClientCnxn$EventThread.run(ClientCnxn.java:488)
+[2019-04-21 09:05:29.979]  
+ [ERROR]org.aztec.autumn.common.zk.ZkConnector.<clinit>(ZkConnector.java:36) - 
+ Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:989)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:341)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2189)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2222)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2017)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:779)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:389)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at org.aztec.autumn.common.utils.jdbc.JdbcConnector.getConnection(JdbcConnector.java:92)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.connect(DBManager.java:43)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.<init>(DBManager.java:37)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.getManager(DBManager.java:24)
+	at org.aztec.autumn.common.zk.ZkConnector.loadInfoFromDB(ZkConnector.java:51)
+	at org.aztec.autumn.common.zk.ZkConnector.<clinit>(ZkConnector.java:29)
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:31)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:17)
+Caused by: java.net.UnknownHostException: metacenter.aztec.com
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(Unknown Source)
+	at java.net.InetAddress.getAddressesFromNameService(Unknown Source)
+	at java.net.InetAddress.getAllByName0(Unknown Source)
+	at java.net.InetAddress.getAllByName(Unknown Source)
+	at java.net.InetAddress.getAllByName(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:188)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:300)
+	... 25 more
+[2019-04-21 09:05:30.109]  
+ [ERROR]org.aztec.autumn.common.zk.BaseWatcher.<clinit>(BaseWatcher.java:32) - 
+ 
+java.lang.NullPointerException
+	at org.aztec.autumn.common.zk.BaseWatcher.regist(BaseWatcher.java:41)
+	at org.aztec.autumn.common.zk.BaseWatcher.<clinit>(BaseWatcher.java:30)
+	at org.aztec.autumn.common.zk.DataMonitor.<init>(DataMonitor.java:36)
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:35)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:17)
+[2019-04-21 09:05:30.111]  
+ [ERROR]org.aztec.deadsea.metacenter.MetaCenterLogger.error(MetaCenterLogger.java:18) - 
+ 
+java.lang.NullPointerException
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:36)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:17)
+[2019-04-21 09:06:52.005]  
+ [ERROR]org.aztec.autumn.common.zk.ZkConnector.<clinit>(ZkConnector.java:36) - 
+ Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:989)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:341)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2189)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2222)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2017)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:779)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:389)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at org.aztec.autumn.common.utils.jdbc.JdbcConnector.getConnection(JdbcConnector.java:92)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.connect(DBManager.java:43)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.<init>(DBManager.java:37)
+	at org.aztec.autumn.common.utils.jdbc.DBManager.getManager(DBManager.java:24)
+	at org.aztec.autumn.common.zk.ZkConnector.loadInfoFromDB(ZkConnector.java:51)
+	at org.aztec.autumn.common.zk.ZkConnector.<clinit>(ZkConnector.java:29)
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:31)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:18)
+Caused by: java.net.UnknownHostException: metacenter.aztec.com
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(Unknown Source)
+	at java.net.InetAddress.getAddressesFromNameService(Unknown Source)
+	at java.net.InetAddress.getAllByName0(Unknown Source)
+	at java.net.InetAddress.getAllByName(Unknown Source)
+	at java.net.InetAddress.getAllByName(Unknown Source)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:188)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:300)
+	... 25 more
+[2019-04-21 09:06:52.034]  
+ [ERROR]org.aztec.autumn.common.zk.BaseWatcher.<clinit>(BaseWatcher.java:32) - 
+ 
+java.lang.NullPointerException
+	at org.aztec.autumn.common.zk.BaseWatcher.regist(BaseWatcher.java:41)
+	at org.aztec.autumn.common.zk.BaseWatcher.<clinit>(BaseWatcher.java:30)
+	at org.aztec.autumn.common.zk.DataMonitor.<init>(DataMonitor.java:36)
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:35)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:18)
+[2019-04-21 09:06:52.035]  
+ [ERROR]org.aztec.deadsea.metacenter.MetaCenterLogger.error(MetaCenterLogger.java:18) - 
+ 
+java.lang.NullPointerException
+	at org.aztec.autumn.common.zk.ZkNode.<init>(ZkNode.java:36)
+	at org.aztec.autumn.common.zk.ZkConfig.<init>(ZkConfig.java:31)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<init>(BaseInfo.java:54)
+	at org.aztec.deadsea.metacenter.conf.zk.BaseInfo.<clinit>(BaseInfo.java:46)
+	at org.aztec.deadsea.metacenter.AppTest.main(AppTest.java:18)
