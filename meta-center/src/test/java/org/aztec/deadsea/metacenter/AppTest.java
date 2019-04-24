@@ -22,8 +22,9 @@ public class AppTest
 			//System.out.println(bi.getDbSize());
 			//System.out.println(String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {"lm_test",1}));
 			//System.exit(0);
-			CodeCipher cipher = new CodeCipher();
-			System.out.println(cipher.encodeBase64("liming3"));
+			/*CodeCipher cipher = new CodeCipher();
+			System.out.println(cipher.encodeBase64("liming3"));*/
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

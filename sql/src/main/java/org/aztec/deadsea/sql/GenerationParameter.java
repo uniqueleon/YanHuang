@@ -6,5 +6,4 @@ public interface GenerationParameter {
 
 	public SqlMetaData getSqlMetaData();
 	public <T> T get(String key);
-	public ShardingConfiguration getShardingConf();
 }

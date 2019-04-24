@@ -37,8 +37,6 @@ public class BaseInfo extends ZkConfig {
 	@Ignored
 	private List<RealServerInfo> servers;
 	@Ignored
-	private List<Account> accounts;
-	@Ignored
 	private List<TimeLimitedCallable>  callBacks;
 	
 	static {
@@ -189,9 +187,6 @@ public class BaseInfo extends ZkConfig {
 	public List<RealServerInfo> getServers() {
 		return servers;
 	}
-
-
-
 	
 	public void registServer(RealServerInfo serverInfo) throws MetaDataException {
 		try {

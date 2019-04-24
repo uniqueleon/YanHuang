@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Properties;
 
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.conf.DatabaseScheme;
+import org.aztec.deadsea.sql.conf.ServerScheme;
+import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.Table;
-import org.aztec.deadsea.sql.scheme.DatabaseScheme;
-import org.aztec.deadsea.sql.scheme.ServerScheme;
-import org.aztec.deadsea.sql.scheme.TableScheme;
 
 public class LocalShardingConfiguration implements ShardingConfiguration {
 	

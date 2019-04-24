@@ -1,4 +1,4 @@
-package org.aztec.deadsea.sql.scheme;
+package org.aztec.deadsea.sql.conf;
 
 public class TableScheme {
 	

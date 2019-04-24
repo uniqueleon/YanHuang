@@ -6,18 +6,24 @@ import java.util.regex.Pattern;
 
 import org.aztec.deadsea.sql.Asserts;
 import org.aztec.deadsea.sql.GenerationParameter;
+import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.ShardingConfigurationFactory;
 import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
+import org.aztec.deadsea.sql.conf.DatabaseScheme;
+import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.SqlUtils;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
-import org.aztec.deadsea.sql.scheme.DatabaseScheme;
-import org.aztec.deadsea.sql.scheme.TableScheme;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 
 public class CreateTableGenerator implements ShardingSqlGenerator {
+	
+	@Autowired
+	private ShardingConfigurationFactory factory;
 
 	private static Pattern tableNamePattern = Pattern
 			.compile("[C|c][R|r][E|e][A|a][T|t][E|e]\\s+[T|t][A|a][B|b][L|l][E|e]\\s+[\\.*\\`*\\w+[_+\\w+]+\\`*]+\\s+\\(");
@@ -43,10 +49,11 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 	}
 
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException {
+		ShardingConfiguration conf = factory.getConfiguration(param.getSqlMetaData());
 		List<String> retString = Lists.newArrayList();
 		String rawSql = param.getSqlMetaData().getRawSql();
 		SqlMetaData metaData = param.getSqlMetaData();
-		TableScheme ts = param.getShardingConf().getTargetTable(metaData.getTable());
+		TableScheme ts = conf.getTargetTable(metaData.getTable());
 		Asserts.assertNotNull(ts, ErrorCodes.NO_TABLE_SCHEME_FOUND);
 		Asserts.assertNotNull(ts.getDatabase(), ErrorCodes.NO_DATABASE_SCHEME_FOUND);
 		DatabaseScheme db = ts.getDatabase();

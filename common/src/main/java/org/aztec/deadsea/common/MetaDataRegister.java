@@ -9,4 +9,10 @@ public interface MetaDataRegister {
 	public Authentication auth(String username,String password) throws DeadSeaException;
 	public void regist(Authentication auth,MetaData data) throws DeadSeaException;
 	public Map<String,List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException;
+	public void update(Authentication auth,MetaData data) throws DeadSeaException;
+	
+
+	public interface MetaDataMapKeys {
+		public static String DATA_BASE_KEY = "db";
+	}
 }

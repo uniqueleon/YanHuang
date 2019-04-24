@@ -24,6 +24,7 @@ public class DatabaseInfo extends ZkConfig{
 	private int no;
 	//数据库名称前缀  XXX_001
 	private String name;
+	
 	//分库数
 	private Integer size;
 	
@@ -100,6 +101,7 @@ public class DatabaseInfo extends ZkConfig{
 	public void setNo(int no) {
 		this.no = no;
 	}
+
 
 	private class TableReloader implements TimeLimitedCallable {
 

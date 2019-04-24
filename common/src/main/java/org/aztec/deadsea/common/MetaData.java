@@ -20,7 +20,7 @@ public interface MetaData {
 	}
 	
 	public enum MetaSubType{
-		DATABASE,TABLE;
+		DATABASE,TABLE,AGE;
 	}
 	
 	public int getSeqNo();

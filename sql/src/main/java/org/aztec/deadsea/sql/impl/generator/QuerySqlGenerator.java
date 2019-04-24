@@ -4,24 +4,30 @@ import java.util.List;
 
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.ShardingConfigurationFactory;
+import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.StringUtils;
+import org.aztec.deadsea.sql.conf.DatabaseScheme;
+import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
-import org.aztec.deadsea.sql.scheme.DatabaseScheme;
-import org.aztec.deadsea.sql.scheme.TableScheme;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QuerySqlGenerator implements ShardingSqlGenerator {
 
+	@Autowired
+	private ShardingConfigurationFactory factory;
+	
 	public QuerySqlGenerator() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String generate(GenerationParameter param) {
+	public String generate(GenerationParameter param) throws ShardingSqlException {
 		SqlMetaData metaData = param.getSqlMetaData();
-		ShardingConfiguration conf = param.getShardingConf();
+		ShardingConfiguration conf = factory.getConfiguration(metaData);
 		StringBuilder builder = new StringBuilder(metaData.getRawSql());
 		String rawSql = metaData.getRawSql();
 		String newSql = rawSql;
@@ -51,7 +57,7 @@ public class QuerySqlGenerator implements ShardingSqlGenerator {
 		return param.getSqlMetaData().getSqlType().equals(SqlType.QUERY);
 	}
 
-	public String generateSingle(GenerationParameter param) {
+	public String generateSingle(GenerationParameter param) throws ShardingSqlException {
 		// TODO Auto-generated method stub
 		return generate(param);
 	}

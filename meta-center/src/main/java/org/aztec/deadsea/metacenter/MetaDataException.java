@@ -23,6 +23,7 @@ public class MetaDataException extends DeadSeaException {
 		public static final int AUTHENTICATE_FAIL = 0x1021;
 		public static final int ADD_AUTHENTICATION_FAIL = 0x1022;
 		public static final int AUTHENTICATE_NOT_EXISTS = 0x1023;
+		public static final int NOT_AUTHORIZED = 0x1024;
 	}
 	
 	public MetaDataException(int errorCode) {

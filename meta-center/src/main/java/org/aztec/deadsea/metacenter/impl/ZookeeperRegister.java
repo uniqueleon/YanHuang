@@ -16,6 +16,7 @@ import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegister;
 import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.entity.Database;
+import org.aztec.deadsea.common.entity.ShardAge;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;
@@ -24,6 +25,7 @@ import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
 import org.aztec.deadsea.metacenter.conf.zk.Account;
 import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 import org.aztec.deadsea.metacenter.conf.zk.DatabaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.ShardingAgeInfo;
 import org.aztec.deadsea.metacenter.conf.zk.TableInfo;
 
 import com.google.common.collect.Lists;
@@ -146,20 +148,48 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 				case DATABASE:
 
 					registDB(auth, data);
+					break;
 				case TABLE:
 					registTable(auth,data);
+					break;
+				case AGE:
+					break;
 				}
 			}
 		}
 	}
 	
+	public void registAge(Authentication auth ,MetaData data) throws MetaDataException {
+
+		assertAuth(auth);
+		String tablePrefix = String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO,new Object[] {auth.getUUID(),data.getParent().getParent().getSeqNo(),data.getParent().getSeqNo()});
+		if(!ZkUtils.isNodeExists(tablePrefix)) {
+			throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
+		}
+		try {
+			TableInfo table = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getParent().getSeqNo()).getTables().get(data.getParent().getSeqNo());
+			ShardingAgeInfo ageInfo = new ShardingAgeInfo(tablePrefix, data.getSeqNo());
+			ShardAge sAge = data.cast();
+			ageInfo.setModulus(sAge.getModulus());
+			ageInfo.setValve(sAge.getValve());
+			ageInfo.save();
+			table.setAgeNum(table.getAgeNum() + 1);
+			table.save();
+		}  catch (Exception e) {
+			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
+		}
+	}
+	
 	public void registDB(Authentication auth ,MetaData data) throws MetaDataException {
+
+		assertAuth(auth);
 		Database db = data.cast();
 		String path = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,new Object[] {auth.getUUID(),db.getSeqNo()});
 		if(ZkUtils.isNodeExists(path)) {
 			throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
 		}
 		try {
+			Account account = accounts.get(auth.getUUID());
 			DatabaseInfo dbInfo = new DatabaseInfo(auth.getUUID());
 			dbInfo.setName(data.getName());
 			dbInfo.setSize(data.getSize());
@@ -167,23 +197,27 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 			dbInfo.setTableNum(0);
 			dbInfo.setNo(data.getSeqNo());
 			dbInfo.save();
+			account.setDbNum(account.getDbNum() + 1);
+			account.save();
 		}  catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
 	
 	public void registTable(Authentication auth ,MetaData data) throws MetaDataException {
-		String path = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,new Object[] {auth.getUUID(),data.getName()});
-		if(ZkUtils.isNodeExists(path)) {
-			throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
+
+		assertAuth(auth);
+		String dbPrefix = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,new Object[] {auth.getUUID(),data.getParent().getSeqNo()});
+		if(!ZkUtils.isNodeExists(dbPrefix)) {
+			throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
 		}
 		MetaData parent = data.getParent();
 		String tablePath = String.format(MetaCenterConst.ZkConfigPaths.TABLES_SHARDING_INFO,new Object[] {auth.getUUID(),parent.getSeqNo(),data.getSeqNo()});
-		if(!ZkUtils.isNodeExists(tablePath)) {
-			throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
+		if(ZkUtils.isNodeExists(tablePath)) {
+			throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
 		}
 		try {
-			TableInfo table = new TableInfo(auth.getUUID());
+			TableInfo table = new TableInfo(dbPrefix,data.getSeqNo());
 			table.setName(data.getName());
 			table.setSize(data.getSize());
 			table.setShard(data.shard());
@@ -191,22 +225,40 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 			table.setNo(data.getSeqNo());
 			table.setAgeNum(0);
 			table.save();
+			DatabaseInfo db = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getSeqNo());
+			db.setTableNum(db.getTableNum() + 1);
+			db.save();
 		} catch (Exception e) {
 
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
+	
+	private void assertAuth(Authentication auth)  throws MetaDataException {
+		if(!auth.isAuthenticated()) {
+			throw  new MetaDataException(ErrorCodes.NOT_AUTHORIZED);
+		}
+	}
 
 	@Override
 	public Map<String, List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException {
-		Authentication authen = auth(auth.getName(),auth.getPassword());
-		if(authen.isAuthenticated()) {
-			String base64 = cipher.encodeBase64(auth.getName());
-			Account account = accounts.get(base64);
-			List<DatabaseInfo> databases = account.getDatabases();
-			
+		
+		assertAuth(auth);
+		Map<String,List<MetaData>> dataMap = Maps.newHashMap();
+		String base64 = cipher.encodeBase64(auth.getName());
+		Account account = accounts.get(base64);
+		List<DatabaseInfo> databases = account.getDatabases();
+		List<MetaData> dbs = Lists.newArrayList();
+		for(DatabaseInfo dbInfo : databases) {
+			dataMap.put(MetaDataRegister.MetaDataMapKeys.DATA_BASE_KEY, dbs);
 		}
-		return null;
+		return dataMap;
+	}
+
+	@Override
+	public void update(Authentication auth, MetaData data) throws DeadSeaException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

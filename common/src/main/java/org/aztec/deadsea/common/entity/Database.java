@@ -10,6 +10,9 @@ public class Database extends BaseMetaData implements MetaData {
 	
 	private int no;
 	
+	private Integer tableNum;
+	
+	
 	private List<Table> tables;
 
 	public Database(int no,String name,int size,int tableNum,boolean shard,List<Table> tables) {
@@ -20,6 +23,7 @@ public class Database extends BaseMetaData implements MetaData {
 		for(Table table : tables){
 			childs.add(table);
 		}
+		this.tableNum = tableNum;
 		
 	}
 
@@ -38,5 +42,15 @@ public class Database extends BaseMetaData implements MetaData {
 	public void setNo(int no) {
 		this.no = no;
 	}
+	
+	public Integer getTableNum() {
+		return tableNum;
+	}
+
+	public void setTableNum(Integer tableNum) {
+		this.tableNum = tableNum;
+	}
+	
+	
 	
 }

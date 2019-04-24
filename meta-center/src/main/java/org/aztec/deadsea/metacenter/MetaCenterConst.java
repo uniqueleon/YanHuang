@@ -11,4 +11,5 @@ public interface MetaCenterConst {
 		public static String TABLES_SHARDING_INFO = DATABASE_INFO + ".tables.%s";
 		public static String SHARDING_AGE_INFO = TABLES_SHARDING_INFO + ".ages.%s";
 	}
+	
 }
