@@ -29,4 +29,28 @@ public class ModulusVirtualNode implements VirtualServer {
 		return dataList;
 	}
 
+	public Long getModulus() {
+		return modulus;
+	}
+
+	public void setModulus(Long modulus) {
+		this.modulus = modulus;
+	}
+
+	public Long[] getRanges() {
+		return ranges;
+	}
+
+	public void setRanges(Long[] ranges) {
+		this.ranges = ranges;
+	}
+
+	@Override
+	public <T> T cast(Class<T> castClass) {
+		if(ModulusVirtualNode.class.isAssignableFrom(castClass)) {
+			return (T) this;
+		}
+		return null;
+	}
+
 }

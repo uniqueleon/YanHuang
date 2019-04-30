@@ -13,6 +13,7 @@ public class SimpleRealServer implements RealServer{
 	private Integer proxyPort;
 	private RealServerType type;
 	private List<VirtualServer> nodes;
+	private Boolean isNew;
 
 	public SimpleRealServer() {
 		// TODO Auto-generated constructor stub
@@ -69,6 +70,28 @@ public class SimpleRealServer implements RealServer{
 	public Integer getNo() {
 		return no;
 	}
-	
-	
+
+	@Override
+	public RealServer cloneThis() {
+		SimpleRealServer cloneOne = new SimpleRealServer(new String(host), new Integer(no), new Integer(port), type);
+		cloneOne.proxyPort = new Integer(proxyPort);
+		return cloneOne;
+	}
+
+	@Override
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public Boolean getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	public void setNo(Integer no) {
+		this.no = no;
+	}
 }

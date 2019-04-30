@@ -4,23 +4,37 @@ import java.util.List;
 
 import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegistration;
-import org.aztec.deadsea.common.ShardingInfoCalculator;
+import org.aztec.deadsea.common.ServerScaler;
 
 public class SimpleRegistration implements ServerRegistration {
 	
 	private List<RealServer> allServers;
-	private ShardingInfoCalculator calculator;
+	private ServerScaler calculator;
 
 	public SimpleRegistration() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	public void setAllServers(List<RealServer> allServers) {
+		this.allServers = allServers;
+	}
+
+
+
+	public void setCalculator(ServerScaler calculator) {
+		this.calculator = calculator;
+	}
+
+
 
 	public List<RealServer> getAllServers() {
 		// TODO Auto-generated method stub
 		return allServers;
 	}
 
-	public ShardingInfoCalculator getCalculator() {
+	public ServerScaler getCalculator() {
 		return calculator;
 	}
 

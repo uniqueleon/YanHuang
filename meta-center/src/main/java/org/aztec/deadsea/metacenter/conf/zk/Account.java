@@ -9,8 +9,6 @@ import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.deadsea.common.MetaData;
-import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 
 import com.google.common.collect.Lists;

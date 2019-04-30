@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.TableGenerator;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
@@ -14,8 +12,6 @@ import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaData;
-import org.aztec.deadsea.common.ShardingAge;
-import org.aztec.deadsea.common.entity.Database;
 import org.aztec.deadsea.common.entity.Table;
 
 import com.google.common.collect.Lists;
@@ -27,6 +23,7 @@ public class TableInfo extends ZkConfig {
 	private Integer size;
 	private Integer ageNum;
 	private Boolean shard;
+	private Long recordSeqNo;
 	@Ignored
 	private List<ShardingAgeInfo> ages;
 
@@ -163,6 +160,14 @@ public class TableInfo extends ZkConfig {
 			
 		}
 		
+	}
+
+	public Long getRecordSeqNo() {
+		return recordSeqNo;
+	}
+
+	public void setRecordSeqNo(Long recordSeqNo) {
+		this.recordSeqNo = recordSeqNo;
 	}
 
 }

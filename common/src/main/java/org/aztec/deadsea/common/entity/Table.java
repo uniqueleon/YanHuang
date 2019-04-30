@@ -4,6 +4,7 @@ public class Table extends BaseMetaData{
 	
 	private Database database;
 	private int ageNum;
+	private Long recordSeqNo;
 
 	public Table(int no,String name,Integer size,boolean shard,Database base) {
 		super(no,name, size, shard);
@@ -26,6 +27,14 @@ public class Table extends BaseMetaData{
 
 	public void setAgeNum(int ageNum) {
 		this.ageNum = ageNum;
+	}
+
+	public Long getRecordSeqNo() {
+		return recordSeqNo;
+	}
+
+	public void setRecordSeqNo(Long recordSeqNo) {
+		this.recordSeqNo = recordSeqNo;
 	}
 
 	

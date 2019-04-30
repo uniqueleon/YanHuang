@@ -3,45 +3,38 @@ package org.aztec.deadsea.common.impl;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.aztec.autumn.common.math.equations.GreatestCommonDivisor;
-import org.aztec.deadsea.common.ShardingInfoCalculator;
+import org.aztec.deadsea.common.DeadSeaException;
+import org.aztec.deadsea.common.ServerScaler;
 
-public abstract class BaseDBCalculator implements ShardingInfoCalculator {
+public abstract class BaseDBScaler implements ServerScaler {
 	
 	protected final AtomicLong currentSize = new AtomicLong(0);
 	protected final AtomicLong databaseSize = new AtomicLong(0);
 	protected final AtomicLong tableSize = new AtomicLong(0);
 	protected final AtomicLong realSize = new AtomicLong(0);
+	protected final AtomicLong nextRealSize = new AtomicLong(0);
 	protected final AtomicLong currentValve = new AtomicLong(0);
+	protected final AtomicLong dataSize = new AtomicLong(0);
 
-	public BaseDBCalculator(int currentSize,int realSize,int databaseSize,int tableSize) {
+	public BaseDBScaler(Long dataSize,int currentSize,int realSize,int databaseSize,int tableSize) {
 		this.currentSize.set(currentSize);
 		this.databaseSize.set(databaseSize);
 		this.tableSize.set(tableSize);
 		this.realSize.set(realSize);
+		this.databaseSize.set(dataSize);
 	}
 
-	public long getRealSize() {
+	public long getActualSize() {
 		return realSize.get();
 	}
 
-	public long getNextRealSize() {
-		if(currentSize.get() == 1) {
-			return 2;
+	public long getNextActualSize() {
+
+		long nextRealSize = realSize.get() + 1;
+		while(!isRelativelyPrime(nextRealSize, databaseSize.get(), tableSize.get())) {
+			nextRealSize ++;
 		}
-		long nextSize = realSize.get() + 1;
-		if(isRelativelyPrime(nextSize, databaseSize.get(), tableSize.get())) {
-			return nextSize;
-		}
-		else {
-			nextSize ++;
-			if(isRelativelyPrime(nextSize, databaseSize.get(), tableSize.get())) {
-				return nextSize;
-			}
-			else {
-				nextSize ++;
-				return nextSize;
-			}
-		}
+		return nextRealSize;
 	}
 
 	public long getCurrentSize() {
@@ -49,8 +42,16 @@ public abstract class BaseDBCalculator implements ShardingInfoCalculator {
 	}
 
 
+
 	public long getNextSize() {
-		return getNextRealSize() * currentSize.get();
+		
+		if(realSize.get() == 1) {
+			return 2;
+		}
+		long realSize = getActualSize();
+		long nextRealSize = getNextActualSize();
+		long nextSize = realSize * nextRealSize;
+		return nextSize;
 	}
 	
 	public boolean isRelativelyPrime(long curSize,long dbSize,long tableSize) {

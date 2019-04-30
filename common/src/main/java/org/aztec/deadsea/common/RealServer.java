@@ -9,4 +9,7 @@ public interface RealServer {
 	public Integer getPort();
 	public Integer getProxyPort();
 	public Integer getNo();
+	public boolean isNew();
+	public void setNodes(List<VirtualServer> virtualNodes);
+	public RealServer cloneThis();
 }

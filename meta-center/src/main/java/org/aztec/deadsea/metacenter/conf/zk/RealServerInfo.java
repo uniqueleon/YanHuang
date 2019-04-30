@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.zk.ZkConfig;
+import org.aztec.deadsea.common.MetaData;
+import org.aztec.deadsea.common.RealServer;
+import org.aztec.deadsea.common.entity.RealServerType;
+import org.aztec.deadsea.common.entity.SimpleRealServer;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 
 public class RealServerInfo extends ZkConfig {
@@ -62,6 +66,14 @@ public class RealServerInfo extends ZkConfig {
 
 	public void setNo(Integer no) {
 		this.no = no;
+	}
+	
+	public RealServer toDto() {
+		SimpleRealServer srs = new SimpleRealServer(host,no,port,RealServerType.SOCKET);
+		if(proxyPort != null) {
+			srs.setProxyPort(proxyPort);
+		}
+		return srs;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.sql.Asserts;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
@@ -51,16 +52,20 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException {
 		ShardingConfiguration conf = factory.getConfiguration(param.getSqlMetaData());
 		List<String> retString = Lists.newArrayList();
-		String rawSql = param.getSqlMetaData().getRawSql();
-		SqlMetaData metaData = param.getSqlMetaData();
-		TableScheme ts = conf.getTargetTable(metaData.getTable());
-		Asserts.assertNotNull(ts, ErrorCodes.NO_TABLE_SCHEME_FOUND);
-		Asserts.assertNotNull(ts.getDatabase(), ErrorCodes.NO_DATABASE_SCHEME_FOUND);
-		DatabaseScheme db = ts.getDatabase();
-		List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.size(),ts.size(),db.getName(),ts.getName());
-		String replaceTarget = getReplaceTarget(rawSql);
-		for(int i = 0;i < dbTables.size();i++) {
-			retString.add(rawSql.replace(replaceTarget, dbTables.get(i)));
+		try {
+			String rawSql = param.getSqlMetaData().getRawSql();
+			SqlMetaData metaData = param.getSqlMetaData();
+			TableScheme ts = conf.getTargetTable(metaData.getTable());
+			Asserts.assertNotNull(ts, ErrorCodes.NO_TABLE_SCHEME_FOUND);
+			Asserts.assertNotNull(ts.getDatabase(), ErrorCodes.NO_DATABASE_SCHEME_FOUND);
+			DatabaseScheme db = ts.getDatabase();
+			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.size(),ts.size(),db.getName(),ts.getName());
+			String replaceTarget = getReplaceTarget(rawSql);
+			for(int i = 0;i < dbTables.size();i++) {
+				retString.add(rawSql.replace(replaceTarget, dbTables.get(i)));
+			}
+		} catch (DeadSeaException e) {
+			throw new ShardingSqlException(ErrorCodes.UNSUPPORT_OPERATION);
 		}
 		return retString;
 	}
