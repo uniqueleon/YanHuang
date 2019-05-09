@@ -1,9 +1,11 @@
 package org.aztec.deadsea.metacenter.impl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.zookeeper.KeeperException;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
@@ -28,6 +30,7 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	private static Map<String, Account> accounts = Maps.newConcurrentMap();
 	
+	
 	private ZkRegistHelper helper = new ZkRegistHelper();
 
 	public ZookeeperRegister() {
@@ -39,6 +42,8 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	}
 	
+	
+	
 	private void validateRegistServers(List<RealServer> newServers) throws MetaDataException {
 		
 		for(RealServer server : newServers) {
@@ -48,7 +53,8 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 		}
 	}
 
-	public void regist(List<RealServer> newServers) throws MetaDataException {
+	public void regist(Authentication auth,List<RealServer> newServers) throws MetaDataException {
+		helper.assertAuth(auth);
 		validateRegistServers(newServers);
 		try {
 			if (CollectionUtils.isNotEmpty(newServers)) {
@@ -58,6 +64,7 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 							realServer.getPort(), realServer.getProxyPort());
 					serverInfo.save();
 					baseInfo.setRealNum(baseInfo.getRealNum() + 1);
+					baseInfo.getServers().add(serverInfo);
 				}
 			}
 		} catch (Exception e) {
@@ -66,7 +73,9 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 
-	public ServerRegistration getRegistration() throws DeadSeaException {
+	public ServerRegistration getRegistration(Authentication auth) throws DeadSeaException {
+
+		helper.assertAuth(auth);
 		SimpleRegistration registration = new SimpleRegistration();
 		List<RealServerInfo> serverDatas = baseInfo.getServers();
 		List<RealServer> serverMetaDatas = Lists.newArrayList();
@@ -152,12 +161,43 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 	@Override
-	public void update(List<RealServer> newServers) throws DeadSeaException {
+	public void update(Authentication auth,List<RealServer> newServers) throws DeadSeaException {
 		// TODO Auto-generated method stub
-		
+
+		helper.assertAuth(auth);
+		validateRegistServers(newServers);
+		List<RealServerInfo> realServers = baseInfo.getServers();
+		try {
+			for(int i = 0;i < newServers.size();i++) {
+				RealServer metaData = newServers.get(i);
+				if (realServers.size() <= metaData.getNo()) {
+					RealServerInfo rsi = new RealServerInfo(metaData.getNo(), metaData.getHost(), metaData.getPort(),
+							metaData.getProxyPort());
+					rsi.save();
+					realServers.set(metaData.getNo(), rsi);
+				}
+				else {
+					RealServerInfo rsi = realServers.get(metaData.getNo());
+					rsi.setHost(metaData.getHost());
+					rsi.setPort(metaData.getPort());
+					rsi.setProxyPort(metaData.getProxyPort());
+					rsi.save();
+				}
+				
+			}
+			// 刷新其它服务器的副本，逼免出现数据不一致
+			baseInfo.save();
+		} catch (Exception e) {
+			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
+		}
 	}
 
-	private void validateUpdateServers(List<RealServer> newServers) {
-		
+	private void validateUpdateServers(Authentication auth,List<RealServer> newServers) throws MetaDataException {
+		for(int i = 0;i < newServers.size();i++) {
+			RealServer server = newServers.get(i);
+			if(baseInfo.getRealNum() <= server.getNo()) {
+				throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
+			}
+		}
 	}
 }

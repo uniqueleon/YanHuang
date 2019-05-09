@@ -2,6 +2,7 @@ package org.aztec.deadsea.sql.impl.generator;
 
 import java.util.List;
 
+import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
@@ -25,7 +26,7 @@ public class QuerySqlGenerator implements ShardingSqlGenerator {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String generate(GenerationParameter param) throws ShardingSqlException {
+	public String generate(GenerationParameter param) throws DeadSeaException {
 		SqlMetaData metaData = param.getSqlMetaData();
 		ShardingConfiguration conf = factory.getConfiguration(metaData);
 		StringBuilder builder = new StringBuilder(metaData.getRawSql());
@@ -59,7 +60,11 @@ public class QuerySqlGenerator implements ShardingSqlGenerator {
 
 	public String generateSingle(GenerationParameter param) throws ShardingSqlException {
 		// TODO Auto-generated method stub
-		return generate(param);
+		try {
+			return generate(param);
+		} catch (DeadSeaException e) {
+			return null;
+		}
 	}
 
 	public List<String> generateMulti(GenerationParameter param) {

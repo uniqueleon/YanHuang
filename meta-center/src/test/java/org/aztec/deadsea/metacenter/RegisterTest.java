@@ -6,7 +6,6 @@ import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
-import org.aztec.deadsea.common.ServerRegister;
 import org.aztec.deadsea.common.entity.RealServerType;
 import org.aztec.deadsea.common.entity.SimpleRealServer;
 import org.aztec.deadsea.metacenter.impl.ZookeeperRegister;
@@ -44,10 +43,11 @@ public class RegisterTest {
 	
 	public static void registServer() {
 		try {
-			ServerRegister register = new ZookeeperRegister();
+			ZookeeperRegister register = new ZookeeperRegister();
+			Authentication auth = register.auth("liming", "lm1234");
 			List<RealServer> newServers = Lists.newArrayList();
 			newServers.add(new SimpleRealServer("db1.aztec.com", 0, 3306, RealServerType.SOCKET));
-			register.regist(newServers);
+			register.regist(auth,newServers);
 		} catch (DeadSeaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
