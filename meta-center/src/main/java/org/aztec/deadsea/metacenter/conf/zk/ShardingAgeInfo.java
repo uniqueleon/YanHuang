@@ -6,7 +6,7 @@ import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaData;
-import org.aztec.deadsea.common.entity.ShardAge;
+import org.aztec.deadsea.common.entity.ShardAgeDTO;
 
 public class ShardingAgeInfo extends ZkConfig {
 	
@@ -39,7 +39,7 @@ public class ShardingAgeInfo extends ZkConfig {
 	}
 
 	public MetaData toMetaData() {
-		ShardAge age = new ShardAge(no);
+		ShardAgeDTO age = new ShardAgeDTO(no);
 		age.setModulus(modulus);
 		age.setLastValve(lastValve);
 		age.setValve(valve);

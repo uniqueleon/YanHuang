@@ -12,7 +12,7 @@ import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaData;
-import org.aztec.deadsea.common.entity.Database;
+import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
@@ -144,7 +144,7 @@ public class DatabaseInfo extends ZkConfig{
 	}
 	
 	public MetaData toMetaData() {
-		Database db = new Database(no, name, size, tableNum, shard,Lists.newArrayList());
+		DatabaseDTO db = new DatabaseDTO(no, name, size, tableNum, shard,Lists.newArrayList());
 		for(TableInfo t : tables) {
 			db.getChilds().add(t.toMetaData(db));
 		}

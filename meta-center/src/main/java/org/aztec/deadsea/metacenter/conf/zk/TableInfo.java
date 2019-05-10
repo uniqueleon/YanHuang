@@ -12,7 +12,7 @@ import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaData;
-import org.aztec.deadsea.common.entity.Table;
+import org.aztec.deadsea.common.entity.TableDTO;
 
 import com.google.common.collect.Lists;
 
@@ -114,7 +114,7 @@ public class TableInfo extends ZkConfig {
 	}
 	
 	public MetaData toMetaData(MetaData db) {
-		Table table = new Table(no,name,size,shard,db.cast());
+		TableDTO table = new TableDTO(no,name,size,shard,db.cast());
 		for(ShardingAgeInfo sa : ages) {
 			table.getChilds().add(sa.toMetaData());
 		}

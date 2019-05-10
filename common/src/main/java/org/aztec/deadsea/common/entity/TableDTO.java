@@ -1,23 +1,23 @@
 package org.aztec.deadsea.common.entity;
 
-public class Table extends BaseMetaData{
+public class TableDTO extends BaseMetaData{
 	
-	private Database database;
+	private DatabaseDTO database;
 	private int ageNum;
 	private Long recordSeqNo;
 
-	public Table(int no,String name,Integer size,boolean shard,Database base) {
+	public TableDTO(int no,String name,Integer size,boolean shard,DatabaseDTO base) {
 		super(no,name, size, shard);
 		this.type = MetaType.DB;
 		this.type.setSubType(MetaSubType.TABLE);
 		this.parent = base;
 	}
 
-	public Database getDatabase() {
+	public DatabaseDTO getDatabase() {
 		return database;
 	}
 
-	public void setDatabase(Database database) {
+	public void setDatabase(DatabaseDTO database) {
 		this.database = database;
 	}
 

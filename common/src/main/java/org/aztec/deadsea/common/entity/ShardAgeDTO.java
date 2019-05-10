@@ -1,12 +1,12 @@
 package org.aztec.deadsea.common.entity;
 
-public class ShardAge extends BaseMetaData{
+public class ShardAgeDTO extends BaseMetaData{
 
 	private Long valve;
 	private Long LastValve;
 	private Long modulus;
 	
-	public ShardAge(int no) {
+	public ShardAgeDTO(int no) {
 		super(no, null, null, true);
 	}
 

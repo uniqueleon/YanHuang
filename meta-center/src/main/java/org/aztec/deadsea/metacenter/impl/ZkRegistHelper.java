@@ -10,10 +10,10 @@ import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
-import org.aztec.deadsea.common.entity.Database;
-import org.aztec.deadsea.common.entity.ShardAge;
+import org.aztec.deadsea.common.entity.DatabaseDTO;
+import org.aztec.deadsea.common.entity.ShardAgeDTO;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
-import org.aztec.deadsea.common.entity.Table;
+import org.aztec.deadsea.common.entity.TableDTO;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;
 import org.aztec.deadsea.metacenter.MetaDataException;
@@ -36,7 +36,7 @@ public class ZkRegistHelper {
 
 	public void updateDB(Map<String,Account> accounts,Authentication auth, MetaData data) throws MetaDataException {
 		try {
-			Database db = data.cast();
+			DatabaseDTO db = data.cast();
 			DatabaseInfo dbInfo = new DatabaseInfo(auth.getUUID());
 			if(data.getName() != null) {
 				dbInfo.setName(data.getName());
@@ -64,7 +64,7 @@ public class ZkRegistHelper {
 		String dbPrefix = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,
 				new Object[] { auth.getUUID(), data.getParent().getSeqNo() });
 		try {
-			Table tbData = data.cast();
+			TableDTO tbData = data.cast();
 			TableInfo table = new TableInfo(dbPrefix, data.getSeqNo());
 			if(data.getName() != null) {
 				table.setName(data.getName());
@@ -97,7 +97,7 @@ public class ZkRegistHelper {
 			TableInfo table = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getParent().getSeqNo())
 					.getTables().get(data.getParent().getSeqNo());
 			ShardingAgeInfo ageInfo = new ShardingAgeInfo(tablePrefix, data.getSeqNo());
-			ShardAge sAge = data.cast();
+			ShardAgeDTO sAge = data.cast();
 			ageInfo.setModulus(sAge.getModulus());
 			ageInfo.setValve(sAge.getValve());
 			ageInfo.save();
@@ -113,7 +113,7 @@ public class ZkRegistHelper {
 		assertAuth(auth);
 		switch(data.getType().getSubType()) {
 		case DATABASE:
-			Database db = data.cast();
+			DatabaseDTO db = data.cast();
 			String path = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,
 					new Object[] { auth.getUUID(), db.getSeqNo() });
 			if (ZkUtils.isNodeExists(path)) {
@@ -200,9 +200,10 @@ public class ZkRegistHelper {
 		Account account = accounts.get(base64);
 		List<DatabaseInfo> databases = account.getDatabases();
 		List<MetaData> dbs = Lists.newArrayList();
-		for (DatabaseInfo dbInfo : databases) {
-			dataMap.put(MetaDataRegister.MetaDataMapKeys.DATA_BASE_KEY, dbs);
+		for(DatabaseInfo dbInfo : databases) {
+			dbs.add(dbInfo.toMetaData());
 		}
+		dataMap.put(MetaDataRegister.MetaDataMapKeys.DATA_BASE_KEY, dbs);
 		return dataMap;
 	}
 	
