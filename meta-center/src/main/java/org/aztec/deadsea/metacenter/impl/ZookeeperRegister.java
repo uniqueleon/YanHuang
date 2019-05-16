@@ -1,11 +1,8 @@
 package org.aztec.deadsea.metacenter.impl;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.zookeeper.KeeperException;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
@@ -13,23 +10,24 @@ import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegister;
 import org.aztec.deadsea.common.ServerRegistration;
+import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.common.entity.SimpleRegistration;
 import org.aztec.deadsea.metacenter.MetaDataException;
-import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
 import org.aztec.deadsea.metacenter.conf.zk.Account;
 import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
+import org.aztec.deadsea.metacenter.conf.zk.ServerAge;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
+@Component
 public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	private static final BaseInfo baseInfo = BaseInfo.getInstance();
 
-	private static Map<String, Account> accounts = Maps.newConcurrentMap();
-	
+
 	
 	private ZkRegistHelper helper = new ZkRegistHelper();
 
@@ -43,41 +41,17 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 	
 	
-	
-	private void validateRegistServers(List<RealServer> newServers) throws MetaDataException {
-		
-		for(RealServer server : newServers) {
-			if(baseInfo.getRealNum() > server.getNo()) {
-				throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
-			}
-		}
-	}
 
-	public void regist(Authentication auth,List<RealServer> newServers) throws MetaDataException {
-		helper.assertAuth(auth);
-		validateRegistServers(newServers);
-		try {
-			if (CollectionUtils.isNotEmpty(newServers)) {
-
-				for (RealServer realServer : newServers) {
-					RealServerInfo serverInfo = new RealServerInfo(realServer.getNo(), realServer.getHost(),
-							realServer.getPort(), realServer.getProxyPort());
-					serverInfo.save();
-					baseInfo.setRealNum(baseInfo.getRealNum() + 1);
-					baseInfo.getServers().add(serverInfo);
-				}
-			}
-		} catch (Exception e) {
-			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
-		}
+	public void regist(Authentication auth,ShardingAge age,List<RealServer> newServers) throws MetaDataException {
+		helper.regist(auth, age, newServers);
 	}
 
 
-	public ServerRegistration getRegistration(Authentication auth) throws DeadSeaException {
-
+	public ServerRegistration getRegistration(Authentication auth,ShardingAge age) throws DeadSeaException {
 		helper.assertAuth(auth);
 		SimpleRegistration registration = new SimpleRegistration();
-		List<RealServerInfo> serverDatas = baseInfo.getServers();
+		ServerAge serverAge = helper.getAge(age.getNo());
+		List<RealServerInfo> serverDatas = serverAge.getServers();
 		List<RealServer> serverMetaDatas = Lists.newArrayList();
 		for(int i = 0;i < serverDatas.size();i++) {
 			serverMetaDatas.add(serverDatas.get(i).toDto());
@@ -88,16 +62,13 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 	public List<MetaData> getRegistedMetaDatas() throws DeadSeaException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Authentication addauth(String username, String password) throws DeadSeaException {
-
 		Account account = helper.addauth(username, password);
 		if(account != null) {
-			accounts.put(account.getUuid(), account);
 			return new SimpleAuthentication(username, account.getUuid(), password, true);
 		}
 		return new SimpleAuthentication(username, null, password, false);
@@ -105,26 +76,24 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	@Override
 	public Authentication auth(String username, String password) throws DeadSeaException {
-		return helper.auth(accounts, username, password);
+		return helper.auth(username, password);
 	}
 
 	@Override
 	public void regist(Authentication auth, MetaData data) throws DeadSeaException {
-		// TODO Auto-generated method stub
-
 		helper.validateMetaData(auth, data);
 		if (auth.isAuthenticated()) {
 			switch (data.getType()) {
 			case DB:
 				switch (data.getType().getSubType()) {
 				case DATABASE:
-					helper.registDB(accounts,auth, data);
+					helper.registDB(auth, data);
 					break;
 				case TABLE:
-					helper.registTable(accounts,auth, data);
+					helper.registTable(auth, data);
 					break;
 				case AGE:
-					helper.registAge(accounts,auth, data);
+					helper.registAge(auth, data);
 					break;
 				}
 			}
@@ -134,13 +103,11 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	@Override
 	public Map<String, List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException {
-
-		return helper.getRegistedMetaDatas(accounts, auth);
+		return helper.getRegistedMetaDatas( auth);
 	}
 
 	@Override
 	public void update(Authentication auth, MetaData data) throws DeadSeaException {
-		// TODO Auto-generated method stub
 		helper.assertAuth(auth);
 		if (auth.isAuthenticated()) {
 			switch (data.getType()) {
@@ -148,10 +115,10 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 				switch (data.getType().getSubType()) {
 				case DATABASE:
 
-					helper.updateDB(accounts, auth, data);
+					helper.updateDB(auth, data);
 					break;
 				case TABLE:
-					helper.updateTable(accounts, auth, data);
+					helper.updateTable( auth, data);
 					break;
 				case AGE:
 					break;
@@ -161,43 +128,8 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 	@Override
-	public void update(Authentication auth,List<RealServer> newServers) throws DeadSeaException {
-		// TODO Auto-generated method stub
-
-		helper.assertAuth(auth);
-		validateRegistServers(newServers);
-		List<RealServerInfo> realServers = baseInfo.getServers();
-		try {
-			for(int i = 0;i < newServers.size();i++) {
-				RealServer metaData = newServers.get(i);
-				if (realServers.size() <= metaData.getNo()) {
-					RealServerInfo rsi = new RealServerInfo(metaData.getNo(), metaData.getHost(), metaData.getPort(),
-							metaData.getProxyPort());
-					rsi.save();
-					realServers.set(metaData.getNo(), rsi);
-				}
-				else {
-					RealServerInfo rsi = realServers.get(metaData.getNo());
-					rsi.setHost(metaData.getHost());
-					rsi.setPort(metaData.getPort());
-					rsi.setProxyPort(metaData.getProxyPort());
-					rsi.save();
-				}
-				
-			}
-			// 刷新其它服务器的副本，逼免出现数据不一致
-			baseInfo.save();
-		} catch (Exception e) {
-			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
-		}
+	public void update(Authentication auth,ShardingAge age,List<RealServer> newServers) throws DeadSeaException {
+		helper.update(auth, age, newServers);
 	}
 
-	private void validateUpdateServers(Authentication auth,List<RealServer> newServers) throws MetaDataException {
-		for(int i = 0;i < newServers.size();i++) {
-			RealServer server = newServers.get(i);
-			if(baseInfo.getRealNum() <= server.getNo()) {
-				throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
-			}
-		}
-	}
 }

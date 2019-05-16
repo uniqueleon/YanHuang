@@ -5,6 +5,7 @@ import java.util.List;
 import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.ServerScaler;
+import org.aztec.deadsea.common.ShardingAge;
 
 public class SimpleRegistration implements ServerRegistration {
 	
@@ -36,6 +37,14 @@ public class SimpleRegistration implements ServerRegistration {
 
 	public ServerScaler getCalculator() {
 		return calculator;
+	}
+
+
+
+	@Override
+	public ShardingAge getAge() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

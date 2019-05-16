@@ -1,0 +1,22 @@
+[2019-05-09 11:11:28.222]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 9780 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-09 11:11:28.232]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-09 11:11:29.548]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 2.204 seconds (JVM running for 4.226)
+[2019-05-09 11:11:33.981]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+java.lang.Error: Unresolved compilation problem: 
+	Unhandled exception type DeadSeaException
+
+	at org.aztec.deadsea.sql.impl.generator.QuerySqlGenerator.generate(QuerySqlGenerator.java:34)
+	at org.aztec.deadsea.sql.impl.generator.QuerySqlGenerator.generateSingle(QuerySqlGenerator.java:62)
+	at org.aztec.deadsea.sql.App.run(App.java:41)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.aztec.deadsea.sql.App.main(App.java:32)

@@ -1,10 +1,8 @@
 package org.aztec.deadsea.common;
 
-import java.util.List;
-
-public interface ShardingAge {
-
-	public DataID lastID();
-	public List<RealServer> getRealServers();
-
+public interface ShardingAge extends MetaData{
+	
+	public Long valve();
+	public Long lastValve();
+	public Integer getNo();
 }

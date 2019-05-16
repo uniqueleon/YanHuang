@@ -45,4 +45,14 @@ public class DeadSeaException extends Exception {
 		this.code = errorCode;
 	}
 
+
+	public int getCode() {
+		return code;
+	}
+
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
 }

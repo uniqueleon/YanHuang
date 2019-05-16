@@ -11,6 +11,7 @@ public class SimpleRealServer implements RealServer{
 	private Integer no;
 	private Integer port;
 	private Integer proxyPort;
+	private Integer age;
 	private RealServerType type;
 	private List<VirtualServer> nodes;
 	private Boolean isNew;
@@ -19,7 +20,7 @@ public class SimpleRealServer implements RealServer{
 		// TODO Auto-generated constructor stub
 	}
 
-	public SimpleRealServer(String host, Integer no, Integer port, RealServerType type) {
+	public SimpleRealServer(Integer age,String host, Integer no, Integer port, RealServerType type) {
 		super();
 		this.host = host;
 		this.no = no;
@@ -73,7 +74,7 @@ public class SimpleRealServer implements RealServer{
 
 	@Override
 	public RealServer cloneThis() {
-		SimpleRealServer cloneOne = new SimpleRealServer(new String(host), new Integer(no), new Integer(port), type);
+		SimpleRealServer cloneOne = new SimpleRealServer(age,new String(host), new Integer(no), new Integer(port), type);
 		cloneOne.proxyPort = new Integer(proxyPort);
 		return cloneOne;
 	}
@@ -93,5 +94,14 @@ public class SimpleRealServer implements RealServer{
 
 	public void setNo(Integer no) {
 		this.no = no;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	@Override
+	public Integer getAge() {
+		return age;
 	}
 }

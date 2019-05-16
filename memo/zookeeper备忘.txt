@@ -1,0 +1,1 @@
+addauth digest XXX:XXX

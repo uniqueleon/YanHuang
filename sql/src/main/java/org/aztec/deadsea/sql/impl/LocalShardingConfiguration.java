@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.ServerScheme;
@@ -38,6 +39,18 @@ public class LocalShardingConfiguration implements ShardingConfiguration {
 	}
 
 	public List<ServerScheme> getVirtualServers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ServerScheme> getRealServers(Integer age) throws DeadSeaException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<List<ServerScheme>> getAllRealServers() throws DeadSeaException {
 		// TODO Auto-generated method stub
 		return null;
 	}

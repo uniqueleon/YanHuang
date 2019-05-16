@@ -10,6 +10,6 @@ import org.aztec.deadsea.sql.meta.Table;
 public interface ShardingConfiguration {
 
 	public TableScheme getTargetTable(Table table) throws DeadSeaException;
-	public List<ServerScheme> getRealServers() throws DeadSeaException;
-	public List<ServerScheme> getVirtualServers() throws DeadSeaException;
+	public List<ServerScheme> getRealServers(Integer age) throws DeadSeaException;
+	public List<List<ServerScheme>> getAllRealServers() throws DeadSeaException;
 }

@@ -13,7 +13,6 @@ public class ShardingAgeInfo extends ZkConfig {
 	private Integer no;
 	private Long lastValve;
 	private Long valve;
-	private Long modulus;
 	
 	public ShardingAgeInfo(String tableName,int ageNo)
 			throws IOException, KeeperException, InterruptedException {
@@ -30,19 +29,9 @@ public class ShardingAgeInfo extends ZkConfig {
 		this.valve = valve;
 	}
 
-	public Long getModulus() {
-		return modulus;
-	}
-
-	public void setModulus(Long modulus) {
-		this.modulus = modulus;
-	}
 
 	public MetaData toMetaData() {
-		ShardAgeDTO age = new ShardAgeDTO(no);
-		age.setModulus(modulus);
-		age.setLastValve(lastValve);
-		age.setValve(valve);
+		ShardAgeDTO age = new ShardAgeDTO(no,0,valve,lastValve);
 		return age;
 	}
 }

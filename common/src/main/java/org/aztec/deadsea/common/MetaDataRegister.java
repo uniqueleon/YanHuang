@@ -13,6 +13,8 @@ public interface MetaDataRegister {
 	
 
 	public interface MetaDataMapKeys {
+		public static String GLOBAL_INFORMATION = "globalInfo";
 		public static String DATA_BASE_KEY = "db";
+		public static String SERVER_AGE = "serverAge";
 	}
 }

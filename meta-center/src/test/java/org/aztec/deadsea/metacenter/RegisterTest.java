@@ -46,8 +46,8 @@ public class RegisterTest {
 			ZookeeperRegister register = new ZookeeperRegister();
 			Authentication auth = register.auth("liming", "lm1234");
 			List<RealServer> newServers = Lists.newArrayList();
-			newServers.add(new SimpleRealServer("db1.aztec.com", 0, 3306, RealServerType.SOCKET));
-			register.regist(auth,newServers);
+			/*newServers.add(new SimpleRealServer("db1.aztec.com", 0, 3306, RealServerType.SOCKET));
+			register.regist(auth,newServers);*/
 		} catch (DeadSeaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,15 +2,18 @@ package org.aztec.deadsea.common.entity;
 
 import org.aztec.deadsea.common.ShardingAge;
 
-public class ShardAgeDTO extends BaseMetaData implements ShardingAge{
-
+public class ServerAgeDTO extends BaseMetaData implements ShardingAge {
+	
 	private Long valve;
 	private Long lastValve;
-	
-	public ShardAgeDTO(int no,int size,Long valve,Long lastValve) {
-		super(no, "", size, true);
-		this.valve = valve;
-		this.lastValve = lastValve;
+
+	public ServerAgeDTO(String name, Integer size) {
+		super(name, size, true);
+	}
+
+	public ServerAgeDTO(int no, String name, Integer size,long valve,long lastValve) {
+		super(no, name, size, true);
+		this.valve = lastValve;
 	}
 
 	public Long getValve() {
@@ -31,13 +34,11 @@ public class ShardAgeDTO extends BaseMetaData implements ShardingAge{
 
 	@Override
 	public Long valve() {
-		// TODO Auto-generated method stub
 		return valve;
 	}
 
 	@Override
 	public Long lastValve() {
-		// TODO Auto-generated method stub
 		return lastValve;
 	}
 
@@ -46,5 +47,4 @@ public class ShardAgeDTO extends BaseMetaData implements ShardingAge{
 		return no;
 	}
 
-	
 }

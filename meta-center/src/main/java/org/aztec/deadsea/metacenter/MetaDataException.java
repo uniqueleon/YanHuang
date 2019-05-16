@@ -15,6 +15,7 @@ public class MetaDataException extends DeadSeaException {
 		public static final int META_DATA_INFO_CONFLICT = 0x1002;
 		public static final int META_DATA_ALREADY_EXISTS = 0x1003;
 		public static final int META_DATA_NOT_EXISTS = 0x1004;
+		public static final int META_DATA_ERROR = 0x1005;
 		
 		public static final int INCOMPATIBLE_SERVER_TYPE = 0x1010;
 		public static final int UNSUPPORT_OPERATION = 0x1011;
