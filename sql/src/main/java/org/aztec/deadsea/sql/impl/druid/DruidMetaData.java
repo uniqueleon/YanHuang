@@ -9,7 +9,5 @@ public class DruidMetaData extends BaseSqlMetaData implements SqlMetaData {
 	public DruidMetaData(String sql) {
 		rawSql = sql;
 	}
-	
-	
 
 }

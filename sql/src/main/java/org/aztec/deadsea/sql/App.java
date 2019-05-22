@@ -1,23 +1,23 @@
 package org.aztec.deadsea.sql;
 
-import java.util.Formatter;
-
 import org.aztec.deadsea.common.sql.SQLTemplates;
-import org.aztec.deadsea.sql.impl.druid.DruidMetaDataBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.Banner.Mode;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Hello world!
  *
  */
 @SpringBootConfiguration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages= {"org.aztec.deadsea.sql.impl.druid.parser",
+		"org.aztec.deadsea.sql.impl.druid.parser.aop",
 		"org.aztec.deadsea.sql"})
 public class App implements ApplicationRunner
 {
@@ -35,7 +35,8 @@ public class App implements ApplicationRunner
 	public void run(ApplicationArguments args) throws Exception {
 		try {
 			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
-			String sql = "SELECT * FROM base_item_0001 WHERE id IN (4266266,4266264)";
+			String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='shardDB'";
+			//String sql = "SELECT * FROM base_item_0001 WHERE id IN (4266266,4266264)";
 			GenerationParameter gp = builder.getGenerationParam(sql);
 			ShardingSqlGenerator sqlGen = builder.build(gp);
 			System.out.println(sqlGen.generateSingle(gp));

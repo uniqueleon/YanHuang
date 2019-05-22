@@ -12,6 +12,7 @@ import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.StringUtils;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.TableScheme;
+import org.aztec.deadsea.sql.impl.druid.parser.aop.ShardSqlAroundAdvice;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,11 +29,14 @@ public class QuerySqlGenerator implements ShardingSqlGenerator {
 
 	public String generate(GenerationParameter param) throws DeadSeaException {
 		SqlMetaData metaData = param.getSqlMetaData();
-		ShardingConfiguration conf = factory.getConfiguration(metaData);
+		ShardingConfiguration conf = factory.getConfiguration();
 		StringBuilder builder = new StringBuilder(metaData.getRawSql());
 		String rawSql = metaData.getRawSql();
 		String newSql = rawSql;
 		TableScheme ts = conf.getTargetTable(metaData.getTable());
+		if(ts == null) {
+			return null;
+		}
 		DatabaseScheme dbScheme = ts.getDatabase();
 		int dbSize = dbScheme.size();
 		for(int i = 0;i < dbSize;i++) {

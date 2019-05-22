@@ -26,6 +26,18 @@ public class SqlUtils {
 		}
 		return retList;
 	}
+	
+	public static List<String> getMultiDatabaseNames(String dbName,int dbSize){
+		int dbPaddingSize = StringUtils.getLeasePadding(dbSize);
+		
+		List<String> retList = Lists.newArrayList();
+		for (int i = 0; i < dbSize; i++) {
+			// String dbName =
+			String dbPrefix = "`" + dbName + "_" + StringUtils.padding(true, "" + i, dbPaddingSize, '0') + "`";
+			retList.add(dbPrefix);
+		}
+		return retList;
+	}
 
 	public static void main(String[] args) {
 		System.out.println(getMultiDatabaseTableNames(7, 103, "lmdb", "account"));

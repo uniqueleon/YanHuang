@@ -1,5 +1,7 @@
 package org.aztec.deadsea.sql.meta;
 
+import org.aztec.deadsea.sql.conf.DatabaseScheme;
+
 public class Database{
 	
 	private String name;
@@ -11,6 +13,10 @@ public class Database{
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Database(DatabaseScheme dbScheme) {
+		this.name = dbScheme.getName();
+		
+	}
 	
 
 	public Database(String name, String alias, String charset, String collate) {

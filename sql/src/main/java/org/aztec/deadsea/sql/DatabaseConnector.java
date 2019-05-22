@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 public interface DatabaseConnector {
 
-	public Connection connect(ConnectionConfiguration conf) throws SQLException,IOException ;
+	public Connection connect(ConnectionConfiguration conf) throws ShardingSqlException ;
 	
 }

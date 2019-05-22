@@ -2,6 +2,7 @@ package org.aztec.deadsea.sql.impl.druid.parser;
 
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.sql.ast.SQLStatement;

@@ -36,7 +36,7 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 
 	public boolean accept(GenerationParameter param) {
 		// TODO Auto-generated method stub
-		return param.getSqlMetaData().getSqlType().equals(SqlType.CREAT_TABLE);
+		return param.getSqlMetaData().getSqlType().equals(SqlType.CREATE_TABLE);
 	}
 
 	public String generate(GenerationParameter param) {
@@ -50,7 +50,7 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 	}
 
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException {
-		ShardingConfiguration conf = factory.getConfiguration(param.getSqlMetaData());
+		ShardingConfiguration conf = factory.getConfiguration();
 		List<String> retString = Lists.newArrayList();
 		try {
 			String rawSql = param.getSqlMetaData().getRawSql();

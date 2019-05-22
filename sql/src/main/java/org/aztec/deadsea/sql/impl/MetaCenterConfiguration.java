@@ -14,31 +14,39 @@ import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.common.entity.GlobalInfoDTO;
+import org.aztec.deadsea.common.entity.ServerAgeDTO;
 import org.aztec.deadsea.common.entity.TableDTO;
+import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
+import org.aztec.deadsea.sql.Asserts;
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.ShardingConfigurationFactory;
+import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.conf.AuthorityScheme;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.LocalAuthConfiguration;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.Table;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+@Component(ShardingConfigurationFactory.DEFAULT_CONFIGURATION_BEAN_NAME)
 public class MetaCenterConfiguration implements ShardingConfiguration {
 
+	@Autowired
 	private MetaDataRegister registor;
+	@Autowired
 	private ServerRegister serverRegistor;
 	private LocalAuthConfiguration localConf;
 	private Authentication auth;
 
-	public MetaCenterConfiguration(MetaDataRegister registor, ServerRegister serverRegistor) throws DeadSeaException {
+	public MetaCenterConfiguration() throws DeadSeaException {
 		// TODO Auto-generated constructor stub
 		localConf = new LocalAuthConfiguration();
 		auth = registor.auth(localConf.getUsername(), localConf.getPassword());
-		this.registor = registor;
-		this.serverRegistor = serverRegistor;
 	}
 
 	@Override
@@ -46,8 +54,8 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		Map<String, List<MetaData>> metaDatas = registor.getRegistedMetaDatas(auth);
 		List<MetaData> dbMetaDatas = metaDatas.get(MetaDataMapKeys.DATA_BASE_KEY);
 		DatabaseDTO dbDTO = findMatchDatabase(dbMetaDatas, table);
-		TableScheme ts = new TableScheme();
-		return null;
+		TableScheme ts = wrapTableScheme(dbDTO, table);
+		return ts;
 	}
 
 	private TableScheme wrapTableScheme(DatabaseDTO dbDTO, Table table) {
@@ -128,5 +136,21 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		}
 		return allSchemes;
 	}
+
+	@Override
+	public ShardingAge getCurrentAge() throws DeadSeaException {
+		//GlobalInfoDTO globalInfo = metaDatas.get(MetaDataRegister.MetaDataMapKeys.GLOBAL_INFORMATION).get(0).cast();
+
+		Map<String, List<MetaData>> metaDatas = registor.getRegistedMetaDatas(auth);
+		GlobalInfoDTO globalInfo = metaDatas.get(MetaDataRegister.MetaDataMapKeys.GLOBAL_INFORMATION).get(0).cast();
+		List<MetaData> ages = metaDatas.get(MetaDataRegister.MetaDataMapKeys.SERVER_AGE);
+		Asserts.assertNotNull(globalInfo, ErrorCodes.META_DATA_ERROR);
+		Asserts.assertNotNull(ages, ErrorCodes.META_DATA_ERROR);
+		Asserts.assertSize(ages, globalInfo.getMaxAge(), CompareType.GREATE, ErrorCodes.META_DATA_ERROR);
+		ServerAgeDTO currentAge = ages.get(globalInfo.getMaxAge()).cast();
+		return currentAge;
+	}
+	
+	
 
 }

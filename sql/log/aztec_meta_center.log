@@ -20,3 +20,614 @@ java.lang.Error: Unresolved compilation problem:
 	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
 	at org.aztec.deadsea.sql.App.main(App.java:32)
+[2019-05-16 19:08:44.975]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 10364 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:08:45.001]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:08:46.212]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 2.016 seconds (JVM running for 3.758)
+[2019-05-16 19:09:20.651]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 11208 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:09:20.655]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:09:21.207]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.051 seconds (JVM running for 2.284)
+[2019-05-16 19:10:00.516]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 5060 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:10:00.519]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:10:01.074]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.084 seconds (JVM running for 2.53)
+[2019-05-16 19:10:31.688]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 6712 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:10:31.691]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:10:32.231]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.109 seconds (JVM running for 2.459)
+[2019-05-16 19:11:28.916]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 9896 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:11:28.920]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:11:29.603]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.256 seconds (JVM running for 2.589)
+[2019-05-16 19:11:56.916]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 7824 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:11:56.919]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:11:57.464]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.155 seconds (JVM running for 2.445)
+[2019-05-16 19:13:27.379]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 1236 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:13:27.383]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:13:28.028]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.209 seconds (JVM running for 2.676)
+[2019-05-16 19:14:30.869]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 12116 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:14:30.872]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:14:31.488]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.135 seconds (JVM running for 2.425)
+[2019-05-16 19:15:16.806]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 10548 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:15:16.809]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:15:17.394]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.186 seconds (JVM running for 2.431)
+[2019-05-16 19:21:39.569]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 3680 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:21:39.573]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:21:40.300]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+[2019-05-16 19:21:40.318]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:510)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:35)
+Caused by: java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.maybeBindProceedingJoinPoint(AbstractAspectJAdvice.java:414)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.calculateArgumentBindings(AbstractAspectJAdvice.java:388)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvice(ReflectiveAspectJAdvisorFactory.java:294)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.instantiateAdvice(InstantiationModelAwarePointcutAdvisorImpl.java:149)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.<init>(InstantiationModelAwarePointcutAdvisorImpl.java:113)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisor(ReflectiveAspectJAdvisorFactory.java:198)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisors(ReflectiveAspectJAdvisorFactory.java:126)
+	at org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors(BeanFactoryAspectJAdvisorsBuilder.java:110)
+	at org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator.findCandidateAdvisors(AnnotationAwareAspectJAutoProxyCreator.java:95)
+	at org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.shouldSkip(AspectJAwareAdvisorAutoProxyCreator.java:101)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessBeforeInstantiation(AbstractAutoProxyCreator.java:251)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1108)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1081)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:504)
+	... 11 more
+[2019-05-16 19:22:28.375]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 516 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:22:28.378]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:22:28.998]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+[2019-05-16 19:22:29.007]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:510)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:35)
+Caused by: java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.maybeBindProceedingJoinPoint(AbstractAspectJAdvice.java:414)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.calculateArgumentBindings(AbstractAspectJAdvice.java:388)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvice(ReflectiveAspectJAdvisorFactory.java:294)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.instantiateAdvice(InstantiationModelAwarePointcutAdvisorImpl.java:149)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.<init>(InstantiationModelAwarePointcutAdvisorImpl.java:113)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisor(ReflectiveAspectJAdvisorFactory.java:198)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisors(ReflectiveAspectJAdvisorFactory.java:126)
+	at org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors(BeanFactoryAspectJAdvisorsBuilder.java:110)
+	at org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator.findCandidateAdvisors(AnnotationAwareAspectJAutoProxyCreator.java:95)
+	at org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.shouldSkip(AspectJAwareAdvisorAutoProxyCreator.java:101)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessBeforeInstantiation(AbstractAutoProxyCreator.java:251)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1108)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1081)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:504)
+	... 11 more
+[2019-05-16 19:23:36.831]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 4072 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:23:36.834]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:23:37.430]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+[2019-05-16 19:23:37.437]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:510)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:34)
+Caused by: java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.maybeBindProceedingJoinPoint(AbstractAspectJAdvice.java:414)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.calculateArgumentBindings(AbstractAspectJAdvice.java:388)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvice(ReflectiveAspectJAdvisorFactory.java:294)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.instantiateAdvice(InstantiationModelAwarePointcutAdvisorImpl.java:149)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.<init>(InstantiationModelAwarePointcutAdvisorImpl.java:113)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisor(ReflectiveAspectJAdvisorFactory.java:198)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisors(ReflectiveAspectJAdvisorFactory.java:126)
+	at org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors(BeanFactoryAspectJAdvisorsBuilder.java:110)
+	at org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator.findCandidateAdvisors(AnnotationAwareAspectJAutoProxyCreator.java:95)
+	at org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.shouldSkip(AspectJAwareAdvisorAutoProxyCreator.java:101)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessBeforeInstantiation(AbstractAutoProxyCreator.java:251)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1108)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1081)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:504)
+	... 11 more
+[2019-05-16 19:23:58.471]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 9476 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:23:58.475]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:23:59.182]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+[2019-05-16 19:23:59.196]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app': BeanPostProcessor before instantiation of bean failed; nested exception is java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:510)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:30)
+Caused by: java.lang.IllegalArgumentException: ProceedingJoinPoint is only supported for around advice
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.maybeBindProceedingJoinPoint(AbstractAspectJAdvice.java:414)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.calculateArgumentBindings(AbstractAspectJAdvice.java:388)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvice(ReflectiveAspectJAdvisorFactory.java:294)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.instantiateAdvice(InstantiationModelAwarePointcutAdvisorImpl.java:149)
+	at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.<init>(InstantiationModelAwarePointcutAdvisorImpl.java:113)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisor(ReflectiveAspectJAdvisorFactory.java:198)
+	at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisors(ReflectiveAspectJAdvisorFactory.java:126)
+	at org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors(BeanFactoryAspectJAdvisorsBuilder.java:110)
+	at org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator.findCandidateAdvisors(AnnotationAwareAspectJAutoProxyCreator.java:95)
+	at org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.shouldSkip(AspectJAwareAdvisorAutoProxyCreator.java:101)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessBeforeInstantiation(AbstractAutoProxyCreator.java:251)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1108)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeforeInstantiation(AbstractAutowireCapableBeanFactory.java:1081)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:504)
+	... 11 more
+[2019-05-16 19:30:44.073]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 5800 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:30:44.076]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:30:45.168]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.612 seconds (JVM running for 2.958)
+[2019-05-16 19:32:19.088]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 8144 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:32:19.091]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:32:19.979]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.415 seconds (JVM running for 2.74)
+[2019-05-16 19:33:07.796]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 10152 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:33:07.799]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:33:08.646]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.357 seconds (JVM running for 2.676)
+[2019-05-16 19:33:26.054]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 3620 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:33:26.057]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:33:26.865]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.IllegalArgumentException: warning no match for this type name: org.aztec.deadsea.sql.impl.druid.parser [Xlint:invalidAbsoluteTypeName]
+[2019-05-16 19:33:26.872]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.IllegalArgumentException: warning no match for this type name: org.aztec.deadsea.sql.impl.druid.parser [Xlint:invalidAbsoluteTypeName]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:32)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.IllegalArgumentException: warning no match for this type name: org.aztec.deadsea.sql.impl.druid.parser [Xlint:invalidAbsoluteTypeName]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 16 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.IllegalArgumentException: warning no match for this type name: org.aztec.deadsea.sql.impl.druid.parser [Xlint:invalidAbsoluteTypeName]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 29 more
+Caused by: java.lang.IllegalArgumentException: warning no match for this type name: org.aztec.deadsea.sql.impl.druid.parser [Xlint:invalidAbsoluteTypeName]
+	at org.aspectj.weaver.tools.PointcutParser.parsePointcutExpression(PointcutParser.java:301)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.buildPointcutExpression(AspectJExpressionPointcut.java:227)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.obtainPointcutExpression(AspectJExpressionPointcut.java:198)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.getClassFilter(AspectJExpressionPointcut.java:177)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:225)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:288)
+	at org.springframework.aop.support.AopUtils.findAdvisorsThatCanApply(AopUtils.java:320)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findAdvisorsThatCanApply(AbstractAdvisorAutoProxyCreator.java:126)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findEligibleAdvisors(AbstractAdvisorAutoProxyCreator.java:95)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.getAdvicesAndAdvisorsForBean(AbstractAdvisorAutoProxyCreator.java:76)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.wrapIfNecessary(AbstractAutoProxyCreator.java:347)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessAfterInitialization(AbstractAutoProxyCreator.java:299)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization(AbstractAutowireCapableBeanFactory.java:429)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	... 38 more
+[2019-05-16 19:33:58.646]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 8704 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:33:58.650]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:33:59.757]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:59) - 
+ Started App in 1.626 seconds (JVM running for 2.894)
+[2019-05-16 19:35:33.907]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 1196 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:35:33.910]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:35:34.670]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+[2019-05-16 19:35:34.726]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:32)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 16 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 29 more
+Caused by: java.lang.RuntimeException: bad |
+	at org.aspectj.weaver.patterns.BasicTokenSource.makeTokenSource(BasicTokenSource.java:143)
+	at org.aspectj.weaver.patterns.PatternParser.<init>(PatternParser.java:1892)
+	at org.aspectj.weaver.tools.PointcutParser.resolvePointcutExpression(PointcutParser.java:308)
+	at org.aspectj.weaver.tools.PointcutParser.parsePointcutExpression(PointcutParser.java:294)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.buildPointcutExpression(AspectJExpressionPointcut.java:227)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.obtainPointcutExpression(AspectJExpressionPointcut.java:198)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.getClassFilter(AspectJExpressionPointcut.java:177)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:225)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:288)
+	at org.springframework.aop.support.AopUtils.findAdvisorsThatCanApply(AopUtils.java:320)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findAdvisorsThatCanApply(AbstractAdvisorAutoProxyCreator.java:126)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findEligibleAdvisors(AbstractAdvisorAutoProxyCreator.java:95)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.getAdvicesAndAdvisorsForBean(AbstractAdvisorAutoProxyCreator.java:76)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.wrapIfNecessary(AbstractAutoProxyCreator.java:347)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessAfterInitialization(AbstractAutoProxyCreator.java:299)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization(AbstractAutowireCapableBeanFactory.java:429)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	... 38 more
+[2019-05-16 19:37:01.898]  
+ [INFO]org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50) - 
+ Starting App on GZS-NB10064513 with PID 12168 (E:\lm\git\deadsea\deadsea\sql\target\classes started by 10064513 in E:\lm\git\deadsea\deadsea\sql)
+[2019-05-16 19:37:01.902]  
+ [INFO]org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:675) - 
+ No active profile set, falling back to default profiles: default
+[2019-05-16 19:37:02.630]  
+ [WARN]org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:557) - 
+ Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+[2019-05-16 19:37:02.637]  
+ [ERROR]org.springframework.boot.SpringApplication.reportFailure(SpringApplication.java:858) - 
+ Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'app': Unsatisfied dependency expressed through field 'builder'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:849)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.aztec.deadsea.sql.App.main(App.java:32)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'druidSqlGeneratorBuilder': Unsatisfied dependency expressed through field 'confFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:596)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:374)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 16 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shardingConfBuilderImpl' defined in file [E:\lm\git\deadsea\deadsea\sql\target\classes\org\aztec\deadsea\sql\impl\ShardingConfBuilderImpl.class]: Initialization of bean failed; nested exception is java.lang.RuntimeException: bad |
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1247)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1167)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:593)
+	... 29 more
+Caused by: java.lang.RuntimeException: bad |
+	at org.aspectj.weaver.patterns.BasicTokenSource.makeTokenSource(BasicTokenSource.java:143)
+	at org.aspectj.weaver.patterns.PatternParser.<init>(PatternParser.java:1892)
+	at org.aspectj.weaver.tools.PointcutParser.resolvePointcutExpression(PointcutParser.java:308)
+	at org.aspectj.weaver.tools.PointcutParser.parsePointcutExpression(PointcutParser.java:294)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.buildPointcutExpression(AspectJExpressionPointcut.java:227)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.obtainPointcutExpression(AspectJExpressionPointcut.java:198)
+	at org.springframework.aop.aspectj.AspectJExpressionPointcut.getClassFilter(AspectJExpressionPointcut.java:177)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:225)
+	at org.springframework.aop.support.AopUtils.canApply(AopUtils.java:288)
+	at org.springframework.aop.support.AopUtils.findAdvisorsThatCanApply(AopUtils.java:320)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findAdvisorsThatCanApply(AbstractAdvisorAutoProxyCreator.java:126)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.findEligibleAdvisors(AbstractAdvisorAutoProxyCreator.java:95)
+	at org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.getAdvicesAndAdvisorsForBean(AbstractAdvisorAutoProxyCreator.java:76)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.wrapIfNecessary(AbstractAutoProxyCreator.java:347)
+	at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessAfterInitialization(AbstractAutoProxyCreator.java:299)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization(AbstractAutowireCapableBeanFactory.java:429)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	... 38 more
+[2019-05-17 16:38:33.037]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 16:39:38.166]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 16:41:32.258]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 16:50:51.515]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 16:53:26.057]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 17:07:09.096]  
+ [ERROR]com.alibaba.druid.pool.DruidAbstractDataSource.setMaxIdle(DruidAbstractDataSource.java:935) - 
+ maxIdle is deprecated
+[2019-05-17 17:07:27.858]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 17:09:24.950]  
+ [ERROR]com.alibaba.druid.pool.DruidAbstractDataSource.setMaxIdle(DruidAbstractDataSource.java:935) - 
+ maxIdle is deprecated
+[2019-05-17 17:09:25.444]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 17:14:36.432]  
+ [ERROR]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:643) - 
+ init datasource error, url: jdbc:mysql://127.0.0.1:3306/
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:964)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:873)
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1710)
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1226)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2191)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2222)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2017)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:779)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:389)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:148)
+	at com.alibaba.druid.filter.stat.StatFilter.connection_connect(StatFilter.java:211)
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:142)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1377)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1431)
+	at com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:632)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:934)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:930)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:102)
+	at org.aztec.deadsea.sql.impl.druid.DruidConnector.connect(DruidConnector.java:35)
+	at org.aztec.deadsea.sql.impl.druid.DruidConnector.main(DruidConnector.java:46)
+[2019-05-17 17:14:36.461]  
+ [ERROR]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:660) - 
+ dataSource init error
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:964)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:873)
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1710)
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1226)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2191)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2222)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2017)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:779)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:389)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:148)
+	at com.alibaba.druid.filter.stat.StatFilter.connection_connect(StatFilter.java:211)
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:142)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1377)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1431)
+	at com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:632)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:934)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:930)
+	at com.alibaba.druid.pool.DruidDataSource.getConnection(DruidDataSource.java:102)
+	at org.aztec.deadsea.sql.impl.druid.DruidConnector.connect(DruidConnector.java:35)
+	at org.aztec.deadsea.sql.impl.druid.DruidConnector.main(DruidConnector.java:46)
+[2019-05-17 17:14:36.462]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited
+[2019-05-17 17:15:04.620]  
+ [INFO]com.alibaba.druid.pool.DruidDataSource.init(DruidDataSource.java:669) - 
+ {dataSource-1} inited

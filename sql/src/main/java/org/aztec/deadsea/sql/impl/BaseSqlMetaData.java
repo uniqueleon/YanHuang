@@ -11,7 +11,9 @@ import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 
 public class BaseSqlMetaData implements SqlMetaData {
-	
+
+	protected boolean shard;
+	protected Integer shardSize;
 	protected SqlType type;
 	protected String rawSql;
 	protected Database db;
@@ -115,6 +117,27 @@ public class BaseSqlMetaData implements SqlMetaData {
 
 	public void setOrderByClauses(List<OrderByClause> orderByClauses) {
 		this.orderByClauses = orderByClauses;
+	}
+
+	public boolean isShard() {
+		return shard;
+	}
+
+	public void setShard(boolean shard) {
+		this.shard = shard;
+	}
+
+	@Override
+	public boolean shard() {
+		return shard;
+	}
+
+	public Integer getShardSize() {
+		return shardSize;
+	}
+
+	public void setShardSize(Integer shardSize) {
+		this.shardSize = shardSize;
 	}
 
 	

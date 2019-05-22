@@ -7,6 +7,8 @@ import org.aztec.deadsea.sql.SqlType;
 public interface SqlMetaData {
 
 
+	public boolean shard();
+	public Integer getShardSize();
 	public String getRawSql();
 	public SqlType getSqlType();
 	public Table getTable();

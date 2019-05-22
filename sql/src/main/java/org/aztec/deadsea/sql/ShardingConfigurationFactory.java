@@ -4,5 +4,7 @@ import org.aztec.deadsea.sql.meta.SqlMetaData;
 
 public interface ShardingConfigurationFactory {
 
-	public ShardingConfiguration getConfiguration(SqlMetaData metaData) throws ShardingSqlException;
+
+	public static final String DEFAULT_CONFIGURATION_BEAN_NAME = "defaultConfiguration";
+	public ShardingConfiguration getConfiguration() throws ShardingSqlException;
 }
