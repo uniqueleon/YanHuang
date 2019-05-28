@@ -7,9 +7,11 @@ import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.SqlUtils;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
+@Component
 public class CreateDatabaseSqlGenerator implements ShardingSqlGenerator {
 
 	public CreateDatabaseSqlGenerator() {
@@ -33,10 +35,10 @@ public class CreateDatabaseSqlGenerator implements ShardingSqlGenerator {
 		List<String> retSql = Lists.newArrayList();
 		String rawDbName = param.getSqlMetaData().getDatabase().name();
 		Integer shardSize = param.getSqlMetaData().getShardSize();
-		List<String> shardDbs = SqlUtils.getMultiDatabaseNames(param.getSqlMetaData().getDatabase().name(), param.getSqlMetaData().getShardSize());
+		List<String> shardDbs = SqlUtils.getMultiDatabaseNames(rawDbName, shardSize);
 		String rawSql = param.getSqlMetaData().getRawSql();
 		for(int i = 0;i < shardDbs.size();i++) {
-			rawSql.replace(rawDbName, shardDbs.get(i));
+			retSql.add(rawSql.replace(rawDbName, shardDbs.get(i)));
 		}
 		return retSql;
 	}

@@ -7,7 +7,6 @@ import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
 import org.aztec.deadsea.sql.meta.Location;
 import org.aztec.deadsea.sql.meta.Table;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.sql.ast.SQLStatement;

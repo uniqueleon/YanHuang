@@ -1,6 +1,5 @@
 package org.aztec.deadsea.sql.impl.druid;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,14 +7,9 @@ import java.util.regex.Pattern;
 import javax.inject.Singleton;
 
 import org.aztec.deadsea.common.DeadSeaException;
-import org.aztec.deadsea.common.MetaDataRegister;
-import org.aztec.deadsea.common.ServerRegister;
 import org.aztec.deadsea.sql.ShardSqlDialect;
 import org.aztec.deadsea.sql.ShardingConfiguration;
-import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.conf.TableScheme;
-import org.aztec.deadsea.sql.impl.MetaCenterConfiguration;
-import org.aztec.deadsea.sql.meta.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +35,8 @@ public class DruidMetaDataBuilder {
 	
 	public DruidMetaData getMetaData(String sql) throws DeadSeaException {
 		DruidMetaData tmpMetaData = checkShardDialect(sql);
-		MySqlStatementParser parser = new MySqlStatementParser(tmpMetaData.getRawSql());
+		MySqlStatementParser parser = new MySqlStatementParser(tmpMetaData != null ? 
+				tmpMetaData.getRawSql() : sql);
 		SQLStatement statement = parser.parseStatement();
 		if(parsers != null && parsers.size() > 0) {
 			for(DruidSqlParser sqlParser : parsers) {
@@ -64,9 +59,11 @@ public class DruidMetaDataBuilder {
 	}
 	
 	private void checkShardConfig(DruidMetaData metaData) throws DeadSeaException {
-		TableScheme tScheme = conf.getTargetTable(metaData.getTable());
-		metaData.setShard(tScheme.isShard());
-		metaData.setShardSize(tScheme.getSize());
+		if(metaData.getTable() != null) {
+			TableScheme tScheme = conf.getTargetTable(metaData.getTable());
+			metaData.setShard(tScheme.isShard());
+			metaData.setShardSize(tScheme.getSize());
+		}
 	}
 	
 	private DruidMetaData checkShardDialect(String rawSql) {

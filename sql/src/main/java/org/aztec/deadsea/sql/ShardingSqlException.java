@@ -16,6 +16,7 @@ public class ShardingSqlException extends DeadSeaException {
 		public static final int SHARDING_CONFIGURATION_UNAVAILABLE = 0x03;
 		public static final int NO_TABLE_SCHEME_FOUND = 0x04;
 		public static final int NO_DATABASE_SCHEME_FOUND = 0x05;
+		public static final int NO_DATABASE_INFO = 0x06;
 		public static final int UNKOWN_ERROR = 0xFFFFFFFF;
 	}
 	

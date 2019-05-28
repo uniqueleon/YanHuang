@@ -8,6 +8,7 @@ public interface MetaDataRegister {
 	public Authentication addauth(String username,String password) throws DeadSeaException;
 	public Authentication auth(String username,String password) throws DeadSeaException;
 	public void regist(Authentication auth,MetaData data) throws DeadSeaException;
+	public void remove(Authentication auth,MetaData data) throws DeadSeaException;
 	public Map<String,List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException;
 	public void update(Authentication auth,MetaData data) throws DeadSeaException;
 	

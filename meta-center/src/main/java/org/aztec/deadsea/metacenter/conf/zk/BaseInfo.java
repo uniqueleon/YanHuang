@@ -132,6 +132,7 @@ public class BaseInfo extends ZkConfig {
 	
 	public MetaData toMetaData() {
 		GlobalInfoDTO globalInfo = new GlobalInfoDTO(tableNum,maxAge,type,tableSize,globalAccessString);
+		globalInfo.setMaxAge(maxAge);
 		return globalInfo;
 	}
 }

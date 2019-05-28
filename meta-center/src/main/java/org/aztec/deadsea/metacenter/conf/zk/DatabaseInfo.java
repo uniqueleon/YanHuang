@@ -42,14 +42,8 @@ public class DatabaseInfo extends ZkConfig{
 		initDb();
 	}
 	
-	public DatabaseInfo(String path) throws IOException, KeeperException, InterruptedException {
-		// TODO Auto-generated constructor stub
-		super(path, ConfigFormat.JSON);
-		initDb();
-	}
-	
 	private void initDb() {
-
+		callbacks = Lists.newArrayList();
 		callbacks.add(new TableReloader());
 		appendWatcher(new CallableWatcher(callbacks, null));
 	}

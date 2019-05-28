@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
+import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
@@ -28,6 +29,15 @@ public class Account extends ZkConfig{
 	public Account(String uuid) throws IOException, KeeperException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		super(String.format(MetaCenterConst.ZkConfigPaths.BASE_AUTHENTICATIONS_INFO, new Object[] {uuid}), ConfigFormat.JSON);
+		initAccount();
+	}
+	
+	private void initAccount()  {
+		callBacks = Lists.newArrayList();
+		DatabaseReloader loader = new DatabaseReloader();
+		//loader.loadDatabases();
+		callBacks.add(loader);
+		appendWatcher(new CallableWatcher(callBacks, null));
 	}
 
 	public String getUsername() {
@@ -79,11 +89,11 @@ public class Account extends ZkConfig{
 				}
 				databases.clear();
 			}
-			loadTables();
+			loadDatabases();
 			return null;
 		}
 		
-		public void loadTables() throws IOException, KeeperException, InterruptedException {
+		public void loadDatabases() throws IOException, KeeperException, InterruptedException {
 			
 			databases = Lists.newArrayList();
 			if(dbNum == null) {

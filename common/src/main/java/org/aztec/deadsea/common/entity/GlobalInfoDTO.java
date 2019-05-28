@@ -18,6 +18,10 @@ public class GlobalInfoDTO extends BaseMetaData implements MetaData{
 		// TODO Auto-generated constructor stub
 		super("GLOBAL_INFORMATION", 1, true);
 		super.type = type.equals("DB") ? MetaType.DB : MetaType.CACHE;
+		this.tableNum = tableNum;
+		this.maxAge = maxAge;
+		this.tableSize = tableSize;
+		this.accessString = accessString;
 	}
 
 	public Integer getTableNum() {

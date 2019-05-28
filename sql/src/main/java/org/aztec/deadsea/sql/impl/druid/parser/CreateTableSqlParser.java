@@ -1,8 +1,11 @@
 package org.aztec.deadsea.sql.impl.druid.parser;
 
+import org.aztec.deadsea.sql.ShardingSqlException;
+import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
 import org.aztec.deadsea.sql.meta.Database;
+import org.aztec.deadsea.sql.meta.Location;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +24,7 @@ public class CreateTableSqlParser implements DruidSqlParser {
 		return sql instanceof SQLCreateTableStatement;
 	}
 
-	public DruidMetaData parse(SQLStatement sql) {
+	public DruidMetaData parse(SQLStatement sql) throws ShardingSqlException {
 		
 		SQLCreateTableStatement scts = (SQLCreateTableStatement) sql;
 		SQLExprTableSource ts = scts.getTableSource();
@@ -30,16 +33,15 @@ public class CreateTableSqlParser implements DruidSqlParser {
 		if(tableExpr.contains(".")) {
 			String dbName = tableExpr.split("\\.")[0].replaceAll("`", "");
 			String tablename = tableExpr.split("\\.")[1].replaceAll("`", "");
-			dmd.setDb(new Database(dbName, null, null, null));
+			Database db = new Database(dbName, null, null, null);
+			dmd.setDb(db);
+			Table table = new Table(db, tablename, null, Location.FROM);
+			dmd.setTable(table);
+			return dmd;
 		}
 		else {
-
-			String tablename = tableExpr.replaceAll("`", "");
-			dmd.setDb(null);
-			SQLExprTableSource sets = new SQLExprTableSource();
-			//dmd.setTable(new Table(tableName));
+			throw new ShardingSqlException(ErrorCodes.NO_DATABASE_INFO);
 		}
-		return dmd;
 	}
 
 }

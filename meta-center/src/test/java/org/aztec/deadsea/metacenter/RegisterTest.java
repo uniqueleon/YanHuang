@@ -3,11 +3,8 @@ package org.aztec.deadsea.metacenter;
 import java.util.List;
 
 import org.aztec.deadsea.common.Authentication;
-import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
-import org.aztec.deadsea.common.entity.RealServerType;
-import org.aztec.deadsea.common.entity.SimpleRealServer;
 import org.aztec.deadsea.metacenter.impl.ZookeeperRegister;
 
 import com.beust.jcommander.internal.Lists;
@@ -24,7 +21,7 @@ public class RegisterTest {
 			MetaDataRegister register = new ZookeeperRegister();
 			register.addauth("liming", "lm1234");
 			//register.auth("liming", "lm1234");
-		} catch (DeadSeaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -35,7 +32,7 @@ public class RegisterTest {
 			MetaDataRegister register = new ZookeeperRegister();
 			Authentication auth = register.auth("liming", "lm1234");
 			System.out.println(auth.isAuthenticated());
-		} catch (DeadSeaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -48,10 +45,14 @@ public class RegisterTest {
 			List<RealServer> newServers = Lists.newArrayList();
 			/*newServers.add(new SimpleRealServer("db1.aztec.com", 0, 3306, RealServerType.SOCKET));
 			register.regist(auth,newServers);*/
-		} catch (DeadSeaException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void registDatabase() {
+		
 	}
 	
 	public static void main(String[] args) {

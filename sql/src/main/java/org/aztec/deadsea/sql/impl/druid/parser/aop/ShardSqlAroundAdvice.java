@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.aop.BeforeAdvice;
 import org.springframework.stereotype.Component;
 
-@Component
-@Aspect
+//@Component
+//@Aspect
 public class ShardSqlAroundAdvice implements BeforeAdvice{
 
 	public ShardSqlAroundAdvice() {

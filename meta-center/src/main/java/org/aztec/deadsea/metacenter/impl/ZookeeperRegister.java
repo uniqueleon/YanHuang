@@ -1,8 +1,10 @@
 package org.aztec.deadsea.metacenter.impl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.zookeeper.KeeperException;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
@@ -24,16 +26,11 @@ import com.google.common.collect.Lists;
 
 @Component
 public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
-
-	private static final BaseInfo baseInfo = BaseInfo.getInstance();
-
-
 	
-	private ZkRegistHelper helper = new ZkRegistHelper();
+	private ZkRegistHelper helper;
 
-	public ZookeeperRegister() {
-		// TODO Auto-generated constructor stub
-
+	public ZookeeperRegister() throws IOException, KeeperException, InterruptedException {
+		helper = new ZkRegistHelper();
 	}
 
 	public void loadMetaData() {
@@ -61,9 +58,6 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 		return registration;
 	}
 
-	public List<MetaData> getRegistedMetaDatas() throws DeadSeaException {
-		return null;
-	}
 
 	@Override
 	public Authentication addauth(String username, String password) throws DeadSeaException {
@@ -118,11 +112,13 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 					helper.updateDB(auth, data);
 					break;
 				case TABLE:
-					helper.updateTable( auth, data);
+					helper.updateTable(auth, data);
 					break;
 				case AGE:
 					break;
 				}
+			case CACHE:
+				break;
 			}
 		}
 	}
@@ -130,6 +126,12 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	@Override
 	public void update(Authentication auth,ShardingAge age,List<RealServer> newServers) throws DeadSeaException {
 		helper.update(auth, age, newServers);
+	}
+
+	@Override
+	public void remove(Authentication auth, MetaData data) throws DeadSeaException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

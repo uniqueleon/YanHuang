@@ -45,14 +45,24 @@ public class ZkRegistHelper {
 	
 	private static final BaseInfo baseInfo = BaseInfo.getInstance();
 
-	public ZkRegistHelper() {
-		// TODO Auto-generated constructor stub
+	public ZkRegistHelper() throws IOException, KeeperException, InterruptedException {
+		initData();
+	}
+	
+	private void initData() throws IOException, KeeperException, InterruptedException {
+		for(int i = 0;i <= baseInfo.getMaxAge();i++) {
+			ServerAge age = new ServerAge(i);
+			if(!age.isDeprecated()) {
+				ages.put(age.getAge(), age);
+			}
+		}
 	}
 
 	public void updateDB(Authentication auth, MetaData data) throws MetaDataException {
 		try {
+			Account account = accounts.get(auth.getUUID());
 			DatabaseDTO db = data.cast();
-			DatabaseInfo dbInfo = new DatabaseInfo(auth.getUUID());
+			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(),db.getNo());
 			if(data.getName() != null) {
 				dbInfo.setName(data.getName());
 			}
@@ -67,7 +77,6 @@ public class ZkRegistHelper {
 			}
 			dbInfo.save();
 			//only to triger server synchorization!
-			Account account = accounts.get(auth.getUUID());
 			account.save();
 		} catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
@@ -161,7 +170,10 @@ public class ZkRegistHelper {
 
 		try {
 			Account account = accounts.get(auth.getUUID());
-			DatabaseInfo dbInfo = new DatabaseInfo(auth.getUUID());
+			if(account.getDbNum() == null) {
+				account.setDbNum(0);
+			}
+			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(),account.getDbNum());
 			dbInfo.setName(data.getName());
 			dbInfo.setSize(data.getSize());
 			dbInfo.setShard(data.shard());
@@ -212,8 +224,8 @@ public class ZkRegistHelper {
 		assertAuth(auth);
 		Map<String, List<MetaData>> dataMap = Maps.newHashMap();
 		List<MetaData> ageList = Lists.newArrayList();
-		for(Entry<Integer,ServerAge> ageEntry : ages.entrySet()) {
-			ageList.set(ageEntry.getKey(), ageEntry.getValue().toMetaData());
+		for(int i = 0;i < ages.size();i++) {
+			ageList.add(ages.get(i).toMetaData());
 		}
 		dataMap.put(MetaDataRegister.MetaDataMapKeys.SERVER_AGE, ageList);
 		List<MetaData> globalInfo = Lists.newArrayList();
@@ -223,8 +235,10 @@ public class ZkRegistHelper {
 		Account account = accounts.get(base64);
 		List<DatabaseInfo> databases = account.getDatabases();
 		List<MetaData> dbs = Lists.newArrayList();
-		for(DatabaseInfo dbInfo : databases) {
-			dbs.add(dbInfo.toMetaData());
+		if(databases != null) {
+			for(DatabaseInfo dbInfo : databases) {
+				dbs.add(dbInfo.toMetaData());
+			}
 		}
 		dataMap.put(MetaDataRegister.MetaDataMapKeys.DATA_BASE_KEY, dbs);
 		return dataMap;

@@ -18,16 +18,15 @@ import org.aztec.deadsea.common.entity.ServerAgeDTO;
 import org.aztec.deadsea.common.entity.TableDTO;
 import org.aztec.deadsea.metacenter.MetaDataException.ErrorCodes;
 import org.aztec.deadsea.sql.Asserts;
+import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
-import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.conf.AuthorityScheme;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.LocalAuthConfiguration;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.Table;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -36,16 +35,16 @@ import com.google.common.collect.Maps;
 @Component(ShardingConfigurationFactory.DEFAULT_CONFIGURATION_BEAN_NAME)
 public class MetaCenterConfiguration implements ShardingConfiguration {
 
-	@Autowired
 	private MetaDataRegister registor;
-	@Autowired
 	private ServerRegister serverRegistor;
 	private LocalAuthConfiguration localConf;
 	private Authentication auth;
 
-	public MetaCenterConfiguration() throws DeadSeaException {
+	public MetaCenterConfiguration(MetaDataRegister registor,ServerRegister serverRegistor) throws DeadSeaException {
 		// TODO Auto-generated constructor stub
 		localConf = new LocalAuthConfiguration();
+		this.registor = registor;
+		this.serverRegistor = serverRegistor;
 		auth = registor.auth(localConf.getUsername(), localConf.getPassword());
 	}
 
@@ -149,6 +148,11 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		Asserts.assertSize(ages, globalInfo.getMaxAge(), CompareType.GREATE, ErrorCodes.META_DATA_ERROR);
 		ServerAgeDTO currentAge = ages.get(globalInfo.getMaxAge()).cast();
 		return currentAge;
+	}
+
+	@Override
+	public Authentication getAuth() throws DeadSeaException {
+		return auth;
 	}
 	
 	
