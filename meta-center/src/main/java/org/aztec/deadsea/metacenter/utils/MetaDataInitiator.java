@@ -1,13 +1,9 @@
 package org.aztec.deadsea.metacenter.utils;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.zookeeper.KeeperException;
-import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.autumn.common.zk.ZkConfig.ConfigFormat;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaDataRegister;

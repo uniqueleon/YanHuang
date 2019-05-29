@@ -11,7 +11,7 @@ public class LocalAuthConfiguration extends BasePropertiesConfig{
 	private String password;
 	
 	public LocalAuthConfiguration() {
-		super("conf/auth.properties");
+		super("res:/auth.properties");
 	}
 
 	public String getUsername() {

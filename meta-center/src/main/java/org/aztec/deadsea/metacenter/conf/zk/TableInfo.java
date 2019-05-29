@@ -52,9 +52,10 @@ public class TableInfo extends ZkConfig {
 		initTable();
 	}
 
-	private void initTable() {
-
-		callbacks.add(new AgeReloader());
+	private void initTable() throws IOException, KeeperException, InterruptedException {
+		AgeReloader loader = new AgeReloader();
+		callbacks.add(loader);
+		loader.loadAges();
 		appendWatcher(new CallableWatcher(callbacks, null));
 	}
 
@@ -131,11 +132,11 @@ public class TableInfo extends ZkConfig {
 				}
 				ages.clear();
 			}
-			loadTables();
+			loadAges();
 			return null;
 		}
 		
-		public void loadTables() throws IOException, KeeperException, InterruptedException {
+		public void loadAges() throws IOException, KeeperException, InterruptedException {
 			
 			ages = Lists.newArrayList();
 			if(ageNum == null) {

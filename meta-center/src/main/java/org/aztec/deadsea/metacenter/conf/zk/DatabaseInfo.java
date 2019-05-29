@@ -42,9 +42,11 @@ public class DatabaseInfo extends ZkConfig{
 		initDb();
 	}
 	
-	private void initDb() {
+	private void initDb() throws IOException, KeeperException, InterruptedException {
 		callbacks = Lists.newArrayList();
-		callbacks.add(new TableReloader());
+		TableReloader reloader = new TableReloader();
+		callbacks.add(reloader);
+		reloader.loadTables();
 		appendWatcher(new CallableWatcher(callbacks, null));
 	}
 	

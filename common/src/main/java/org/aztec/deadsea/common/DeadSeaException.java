@@ -7,6 +7,7 @@ public class DeadSeaException extends Exception {
 	 */
 	private static final long serialVersionUID = -2362016262685337063L;
 	protected int code;
+	protected String desc;
 	
 	public static interface GeneralErrors{
 		public static final int NEW_SERVER_SIZE_INCORRECT = 0xf0001;
@@ -23,10 +24,12 @@ public class DeadSeaException extends Exception {
 	public DeadSeaException(int errorCode) {
 		super("ERROR CODE:" + errorCode);
 		this.code = errorCode;
+		
 	}
+	
 
 	public DeadSeaException(String message,int errorCode) {
-		super(message + "-----" + message);
+		super(message + "-----" + errorCode);
 		this.code = errorCode;
 	}
 
@@ -45,11 +48,9 @@ public class DeadSeaException extends Exception {
 		this.code = errorCode;
 	}
 
-
 	public int getCode() {
 		return code;
 	}
-
 
 	public void setCode(int code) {
 		this.code = code;

@@ -17,6 +17,7 @@ import org.aztec.deadsea.sql.SqlUtils;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
+import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,10 +58,10 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 		try {
 			String rawSql = param.getSqlMetaData().getRawSql();
 			SqlMetaData metaData = param.getSqlMetaData();
-			TableScheme ts = conf.getTargetTable(metaData.getTable());
-			Asserts.assertNotNull(ts, ErrorCodes.NO_TABLE_SCHEME_FOUND);
-			Asserts.assertNotNull(ts.getDatabase(), ErrorCodes.NO_DATABASE_SCHEME_FOUND);
-			DatabaseScheme db = ts.getDatabase();
+			Table table = metaData.getTable();
+			DatabaseScheme db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
+			TableScheme ts = new TableScheme(table.name(), table.alias(), 
+					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(), db);
 			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.size(),ts.size(),db.getName(),ts.getName());
 			String replaceTarget = getReplaceTarget(rawSql);
 			for(int i = 0;i < dbTables.size();i++) {

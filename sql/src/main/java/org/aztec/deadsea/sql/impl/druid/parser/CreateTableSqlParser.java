@@ -1,6 +1,7 @@
 package org.aztec.deadsea.sql.impl.druid.parser;
 
 import org.aztec.deadsea.sql.ShardingSqlException;
+import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
@@ -30,6 +31,7 @@ public class CreateTableSqlParser implements DruidSqlParser {
 		SQLExprTableSource ts = scts.getTableSource();
 		String tableExpr = ts.getExpr().toString();
 		DruidMetaData dmd = new DruidMetaData(sql.toString());
+		dmd.setType(SqlType.CREATE_TABLE);
 		if(tableExpr.contains(".")) {
 			String dbName = tableExpr.split("\\.")[0].replaceAll("`", "");
 			String tablename = tableExpr.split("\\.")[1].replaceAll("`", "");

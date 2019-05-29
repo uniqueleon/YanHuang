@@ -17,7 +17,6 @@ import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.common.entity.SimpleRegistration;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.conf.zk.Account;
-import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
 import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
 import org.aztec.deadsea.metacenter.conf.zk.ServerAge;
 import org.springframework.stereotype.Component;

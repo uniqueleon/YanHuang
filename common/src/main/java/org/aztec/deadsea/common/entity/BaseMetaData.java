@@ -37,6 +37,7 @@ public class BaseMetaData implements MetaData {
 		this.shard = shard;
 		attachments = Maps.newHashMap();
 		this.no = no;
+		childs = Lists.newArrayList();
 	}
 
 	public String getName() {

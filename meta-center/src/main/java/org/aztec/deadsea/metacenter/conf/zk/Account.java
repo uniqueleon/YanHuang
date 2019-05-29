@@ -32,10 +32,10 @@ public class Account extends ZkConfig{
 		initAccount();
 	}
 	
-	private void initAccount()  {
+	private void initAccount() throws IOException, KeeperException, InterruptedException  {
 		callBacks = Lists.newArrayList();
 		DatabaseReloader loader = new DatabaseReloader();
-		//loader.loadDatabases();
+		loader.loadDatabases();
 		callBacks.add(loader);
 		appendWatcher(new CallableWatcher(callBacks, null));
 	}

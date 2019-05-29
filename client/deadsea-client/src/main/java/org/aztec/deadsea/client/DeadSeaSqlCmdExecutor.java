@@ -27,7 +27,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 		"org.aztec.deadsea.sql.impl.generator",
 		"org.aztec.deadsea.metacenter.impl",
 		"org.aztec.deadsea.sql"})
-public class DeadSeaSqlExecutor implements ApplicationRunner
+public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 {
 	@Autowired
 	ShardSqlExecutor executor;
@@ -35,7 +35,7 @@ public class DeadSeaSqlExecutor implements ApplicationRunner
 	
     public static void main( String[] args )
     {
-        SpringApplication sa = new SpringApplication(DeadSeaSqlExecutor.class);
+        SpringApplication sa = new SpringApplication(DeadSeaSqlCmdExecutor.class);
         sa.setBannerMode(Mode.OFF);
         sa.run(args);
     }
@@ -45,7 +45,8 @@ public class DeadSeaSqlExecutor implements ApplicationRunner
 			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
 			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='shardDB'";
 			//String sql = "SELECT * FROM base_item_0001 WHERE id IN (4266266,4266264)";
-			String sql = "create shard(11) database `lmDb`";
+			//String sql = "create shard(11) database `lmDb`";
+			String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
 			SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
 			System.out.println(sResult.isSuccess());
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));

@@ -12,7 +12,6 @@ import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.StringUtils;
 import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.TableScheme;
-import org.aztec.deadsea.sql.impl.druid.parser.aop.ShardSqlAroundAdvice;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
