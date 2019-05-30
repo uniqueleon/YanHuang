@@ -1,10 +1,6 @@
 package org.aztec.deadsea.common.entity;
 
-import java.util.List;
-import java.util.Map;
-
 import org.aztec.deadsea.common.Authentication;
-import org.aztec.deadsea.common.MetaData;
 
 public class SimpleAuthentication implements Authentication {
 	

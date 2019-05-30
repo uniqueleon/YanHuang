@@ -3,7 +3,6 @@ package org.aztec.deadsea.common.impl;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.aztec.autumn.common.math.equations.GreatestCommonDivisor;
-import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.ServerScaler;
 
 public abstract class BaseDBScaler implements ServerScaler {
