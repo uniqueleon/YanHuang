@@ -4,9 +4,9 @@ public interface XAResponse {
 
 	public TransactionPhase getCurrentPhase();
 	public String getID();
+	public int getNo();
 	public String getHost();
-	public XAProposal getProposal();
-	public boolean isAccepted();
-	public boolean isSuccess();
-	public boolean isCommited();
+	public boolean isOK();
+	public boolean isFail();
+	public boolean isMissed();
 }

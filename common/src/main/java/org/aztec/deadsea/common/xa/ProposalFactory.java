@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface ProposalFactory {
 
-	public XAProposal createProposal(String txID,Map<String,Object> attachments);
+	public XAProposal createProposal(String txID,int quorum,Map<String,Object> attachments)  throws XAException;
 }

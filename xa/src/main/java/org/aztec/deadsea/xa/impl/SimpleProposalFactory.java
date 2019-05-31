@@ -11,9 +11,9 @@ public class SimpleProposalFactory implements ProposalFactory {
 		// TODO Auto-generated constructor stub
 	}
 
-	public XAProposal createProposal(String txID, Map<String, Object> attachments) {
+	public XAProposal createProposal(String txID, int quorum,Map<String, Object> attachments) {
 		// TODO Auto-generated method stub
-		return null;
+		return new SimpleProposal(txID,quorum, attachments);
 	}
 
 }

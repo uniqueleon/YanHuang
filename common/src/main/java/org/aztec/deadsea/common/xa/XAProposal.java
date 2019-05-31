@@ -5,5 +5,6 @@ import java.util.Map;
 public interface XAProposal {
 
 	public String getTxID();
-	public Map<String,Object> getAttachments();
+	public Map<String,Object> getContent();
+	public int getQuorum();
 }

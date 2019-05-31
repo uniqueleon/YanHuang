@@ -1,5 +1,7 @@
 package org.aztec.deadsea.common.xa;
 
+import java.util.concurrent.Callable;
+
 /**
  * 分布式事务执行器
  * @author 10064513
@@ -13,17 +15,17 @@ public interface XAExecutor {
 	 * @param context
 	 * @return
 	 */
-	public XAContext prepare(XAProposal request,XAContext context);
+	public XAResponse prepare(XAContext context)  throws XAException;
 	/**
 	 * 提交
 	 * @param context
 	 * @return
 	 */
-	public XAContext commit(XAContext context);
+	public XAResponse commit(XAContext context)  throws XAException;
 	/**
 	 * 回滚
 	 * @param context
 	 * @return
 	 */
-	public XAContext rollback(XAContext context);
+	public XAResponse rollback(XAContext context)  throws XAException;
 }
