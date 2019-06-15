@@ -15,23 +15,25 @@ import org.aztec.deadsea.common.xa.XAPhaseListener;
 import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
+import org.aztec.deadsea.xa.impl.SimpleXAResponse;
+import org.aztec.deadsea.xa.impl.SimpleXAResponseSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 
 public class RedisTxAckSubscriber implements CacheDataSubscriber {
-	
+
 	private XAProposal proposal;
 	private List<XAResponse> responses;
 	protected boolean unsubscribed = false;
-	TransactionPhase lastPhase  = null;
+	TransactionPhase lastPhase = null;
 	private JsonUtils jsonUtil;
 	@Autowired
 	private List<XAPhaseListener> listeners;
 	@Autowired
 	private XAResponseBuilder builder;
-	
-	private Object lockObj  = new Object();
+
+	private Object lockObj = new Object();
 
 	public RedisTxAckSubscriber(XAProposal proposal) {
 		this.proposal = proposal;
@@ -41,29 +43,27 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 	}
 
 	public void notify(String channel, String newMsg) {
-		if(lastPhase == null) {
+		if (lastPhase == null) {
 			responses = Lists.newArrayList();
 		}
 		TransactionPhase currentPhase = null;
 		final String[] channelNames = getSubscribeChannels(proposal.getTxID());
-		
-		if(channel.equals(channelNames[0])) {
+
+		if (channel.equals(channelNames[0])) {
 			currentPhase = TransactionPhase.PREPARE;
-		}
-		else if (channel.startsWith(channelNames[1])) {
+		} else if (channel.startsWith(channelNames[1])) {
 			currentPhase = TransactionPhase.COMMIT;
-		}
-		else if (channel.startsWith(channelNames[2])) {
+		} else if (channel.startsWith(channelNames[2])) {
 			currentPhase = TransactionPhase.ROLLBACK;
 		}
-		if(!currentPhase.equals(lastPhase)) {
+		if (!currentPhase.equals(lastPhase)) {
 			lastPhase = currentPhase;
 			responses.clear();
-		}
-		else {
+		} else {
 			try {
-				Map<String,Object> dataMap = jsonUtil.json2Object(newMsg, Map.class);
-				XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer)dataMap.get("seqNo"),currentPhase);
+				Map<String, Object> dataMap = jsonUtil.json2Object(newMsg, Map.class);
+				XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer) dataMap.get("seqNo"),
+						currentPhase);
 				responses.add(response);
 				lockObj.notifyAll();
 			} catch (Exception e) {
@@ -72,8 +72,8 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 			}
 		}
 	}
-	
-	public List<XAResponse> getResponses(){
+
+	public List<XAResponse> getResponses() {
 		return responses;
 	}
 
@@ -85,7 +85,7 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 	public boolean isUnsubscribed() {
 		return unsubscribed;
 	}
-	
+
 	public static String[] getSubscribeChannels(String txID) {
 		return new String[] {
 				XAConstant.REDIS_CHANNLE_NAMES.PREPARE + XAConstant.REDIS_CHANNLE_NAMES.ACKOWNLEDGE
@@ -97,23 +97,25 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 
 		};
 	}
-	
+
 	public class PhaseNotifyThread implements Callable {
 
 		private boolean runnable = true;
+
 		@Override
 		public Object call() throws Exception {
-		
-			while(runnable) {
+
+			while (runnable) {
 				lockObj.wait();
-				for(XAPhaseListener listener : listeners) {
-					listener.listen(responses);
+
+				for (XAPhaseListener listener : listeners) {
+					listener.listen(
+							new SimpleXAResponseSet(lastPhase, proposal.getTxID(), responses, proposal.getQuorum()));
 				}
 			}
 			return null;
 		}
-		
+
 	}
-	
 
 }

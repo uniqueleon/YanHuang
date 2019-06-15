@@ -2,6 +2,7 @@ package org.aztec.deadsea.xa.impl.redis;
 
 import java.util.List;
 
+import org.aztec.autumn.common.utils.CacheException;
 import org.aztec.autumn.common.utils.CacheUtils;
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
@@ -11,6 +12,7 @@ import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XAExecutor;
+import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,42 +49,51 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 			TransactionPhase phase = TransactionPhase.values()[index];
 			String txID = channel.substring(channel.lastIndexOf("_") + 1, channel.length());
 			XAContext context = new RedisTransactionContext(txID, phase);
-			cacheUtil.lock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
-			Integer no = 0;
-			String seqNoStr = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, String.class);
-			if(seqNoStr != null) {
-				no = Integer.parseInt(seqNoStr);
-			}
-			no ++;
-			context.setAssignmentNo(no);
-			cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, no);
-			cacheUtil.unlock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
-			XAResponse response = null;
+			
 			String pubChannel = null;
-			for (XAExecutor executor : executors) {
-				switch (phase) {
-				case PREPARE:
-					response = executor.prepare(context);
-					context.persist();
-					pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[0];
-					break;
-				case COMMIT:
-					response = executor.commit(context);
-					context.persist();
-					pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[1];
-					break;
-				case ROLLBACK:
-					response = executor.rollback(context);
-					context.persist();
-					pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[2];
-					break;
+			Integer assignmentNo = getAssignmentNo(txID);
+			while(assignmentNo != null) {
+				XAResponse response = null;
+				context.setAssignmentNo(assignmentNo);
+				for (XAExecutor executor : executors) {
+					switch (phase) {
+					case PREPARE:
+						response = executor.prepare(context);
+						context.persist();
+						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[0];
+						break;
+					case COMMIT:
+						response = executor.commit(context);
+						context.persist();
+						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[1];
+						break;
+					case ROLLBACK:
+						response = executor.rollback(context);
+						context.persist();
+						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[2];
+						break;
+					}
 				}
+				String msg = jsonUtil.object2Json(response);
+				cacheUtil.publish(pubChannel, msg);
+				assignmentNo = getAssignmentNo(txID);
 			}
-			String msg = jsonUtil.object2Json(response);
-			cacheUtil.publish(pubChannel, msg);
 		} catch (Exception e) {
 			DeadSeaLogger.error("[XA]", e);
 		}
+	}
+	
+	public Integer getAssignmentNo(String txID) throws CacheException {
+		cacheUtil.lock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
+		Integer no = 0;
+		String seqNoStr = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, String.class);
+		if(seqNoStr != null) {
+			no = Integer.parseInt(seqNoStr);
+		}
+		no ++;
+		cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, no);
+		cacheUtil.unlock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
+		return no;
 	}
 
 	@Override

@@ -9,5 +9,6 @@ public interface XAContext {
 	public TransactionPhase getCurrentPhase();
 	public void persist() throws XAException;
 	public Integer getAssignmentNo();
+	public Integer getQuorum();
 	public void setAssignmentNo(Integer no);
 }

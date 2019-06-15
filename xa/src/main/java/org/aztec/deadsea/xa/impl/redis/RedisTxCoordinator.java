@@ -56,7 +56,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 				XAConstant.REDIS_CHANNLE_NAMES.ROLLBACK + "_" + txID, };
 	}
 
-	public void commit(XAProposal proposal, XAPhaseListener aware) throws XAException {
+	public void commit(XAProposal proposal) throws XAException {
 		try {
 			String[] channelNames = getTxChannelNames(proposal.getTxID());
 			cacheUtil.publish(channelNames[1], jsonUtil.object2Json(proposal.getContent()));
@@ -65,7 +65,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 		}
 	}
 
-	public void rollback(XAProposal proposal, XAPhaseListener aware) throws XAException {
+	public void rollback(XAProposal proposal) throws XAException {
 		try {
 			String[] channelNames = getTxChannelNames(proposal.getTxID());
 			cacheUtil.publish(channelNames[2], jsonUtil.object2Json(proposal.getContent()));

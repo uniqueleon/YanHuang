@@ -22,11 +22,12 @@ public class RedisTransactionContext implements XAContext {
 
 	private static CacheUtils cacheUtil;
 	private static JsonUtils jsonUtil;
-	private static TransactionPhase phase;
+	private TransactionPhase phase;
 	private static List<String> allTxIds = Lists.newCopyOnWriteArrayList();
 	private Map<String, Object> contextObjs = Maps.newConcurrentMap();
 	private String txID;
 	private Integer assignmentID;
+	private Integer quorum;
 
 	static {
 
@@ -53,6 +54,7 @@ public class RedisTransactionContext implements XAContext {
 	public RedisTransactionContext(XAProposal proposal, TransactionPhase phase) throws Exception {
 		this.txID = proposal.getTxID();
 		this.phase = phase;
+		this.quorum = proposal.getQuorum();
 		if (allTxIds.contains(proposal.getTxID())) {
 			restoreContext();
 		} else {
@@ -71,7 +73,6 @@ public class RedisTransactionContext implements XAContext {
 		
 		contextObjs.putAll(proposal.getContent());
 		contextObjs.put(XAConstant.CONTEXT_KEYS.PHASE, phase.name());
-		
 	}
 
 	private void addNewTransactionID(String txID) throws CacheException {
@@ -137,6 +138,11 @@ public class RedisTransactionContext implements XAContext {
 	@Override
 	public void setAssignmentNo(Integer id) {
 		this.assignmentID = id;		
+	}
+
+	@Override
+	public Integer getQuorum() {
+		return quorum;
 	}
 
 }
