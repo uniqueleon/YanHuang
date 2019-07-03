@@ -6,8 +6,6 @@ import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseSet;
 
-import com.sun.research.ws.wadl.Representation;
-
 public class SimpleXAResponseSet implements XAResponseSet {
 	
 	private TransactionPhase phase;

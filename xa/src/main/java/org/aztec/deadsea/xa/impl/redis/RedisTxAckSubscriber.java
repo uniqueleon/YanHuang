@@ -15,7 +15,6 @@ import org.aztec.deadsea.common.xa.XAPhaseListener;
 import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
-import org.aztec.deadsea.xa.impl.SimpleXAResponse;
 import org.aztec.deadsea.xa.impl.SimpleXAResponseSet;
 import org.springframework.beans.factory.annotation.Autowired;
 

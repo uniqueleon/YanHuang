@@ -18,6 +18,7 @@ import com.google.common.collect.Maps;
 public class XASQLExecutor implements XAExecutor {
 
 	private static final Map<String, Connection> connections = Maps.newConcurrentMap();
+	//private static final 
 	@Autowired
 	private XAResponseBuilder builder;
 

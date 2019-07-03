@@ -12,7 +12,6 @@ import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XAExecutor;
-import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
