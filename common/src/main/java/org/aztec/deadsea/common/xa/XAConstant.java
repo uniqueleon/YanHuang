@@ -17,6 +17,7 @@ public interface XAConstant {
 		public static final String TRANSACTIONS_ID = "XA_REDIS_TX_IDS";
 		public static final String TRANSACTIONS_SEQ_NO_LOCK = "XA_REDIS_TX_SEQ_LOCK_";
 		public static final String TRANSACTIONS_SEQ_NO = "XA_REDIS_TX_SEQ_NO_";
+		public static final String TRANSACTIONS_SEQ_LIMIT = "XA_REDIS_TX_SEQ_NO_LIMIT";
 	}
 	
 	public static interface CONTEXT_KEYS{

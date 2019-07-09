@@ -62,11 +62,13 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[0];
 						break;
 					case COMMIT:
+						context.setCurrentPhase(TransactionPhase.COMMIT);
 						response = executor.commit(context);
 						context.persist();
 						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[1];
 						break;
 					case ROLLBACK:
+						context.setCurrentPhase(TransactionPhase.ROLLBACK);
 						response = executor.rollback(context);
 						context.persist();
 						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[2];
@@ -86,11 +88,18 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 		cacheUtil.lock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
 		Integer no = 0;
 		String seqNoStr = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, String.class);
+		String seqLimitNo = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_LIMIT + txID, String.class);
+		Integer upperLimit = Integer.parseInt(seqLimitNo);
 		if(seqNoStr != null) {
 			no = Integer.parseInt(seqNoStr);
+			no ++;
 		}
-		no ++;
-		cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, no);
+		if(no >= upperLimit) {
+			no = null;
+		}
+		else {
+			cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, no);
+		}
 		cacheUtil.unlock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
 		return no;
 	}

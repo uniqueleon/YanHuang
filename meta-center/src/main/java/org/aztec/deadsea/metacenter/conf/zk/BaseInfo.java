@@ -30,6 +30,7 @@ public class BaseInfo extends ZkConfig {
 		try {
 			instance = new BaseInfo();
 		} catch (Exception e) {
+			e.printStackTrace();
 			MetaCenterLogger.error(e);
 		}
 	}

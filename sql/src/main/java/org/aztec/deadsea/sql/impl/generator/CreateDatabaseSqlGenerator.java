@@ -43,5 +43,19 @@ public class CreateDatabaseSqlGenerator implements ShardingSqlGenerator {
 		return retSql;
 	}
 
+	@Override
+	public List<String> generateRollback(GenerationParameter param) throws ShardingSqlException {
+		String rollBackSqlTmpl = "DROP DATABASE _DB_;";
+		List<String> retSql = Lists.newArrayList();
+		String rawDbName = "_DB_";
+		Integer shardSize = param.getSqlMetaData().getShardSize();
+		List<String> shardDbs = SqlUtils.getMultiDatabaseNames(rawDbName, shardSize);
+		String rawSql = rollBackSqlTmpl;
+		for(int i = 0;i < shardDbs.size();i++) {
+			retSql.add(rawSql.replace(rawDbName, shardDbs.get(i)));
+		}
+		return retSql;
+	}
+
 
 }

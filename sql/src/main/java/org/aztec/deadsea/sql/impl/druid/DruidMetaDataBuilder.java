@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.sql.ShardSqlDialect;
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.ShardingConfigurationFactory;
 import org.aztec.deadsea.sql.conf.TableScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class DruidMetaDataBuilder {
 	private List<DruidSqlParser> parsers;
 	
 	@Autowired
-	ShardingConfiguration conf;
+	ShardingConfigurationFactory confFactory;
 	
 	private final static Pattern shardSqlPattern = Pattern.compile(ShardSqlDialect.SHARD_KEY_WORD_PATTERN);
 	
@@ -34,6 +35,7 @@ public class DruidMetaDataBuilder {
 
 	
 	public DruidMetaData getMetaData(String sql) throws DeadSeaException {
+		ShardingConfiguration conf = confFactory.getConfiguration();
 		DruidMetaData tmpMetaData = checkShardDialect(sql);
 		MySqlStatementParser parser = new MySqlStatementParser(tmpMetaData != null ? 
 				tmpMetaData.getRawSql() : sql);
@@ -49,7 +51,7 @@ public class DruidMetaDataBuilder {
 						metaData.setRawSql(tmpMetaData.getRawSql());
 					}
 					else {
-						checkShardConfig(metaData);
+						checkShardConfig(conf,metaData);
 					}
 					return metaData;
 				}
@@ -58,7 +60,7 @@ public class DruidMetaDataBuilder {
 		return null;
 	}
 	
-	private void checkShardConfig(DruidMetaData metaData) throws DeadSeaException {
+	private void checkShardConfig(ShardingConfiguration conf,DruidMetaData metaData) throws DeadSeaException {
 		if(metaData.getTable() != null) {
 			TableScheme tScheme = conf.getTargetTable(metaData.getTable());
 			metaData.setShard(tScheme.isShard());

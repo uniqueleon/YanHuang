@@ -12,7 +12,7 @@ public class SimpleXAResponse implements XAResponse {
 	private boolean fail = false;
 	private boolean missed = false;
 	private Integer no;
-
+	private Integer errorCode;
 
 	public SimpleXAResponse(String host, String id, TransactionPhase phase, boolean ok, boolean fail, boolean missed
 			) {
@@ -25,8 +25,16 @@ public class SimpleXAResponse implements XAResponse {
 		this.missed = missed;
 	}
 
-	public String getId() {
-		return id;
+	public SimpleXAResponse(String host, String id, TransactionPhase phase, Integer no, Integer errorCode) {
+		super();
+		this.host = host;
+		this.id = id;
+		this.phase = phase;
+		this.no = no;
+		this.errorCode = errorCode;
+		ok = false;
+		fail = true;
+		missed = false;
 	}
 
 	public void setId(String id) {
@@ -66,17 +74,12 @@ public class SimpleXAResponse implements XAResponse {
 		return phase;
 	}
 
-	public String getID() {
+	public String getId() {
 		return id;
 	}
 
 	public String getHost() {
 		return host;
-	}
-
-
-	public boolean isOK() {
-		return ok;
 	}
 
 	public boolean isFail() {
@@ -92,4 +95,17 @@ public class SimpleXAResponse implements XAResponse {
 		return no;
 	}
 
+	public void setNo(Integer no) {
+		this.no = no;
+	}
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	
 }

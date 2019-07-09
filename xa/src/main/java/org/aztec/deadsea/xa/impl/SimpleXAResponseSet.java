@@ -27,7 +27,7 @@ public class SimpleXAResponseSet implements XAResponseSet {
 		this.quorum = quorum;
 		int successCount = 0;
 		for(XAResponse response : responses) {
-			if(response.isOK()) {
+			if(response.isOk()) {
 				successCount ++;
 			}
 		}

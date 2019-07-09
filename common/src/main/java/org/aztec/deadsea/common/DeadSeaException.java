@@ -15,6 +15,15 @@ public class DeadSeaException extends Exception {
 		public static final int UNSUPPORTED_OPERATION_PARAMETER = 0xf0003;
 		public static final int UNSUPPORTED_OPERATION = 0xf0004;
 	}
+	
+	public static interface MODULE_OFFSET {
+		public static final int COMMON = 0x10000;
+		public static final int SQL = 0x30000;
+		public static final int META_CENTER = 0x20000;
+		public static final int XA = 0x30000;
+		public static final int SO = 0x40000;
+		
+	}
 
 	public DeadSeaException() {
 		// TODO Auto-generated constructor stub

@@ -120,7 +120,7 @@ public class RedisTransactionContext implements XAContext {
 	public void persist() throws XAException {
 		try {
 			String oldIds = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_ID, String.class);
-			if(!oldIds.contains(txID)) {
+			if(oldIds == null || !oldIds.contains(txID)) {
 				addNewTransactionID(txID);
 			}
 			cacheUtil.cache(XAConstant.REDIS_KEY.TRASACTION_INFO_PREFIX + txID,
@@ -143,6 +143,11 @@ public class RedisTransactionContext implements XAContext {
 	@Override
 	public Integer getQuorum() {
 		return quorum;
+	}
+
+	@Override
+	public void setCurrentPhase(TransactionPhase phase) {
+		this.phase = phase;
 	}
 
 }

@@ -4,7 +4,9 @@ import java.util.Map;
 
 import org.aztec.deadsea.common.xa.ProposalFactory;
 import org.aztec.deadsea.common.xa.XAProposal;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SimpleProposalFactory implements ProposalFactory {
 
 	public SimpleProposalFactory() {

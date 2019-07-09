@@ -171,10 +171,12 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 			if(dbDto.getName().equals(database.name())) {
 				DatabaseScheme dbScheme = new DatabaseScheme(dbDto.getName(), dbDto.getSize());
 				List<TableScheme> tableList = Lists.newArrayList();
-				for(TableDTO tableDto : dbDto.getTables()) {
-					TableScheme tScheme = new TableScheme(tableDto.getName(), null, tableDto.getSize(), 
-							tableDto.shard(), dbScheme);
-					tableList.add(tScheme);
+				if(dbDto.getTables() != null) {
+					for(TableDTO tableDto : dbDto.getTables()) {
+						TableScheme tScheme = new TableScheme(tableDto.getName(), null, tableDto.getSize(), 
+								tableDto.shard(), dbScheme);
+						tableList.add(tScheme);
+					}
 				}
 				dbScheme.setTables(tableList);
 				return dbScheme;

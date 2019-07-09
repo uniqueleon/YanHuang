@@ -7,4 +7,5 @@ public interface ShardingSqlGenerator {
 	public boolean accept(GenerationParameter param);
 	public String generateSingle(GenerationParameter param) throws ShardingSqlException;
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException;
+	public List<String> generateRollback(GenerationParameter param) throws ShardingSqlException;
 }

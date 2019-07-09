@@ -15,14 +15,13 @@ import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.impl.BaseSqlExecResult;
 import org.aztec.deadsea.sql.impl.DruidConnectPropertyPlaceHolder;
 import org.aztec.deadsea.sql.impl.druid.DruidConnector;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 
-@Component
+//@Component
 public class LocalExecutor extends BaseSqlExecutor {
 	
-	public SqlExecuteResult doExecute(List<String> sqls,List<ServerScheme> servers,ExecuteType type) throws ShardingSqlException, IOException, SQLException {
+	public SqlExecuteResult doExecute(List<String> sqls,List<String> rollbacks,List<ServerScheme> servers,ExecuteType type) throws ShardingSqlException, IOException, SQLException {
 		
 		BaseSqlExecResult retResult = new BaseSqlExecResult(true);
 		for(ServerScheme server : servers) {

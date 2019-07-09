@@ -2,9 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.aztec</groupId>
 	<artifactId>deadsea-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>deadsea-client</name>
@@ -29,7 +27,12 @@
 		<dependency>
 			<groupId>org.aztec</groupId>
 			<artifactId>deadsea-sql</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${main-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aztec</groupId>
+			<artifactId>deadsea-xa</artifactId>
+			<version>${main-version}</version>
 		</dependency>
 	</dependencies>
 </project>

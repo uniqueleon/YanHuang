@@ -75,4 +75,10 @@ public class QuerySqlGenerator implements ShardingSqlGenerator {
 		return null;
 	}
 
+	@Override
+	public List<String> generateRollback(GenerationParameter param) throws ShardingSqlException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

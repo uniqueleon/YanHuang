@@ -91,20 +91,23 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 			GenerationParameter gp = builder.getGenerationParam(sql);
 			ShardingSqlGenerator sqlGen = builder.build(gp);
 			List<String> multiSql = Lists.newArrayList();
+			List<String> rollback = Lists.newArrayList();
 			switch(mode) {
 			case SINGLE:
 				//生成多条sql，逐条发送到服务器
 				multiSql.addAll(sqlGen.generateMulti(gp));
+				rollback.addAll(sqlGen.generateRollback(gp));
 				break;
 			case BATCH:
 				//生成一条sql，批量发到服务器
 				multiSql.add(sqlGen.generateSingle(gp));
+				rollback.addAll(sqlGen.generateRollback(gp));
 				break;
 			}
 			ShardingConfiguration conf = confFactory.getConfiguration();
 			ShardingAge age = conf.getCurrentAge();
 			List<ServerScheme> servers = conf.getRealServers(age.getNo());
-			SqlExecuteResult result = doExecute(multiSql, servers,type);
+			SqlExecuteResult result = doExecute(multiSql,rollback, servers,type);
 			
 			if(type.equals(ExecuteType.EXEC) && result.isSuccess()) {
 				registMetaData(conf.getAuth(), conf, gp);
@@ -133,5 +136,6 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 		return builder.toString();
 	}
 	
-	protected abstract SqlExecuteResult doExecute(List<String> sqls,List<ServerScheme> scheme,ExecuteType type) throws Exception;	
+	protected abstract SqlExecuteResult doExecute(List<String> sqls,List<String> rollbacks,
+			List<ServerScheme> scheme,ExecuteType type) throws Exception;	
 }

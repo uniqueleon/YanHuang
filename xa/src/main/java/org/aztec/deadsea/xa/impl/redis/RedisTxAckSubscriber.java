@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
@@ -17,9 +18,11 @@ import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
 import org.aztec.deadsea.xa.impl.SimpleXAResponseSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
+@Component
 public class RedisTxAckSubscriber implements CacheDataSubscriber {
 
 	private XAProposal proposal;
@@ -34,7 +37,11 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 
 	private Object lockObj = new Object();
 
-	public RedisTxAckSubscriber(XAProposal proposal) {
+	public RedisTxAckSubscriber() {
+		
+	}
+	
+	public void init(XAProposal proposal) {
 		this.proposal = proposal;
 		jsonUtil = UtilsFactory.getInstance().getJsonUtils();
 		ExecutorService es = Executors.newFixedThreadPool(1);
@@ -50,25 +57,28 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 
 		if (channel.equals(channelNames[0])) {
 			currentPhase = TransactionPhase.PREPARE;
-		} else if (channel.startsWith(channelNames[1])) {
+		} else if (channel.equals(channelNames[1])) {
 			currentPhase = TransactionPhase.COMMIT;
-		} else if (channel.startsWith(channelNames[2])) {
+		} else if (channel.equals(channelNames[2])) {
 			currentPhase = TransactionPhase.ROLLBACK;
 		}
-		if (!currentPhase.equals(lastPhase)) {
-			lastPhase = currentPhase;
+		if (lastPhase != null && !currentPhase.equals(lastPhase)) {
 			responses.clear();
-		} else {
-			try {
-				Map<String, Object> dataMap = jsonUtil.json2Object(newMsg, Map.class);
-				XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer) dataMap.get("seqNo"),
-						currentPhase);
-				responses.add(response);
-				lockObj.notifyAll();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		}
+		try {
+			Map<String, Object> dataMap = jsonUtil.json2Object(newMsg, Map.class);
+			XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer) dataMap.get("no"),
+					currentPhase);
+			responses.add(response);
+			synchronized (lockObj) {
+				lockObj.notify();
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			lastPhase = currentPhase;
 		}
 	}
 
@@ -105,7 +115,9 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 		public Object call() throws Exception {
 
 			while (runnable) {
-				lockObj.wait();
+				synchronized (lockObj) {
+					lockObj.wait();
+				}
 
 				for (XAPhaseListener listener : listeners) {
 					listener.listen(

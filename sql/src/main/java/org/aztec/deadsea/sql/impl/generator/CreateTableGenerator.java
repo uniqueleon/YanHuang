@@ -78,7 +78,7 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 		String retTarget = null;
 		if(match.find()) {
 			String founded = match.group();
-			retTarget = founded.split(" ")[2].trim();
+			retTarget = founded.split(" ")[3].trim();
 		}
 		return retTarget;
 	}
@@ -87,5 +87,11 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 		String sql = "create table `lm_db`.`lm_es_ook` (dsf)";
 		
 		System.out.println(getReplaceTarget(sql));
+	}
+
+	@Override
+	public List<String> generateRollback(GenerationParameter param) throws ShardingSqlException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

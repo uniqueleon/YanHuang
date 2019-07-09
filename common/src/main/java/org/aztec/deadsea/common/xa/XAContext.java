@@ -7,6 +7,7 @@ public interface XAContext {
 	public void put(String key,Object value);
 	public String getTransactionID();
 	public TransactionPhase getCurrentPhase();
+	public void setCurrentPhase(TransactionPhase phase);
 	public void persist() throws XAException;
 	public Integer getAssignmentNo();
 	public Integer getQuorum();
