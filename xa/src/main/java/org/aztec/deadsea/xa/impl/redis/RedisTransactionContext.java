@@ -28,6 +28,7 @@ public class RedisTransactionContext implements XAContext {
 	private String txID;
 	private Integer assignmentID;
 	private Integer quorum;
+	private String type;
 
 	static {
 
@@ -53,6 +54,7 @@ public class RedisTransactionContext implements XAContext {
 
 	public RedisTransactionContext(XAProposal proposal, TransactionPhase phase) throws Exception {
 		this.txID = proposal.getTxID();
+		this.type = proposal.getType();
 		this.phase = phase;
 		this.quorum = proposal.getQuorum();
 		if (allTxIds.contains(proposal.getTxID())) {
@@ -73,6 +75,7 @@ public class RedisTransactionContext implements XAContext {
 		
 		contextObjs.putAll(proposal.getContent());
 		contextObjs.put(XAConstant.CONTEXT_KEYS.PHASE, phase.name());
+		contextObjs.put(XAConstant.CONTEXT_KEYS.TYPE, proposal.getType());
 	}
 
 	private void addNewTransactionID(String txID) throws CacheException {
@@ -89,6 +92,7 @@ public class RedisTransactionContext implements XAContext {
 		String cacheContent = cacheUtil.get(XAConstant.REDIS_KEY.TRASACTION_INFO_PREFIX + txID
 				, String.class);
 		contextObjs = jsonUtil.json2Object(cacheContent, Map.class);
+		this.type = (String) contextObjs.get(XAConstant.CONTEXT_KEYS.TYPE);
 	}
 
 	@Override
@@ -148,6 +152,11 @@ public class RedisTransactionContext implements XAContext {
 	@Override
 	public void setCurrentPhase(TransactionPhase phase) {
 		this.phase = phase;
+	}
+
+	@Override
+	public String getContextType() {
+		return type;
 	}
 
 }

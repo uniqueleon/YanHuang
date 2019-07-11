@@ -15,7 +15,6 @@ import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataConstant;
-import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.common.entity.ServerAgeDTO;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;

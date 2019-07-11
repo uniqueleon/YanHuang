@@ -1,7 +1,5 @@
 package org.aztec.deadsea.common.xa;
 
-import java.util.concurrent.Callable;
-
 /**
  * 分布式事务执行器
  * @author 10064513
@@ -9,6 +7,13 @@ import java.util.concurrent.Callable;
  */
 public interface XAExecutor {
 
+	/**
+	 * 是否可以处理当
+	 * @param context
+	 * @return
+	 * @throws XAException
+	 */
+	public boolean canHandle(XAContext context) throws XAException;
 	/**
 	 * 准备
 	 * @param request

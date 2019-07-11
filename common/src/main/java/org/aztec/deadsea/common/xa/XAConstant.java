@@ -6,10 +6,10 @@ public interface XAConstant {
 
 		public static final String SEPERATOR = "_";
 		public static final String PREFIX = "XA_REDIS_CHANNEL_";
-		public static final String PREPARE = PREFIX + "_PREPARE";
-		public static final String COMMIT = PREFIX + "_COMMIT";
-		public static final String ROLLBACK = PREFIX + "_ROLLBACK";
-		public static final String ACKOWNLEDGE = "_ACK";
+		public static final String PREPARE = PREFIX + "PREPARE";
+		public static final String COMMIT = PREFIX + "COMMIT";
+		public static final String ROLLBACK = PREFIX + "ROLLBACK";
+		public static final String ACKOWNLEDGE = "ACK";
 	}
 	
 	public static interface REDIS_KEY {
@@ -21,11 +21,24 @@ public interface XAConstant {
 	}
 	
 	public static interface CONTEXT_KEYS{
+		public static final String TYPE = "type";
 		public static final String PHASE = "phase";
+		public static final String CONNECT_ARGS = "CONNECT_ARGS";
+		public static final String EXECUTE_SQL = "TARGET_SQL";
+		public static final String ROLLBACK_SQL = "ROLLBACK_SQL";
+		public static interface META_CENTER_KEYS{
+			public static final String AUTH_USER_NAME = "META_CENTER_AUTH_USERNAME";
+			public static final String AUTH_PASSWORD = "META_CENTER_AUTH_PWD";
+			
+		}
 	}
 	
 	public static interface MSG_BASE_RESPONSE{
 		public static final String OK = "OK";
 		public static final String FAIL = "FAIL";
+	}
+	
+	public static interface XA_PROPOSAL_TYPES {
+		public static final String XA_SQL = "XA_SQL_EXECUTOR";
 	}
 }

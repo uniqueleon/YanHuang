@@ -3,7 +3,6 @@ package org.aztec.deadsea.client;
 import java.util.List;
 
 import org.aztec.autumn.common.utils.BasePropertiesConfig;
-import org.aztec.autumn.common.utils.annotation.config.Configuration;
 import org.aztec.deadsea.common.sql.SQLTemplates;
 import org.aztec.deadsea.sql.ShardSqlExecutor;
 import org.aztec.deadsea.sql.ShardSqlExecutor.ExecuteMode;

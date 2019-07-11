@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XAException;
 import org.aztec.deadsea.common.xa.XAExecutor;
@@ -22,6 +23,7 @@ import com.google.common.collect.Maps;
 public class XASQLExecutor implements XAExecutor {
 
 	private static final Map<String, Connection> connections = Maps.newConcurrentMap();
+	
 	//private static final 
 	@Autowired
 	private XAResponseBuilder builder;
@@ -99,6 +101,13 @@ public class XASQLExecutor implements XAExecutor {
 					context.getCurrentPhase());
 			return response;
 		}
+	}
+
+
+
+	@Override
+	public boolean canHandle(XAContext context) throws XAException {
+		return context.getContextType().equals(XAConstant.XA_PROPOSAL_TYPES.XA_SQL);
 	}
 
 }

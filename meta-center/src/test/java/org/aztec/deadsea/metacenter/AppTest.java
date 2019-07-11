@@ -1,12 +1,5 @@
 package org.aztec.deadsea.metacenter;
 
-import java.util.UUID;
-
-import org.aztec.autumn.common.utils.security.CodeCipher;
-import org.aztec.deadsea.common.MetaDataRegister;
-import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
-import org.aztec.deadsea.metacenter.impl.ZookeeperRegister;
-
 import junit.framework.TestCase;
 
 /**

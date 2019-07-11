@@ -12,4 +12,5 @@ public interface XAContext {
 	public Integer getAssignmentNo();
 	public Integer getQuorum();
 	public void setAssignmentNo(Integer no);
+	public String getContextType();
 }

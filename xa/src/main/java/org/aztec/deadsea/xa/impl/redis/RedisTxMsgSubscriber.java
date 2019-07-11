@@ -51,10 +51,14 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 			
 			String pubChannel = null;
 			Integer assignmentNo = getAssignmentNo(txID);
+			String msg = null;
 			while(assignmentNo != null) {
 				XAResponse response = null;
 				context.setAssignmentNo(assignmentNo);
 				for (XAExecutor executor : executors) {
+					if(!executor.canHandle(context)) {
+						continue;
+					}
 					switch (phase) {
 					case PREPARE:
 						response = executor.prepare(context);
@@ -75,10 +79,10 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 						break;
 					}
 				}
-				String msg = jsonUtil.object2Json(response);
-				cacheUtil.publish(pubChannel, msg);
+				msg = jsonUtil.object2Json(response);
 				assignmentNo = getAssignmentNo(txID);
 			}
+			cacheUtil.publish(pubChannel, msg);
 		} catch (Exception e) {
 			DeadSeaLogger.error("[XA]", e);
 		}
@@ -87,8 +91,10 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 	public Integer getAssignmentNo(String txID) throws CacheException {
 		cacheUtil.lock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
 		Integer no = 0;
-		String seqNoStr = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, String.class);
-		String seqLimitNo = cacheUtil.get(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_LIMIT + txID, String.class);
+		String seqNoKey = XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID;
+		String seqNoLimitKey = XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_LIMIT + txID;
+		String seqNoStr = cacheUtil.get(seqNoKey, String.class);
+		String seqLimitNo = cacheUtil.get(seqNoLimitKey, String.class);
 		Integer upperLimit = Integer.parseInt(seqLimitNo);
 		if(seqNoStr != null) {
 			no = Integer.parseInt(seqNoStr);
@@ -98,7 +104,7 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 			no = null;
 		}
 		else {
-			cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID, no);
+			cacheUtil.cache(seqNoKey, no);
 		}
 		cacheUtil.unlock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
 		return no;

@@ -21,7 +21,6 @@ import org.aztec.deadsea.sql.SqlGeneratorBuilder;
 import org.aztec.deadsea.sql.SqlModularConstant;
 import org.aztec.deadsea.sql.conf.MetaDataTransformer;
 import org.aztec.deadsea.sql.conf.ServerScheme;
-import org.aztec.deadsea.sql.impl.BaseSqlExecResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
