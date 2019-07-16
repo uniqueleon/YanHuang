@@ -70,6 +70,9 @@ public class TableInfo extends ZkConfig {
 	
 	public void destroy() {
 		super.destroy();
+		for(ShardingAgeInfo age : ages) {
+			age.destroy();
+		}
 	}
 
 	public Integer getSize() {
@@ -139,12 +142,11 @@ public class TableInfo extends ZkConfig {
 		public void loadAges() throws IOException, KeeperException, InterruptedException {
 			
 			ages = Lists.newArrayList();
-			if(ageNum == null) {
-				ageNum = 0;
+			ageNum = getSubNodes().size();
+			
+			for(int i = 0;i < ageNum ;i++) {
+				ages.add(new ShardingAgeInfo(znode,i));
 			}
-			/*for(int i = 0;i < tableNum ;i++) {
-				tables.add(new TableInfo(i));
-			}*/
 		}
 
 		public Long getTime() {

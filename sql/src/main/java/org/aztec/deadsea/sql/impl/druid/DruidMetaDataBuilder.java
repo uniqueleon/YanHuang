@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 import javax.inject.Singleton;
 
 import org.aztec.deadsea.common.DeadSeaException;
+import org.aztec.deadsea.common.entity.TableDTO;
 import org.aztec.deadsea.sql.ShardSqlDialect;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
-import org.aztec.deadsea.sql.conf.TableScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class DruidMetaDataBuilder {
 		ShardingConfiguration conf = confFactory.getConfiguration();
 		DruidMetaData tmpMetaData = checkShardDialect(sql);
 		MySqlStatementParser parser = new MySqlStatementParser(tmpMetaData != null ? 
-				tmpMetaData.getRawSql() : sql);
+				tmpMetaData.getSourceSql() : sql);
 		SQLStatement statement = parser.parseStatement();
 		if(parsers != null && parsers.size() > 0) {
 			for(DruidSqlParser sqlParser : parsers) {
@@ -49,6 +49,7 @@ public class DruidMetaDataBuilder {
 						metaData.setShard(tmpMetaData.shard());
 						metaData.setShardSize(tmpMetaData.getShardSize());
 						metaData.setRawSql(tmpMetaData.getRawSql());
+						metaData.setSourceSql(tmpMetaData.getSourceSql());
 					}
 					else {
 						checkShardConfig(conf,metaData);
@@ -62,8 +63,8 @@ public class DruidMetaDataBuilder {
 	
 	private void checkShardConfig(ShardingConfiguration conf,DruidMetaData metaData) throws DeadSeaException {
 		if(metaData.getTable() != null) {
-			TableScheme tScheme = conf.getTargetTable(metaData.getTable());
-			metaData.setShard(tScheme.isShard());
+			TableDTO tScheme = conf.getTargetTable(metaData.getTable());
+			metaData.setShard(tScheme.shard());
 			metaData.setShardSize(tScheme.getSize());
 		}
 	}
@@ -78,8 +79,9 @@ public class DruidMetaDataBuilder {
 			Integer shardSize = Integer.parseInt(shardKeyWord.substring(shardKeyWord.indexOf('(') + 1, 
 					shardKeyWord.indexOf(')')));
 			metaData.setShardSize(shardSize);
-			rawSql = rawSql.replace(shardKeyWord, "");
 			metaData.setRawSql(rawSql);
+			rawSql = rawSql.replace(shardKeyWord, "");
+			metaData.setSourceSql(rawSql);
 			return metaData;
 		}
 		return null;

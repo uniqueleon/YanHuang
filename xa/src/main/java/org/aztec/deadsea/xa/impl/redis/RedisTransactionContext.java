@@ -29,6 +29,7 @@ public class RedisTransactionContext implements XAContext {
 	private Integer assignmentID;
 	private Integer quorum;
 	private String type;
+	
 
 	static {
 

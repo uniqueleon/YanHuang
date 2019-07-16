@@ -7,6 +7,7 @@ public class XAException extends DeadSeaException{
 	public static interface ErrorCodes {
 		public static final int GET_LOCAL_HOST_INFO_ERROR = MODULE_OFFSET.XA + 0x000;
 		public static final int GET_LOCAL = MODULE_OFFSET.XA + 0x000;
+		public static final int UNKONW_ERROR = MODULE_OFFSET.XA + 0xFFFF;
 	}
 
 	public XAException() {

@@ -22,10 +22,8 @@ import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
 import org.aztec.deadsea.sql.conf.AuthorityScheme;
-import org.aztec.deadsea.sql.conf.DatabaseScheme;
 import org.aztec.deadsea.sql.conf.LocalAuthConfiguration;
 import org.aztec.deadsea.sql.conf.ServerScheme;
-import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.Database;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.stereotype.Component;
@@ -50,43 +48,23 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 	}
 
 	@Override
-	public TableScheme getTargetTable(Table table) throws DeadSeaException {
+	public TableDTO getTargetTable(Table table) throws DeadSeaException {
 		Map<String, List<MetaData>> metaDatas = registor.getRegistedMetaDatas(auth);
 		List<MetaData> dbMetaDatas = metaDatas.get(MetaDataMapKeys.DATA_BASE_KEY);
-		DatabaseDTO dbDTO = findMatchDatabase(dbMetaDatas, table);
-		TableScheme ts = wrapTableScheme(dbDTO, table);
-		return ts;
+		return findTable(dbMetaDatas, table);
 	}
 
-	private TableScheme wrapTableScheme(DatabaseDTO dbDTO, Table table) {
-		TableScheme targetScheme = null;
-		DatabaseScheme dbScheme = new DatabaseScheme(dbDTO.getName(), dbDTO.getSize());
-		List<TableScheme> schemes = Lists.newArrayList();
-		for (MetaData tableMetaData : dbDTO.getChilds()) {
-			TableDTO tableDto = tableMetaData.cast();
-			TableScheme tableScheme = new TableScheme(tableDto.getName(), table.alias(), tableDto.getSize(),
-					tableDto.shard(), dbScheme);
-			if (tableDto.getName().equals(table.name())) {
-				targetScheme = tableScheme;
-			}
-			schemes.add(tableScheme);
-		}
-		return targetScheme;
-	}
 
-	public DatabaseDTO findMatchDatabase(List<MetaData> metaDataList, Table table) {
+	public TableDTO findTable(List<MetaData> metaDataList, Table table) {
 		for (MetaData mData : metaDataList) {
 			DatabaseDTO db = mData.cast();
-			if(table.getDatabase() != null && (table.getDatabase().name().equals(db.getName())
-					|| table.getDatabase().name().equals(db.getName().replaceAll("`", "")))) {
-				return db;
-			}
+			
 			List<MetaData> childrens = db.getChilds();
 			if(childrens != null) {
 				for (MetaData child : childrens) {
 					TableDTO tableDto = child.cast();
 					if (tableDto.getName().equals(table.name())) {
-						return db;
+						return tableDto;
 					}
 				}
 			}
@@ -163,23 +141,13 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 	}
 
 	@Override
-	public DatabaseScheme getDatabaseScheme(Database database) throws DeadSeaException {
+	public DatabaseDTO getDatabaseScheme(Database database) throws DeadSeaException {
 		Map<String, List<MetaData>> metaDatas = registor.getRegistedMetaDatas(auth);
 		List<MetaData> dbMetaDatas = metaDatas.get(MetaDataMapKeys.DATA_BASE_KEY);
 		for(MetaData mData : dbMetaDatas) {
 			DatabaseDTO dbDto = mData.cast();
 			if(dbDto.getName().equals(database.name())) {
-				DatabaseScheme dbScheme = new DatabaseScheme(dbDto.getName(), dbDto.getSize());
-				List<TableScheme> tableList = Lists.newArrayList();
-				if(dbDto.getTables() != null) {
-					for(TableDTO tableDto : dbDto.getTables()) {
-						TableScheme tScheme = new TableScheme(tableDto.getName(), null, tableDto.getSize(), 
-								tableDto.shard(), dbScheme);
-						tableList.add(tScheme);
-					}
-				}
-				dbScheme.setTables(tableList);
-				return dbScheme;
+				return dbDto;
 			}
 		}
 		return null;

@@ -26,6 +26,8 @@ public interface XAConstant {
 		public static final String CONNECT_ARGS = "CONNECT_ARGS";
 		public static final String EXECUTE_SQL = "TARGET_SQL";
 		public static final String ROLLBACK_SQL = "ROLLBACK_SQL";
+		public static final String RAW_SQLS = "RAW_SQL";
+		public static final String RAW_SQL_TYPE = "RAW_SQL_TYPE";
 		public static interface META_CENTER_KEYS{
 			public static final String AUTH_USER_NAME = "META_CENTER_AUTH_USERNAME";
 			public static final String AUTH_PASSWORD = "META_CENTER_AUTH_PWD";

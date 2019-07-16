@@ -38,6 +38,8 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 		attachments.put(XAConstant.CONTEXT_KEYS.CONNECT_ARGS, getConnectionArgs(schemes));
 		attachments.put(XAConstant.CONTEXT_KEYS.EXECUTE_SQL, sqls.toArray(new String[sqls.size()]));
 		attachments.put(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL, rollbacks);
+		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQLS, gp.getSqlMetaData().getRawSql());
+		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE, type.name());
 		return manager.submit(quorum, attachments, new TransactionResultBuilder<SqlExecuteResult>() {
 
 			@Override
@@ -69,19 +71,7 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 	@Override
 	protected void registMetaData(Authentication auth, ShardingConfiguration conf, GenerationParameter genParam)
 			throws DeadSeaException {
-		super.registMetaData(auth, conf, genParam);
-		/*
-		 * int quorum = 1; Map<String,Object> attachments = Maps.newHashMap();
-		 * attachments.put(XAConstant.CONTEXT_KEYS.CONNECT_ARGS,
-		 * getConnectionArgs(schemes));
-		 * attachments.put(XAConstant.CONTEXT_KEYS.EXECUTE_SQL, sqls.toArray(new
-		 * String[sqls.size()])); attachments.put(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL,
-		 * rollbacks); String txId = UUID.randomUUID().toString(); XAProposal proposal =
-		 * factory.createProposal(txId, XAConstant.XA_PROPOSAL_TYPES.XA_SQL,quorum,
-		 * attachments); coordinator.prepare(proposal, this); XARecord record = new
-		 * XARecord(proposal,null); records.put(txId, record); synchronized (record) {
-		 * record.wait(); } return record.getExecResult();
-		 */
+		
 	}
 
 

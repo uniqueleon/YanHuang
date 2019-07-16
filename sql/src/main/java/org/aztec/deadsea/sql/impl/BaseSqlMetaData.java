@@ -16,6 +16,7 @@ public class BaseSqlMetaData implements SqlMetaData {
 	protected Integer shardSize;
 	protected SqlType type;
 	protected String rawSql;
+	protected String sourceSql;
 	protected Database db;
 	protected Table table;
 	protected List<Condition> whereConditions;
@@ -138,6 +139,15 @@ public class BaseSqlMetaData implements SqlMetaData {
 
 	public void setShardSize(Integer shardSize) {
 		this.shardSize = shardSize;
+	}
+
+	public void setSourceSql(String sourceSql) {
+		this.sourceSql = sourceSql;
+	}
+
+	@Override
+	public String getSourceSql() {
+		return sourceSql;
 	}
 
 	

@@ -10,6 +10,7 @@ import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
+import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 
 import com.google.common.collect.Lists;
@@ -25,6 +26,8 @@ public class Account extends ZkConfig{
 	private List<TimeLimitedCallable>  callBacks;
 	@Ignored
 	private List<DatabaseInfo> databases;
+	
+	DatabaseReloader loader;
 
 	public Account(String uuid) throws IOException, KeeperException, InterruptedException {
 		// TODO Auto-generated constructor stub
@@ -33,11 +36,14 @@ public class Account extends ZkConfig{
 	}
 	
 	private void initAccount() throws IOException, KeeperException, InterruptedException  {
-		callBacks = Lists.newArrayList();
-		DatabaseReloader loader = new DatabaseReloader();
-		loader.loadDatabases();
-		callBacks.add(loader);
-		appendWatcher(new CallableWatcher(callBacks, null));
+		if(!isDeprecated) {
+			callBacks = Lists.newArrayList();
+			loader = new DatabaseReloader();
+			loader.loadDatabases();
+			callBacks.add(loader);
+			dbNum = getSubNodes().size();
+			appendWatcher(new CallableWatcher(callBacks, null));
+		}
 	}
 
 	public String getUsername() {
@@ -79,6 +85,7 @@ public class Account extends ZkConfig{
 	public void setDatabases(List<DatabaseInfo> databases) {
 		this.databases = databases;
 	}
+	
 
 	private class DatabaseReloader implements TimeLimitedCallable {
 
@@ -96,9 +103,8 @@ public class Account extends ZkConfig{
 		public void loadDatabases() throws IOException, KeeperException, InterruptedException {
 			
 			databases = Lists.newArrayList();
-			if(dbNum == null) {
-				dbNum = 0;
-			}
+			List<String> subNodeNames = getSubNodes();
+			dbNum = subNodeNames.size();
 			for(int i = 0;i < dbNum ;i++) {
 				databases.add(new DatabaseInfo(znode,i));
 			}
@@ -120,4 +126,26 @@ public class Account extends ZkConfig{
 		
 	}
 	
+	public void refresh() throws Exception {
+		loader.loadDatabases();
+		dbNum = getSubNodes().size();
+		save();
+	}
+	
+	public DatabaseInfo findDatabaseInfo(final MetaData param) {
+		if(databases.size() <= param.getSeqNo()) {
+			return null;
+		}
+		return databases.get(param.getSeqNo());
+	}
+	
+	public TableInfo findTableInfo(MetaData param) {
+		DatabaseInfo dbInfo = findDatabaseInfo(param.getParent());
+		if(dbInfo != null) {
+			if(dbInfo.getTables().size() > param.getSeqNo()) {
+				return dbInfo.getTables().get(param.getSeqNo());
+			}
+		}
+		return null;
+	}
 }

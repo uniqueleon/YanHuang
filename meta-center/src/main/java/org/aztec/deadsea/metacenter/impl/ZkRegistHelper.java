@@ -3,6 +3,7 @@ package org.aztec.deadsea.metacenter.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
@@ -49,19 +50,21 @@ public class ZkRegistHelper {
 	}
 	
 	private void initData() throws IOException, KeeperException, InterruptedException {
-		for(int i = 0;i <= baseInfo.getMaxAge();i++) {
-			ServerAge age = new ServerAge(i);
-			if(!age.isDeprecated()) {
-				ages.put(age.getAge(), age);
+		if(baseInfo.getMaxAge() != null) {
+			for(int i = 0;i <= baseInfo.getMaxAge();i++) {
+				ServerAge age = new ServerAge(i);
+				if(!age.isDeprecated()) {
+					ages.put(age.getAge(), age);
+				}
 			}
 		}
 	}
 
 	public void updateDB(Authentication auth, MetaData data) throws MetaDataException {
 		try {
-			Account account = accounts.get(auth.getUUID());
+			Account account = getAccountInfo(auth);
 			DatabaseDTO db = data.cast();
-			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(),db.getNo());
+			DatabaseInfo dbInfo = account.findDatabaseInfo(data);
 			if(data.getName() != null) {
 				dbInfo.setName(data.getName());
 			}
@@ -82,13 +85,20 @@ public class ZkRegistHelper {
 		}
 	}
 	
+	
+	public Account getAccountInfo(Authentication auth) throws Exception{
+
+		Account account = accounts.get(auth.getUUID());
+		//account.refresh();
+		return account;
+	}
+	
 	public void updateTable(Authentication auth, MetaData data) throws MetaDataException {
 
-		String dbPrefix = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,
-				new Object[] { auth.getUUID(), data.getParent().getSeqNo() });
 		try {
+			Account account = getAccountInfo(auth);
 			TableDTO tbData = data.cast();
-			TableInfo table = new TableInfo(dbPrefix, data.getSeqNo());
+			TableInfo table = account.findTableInfo(data);
 			if(data.getName() != null) {
 				table.setName(data.getName());
 			}
@@ -101,8 +111,7 @@ public class ZkRegistHelper {
 			table.setAgeNum(tbData.getAgeNum());
 			table.setRecordSeqNo(tbData.getRecordSeqNo());
 			table.save();
-			DatabaseInfo db = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getSeqNo());
-			db.save();
+			account.refresh();
 		} catch (Exception e) {
 
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
@@ -168,10 +177,8 @@ public class ZkRegistHelper {
 	public void registDB(Authentication auth, MetaData data) throws MetaDataException {
 
 		try {
-			Account account = accounts.get(auth.getUUID());
-			if(account.getDbNum() == null) {
-				account.setDbNum(0);
-			}
+			Account account = getAccountInfo(auth);
+			
 			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(),account.getDbNum());
 			dbInfo.setName(data.getName());
 			dbInfo.setSize(data.getSize());
@@ -179,8 +186,7 @@ public class ZkRegistHelper {
 			dbInfo.setTableNum(0);
 			dbInfo.setNo(data.getSeqNo());
 			dbInfo.save();
-			account.setDbNum(account.getDbNum() + 1);
-			account.save();
+			account.refresh();
 		} catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
@@ -191,6 +197,7 @@ public class ZkRegistHelper {
 		String dbPrefix = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,
 				new Object[] { auth.getUUID(), data.getParent().getSeqNo() });
 		try {
+			Account account = getAccountInfo(auth);
 			TableInfo table = new TableInfo(dbPrefix, data.getSeqNo());
 			table.setName(data.getName());
 			table.setSize(data.getSize());
@@ -200,7 +207,7 @@ public class ZkRegistHelper {
 			table.setAgeNum(0);
 			table.setRecordSeqNo(0l);
 			table.save();
-			DatabaseInfo db = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getSeqNo());
+			DatabaseInfo db = account.findDatabaseInfo(data.getParent());
 			db.setTableNum(db.getTableNum() + 1);
 			db.save();
 		} catch (Exception e) {
@@ -276,6 +283,9 @@ public class ZkRegistHelper {
 		if (!ZkUtils.isNodeExists(node)) {
 			try {
 				Account account = new Account(base64);
+				account.setUuid(UUID.randomUUID().toString());
+				account.setDbNum(0);
+				account.setDatabases(Lists.newArrayList());
 				account.setUsername(username);
 				account.setPassword(cipher.getMD5Substract(password, GlobalConst.DEFAULT_CHARSET));
 				account.save();
@@ -379,5 +389,51 @@ public class ZkRegistHelper {
 			}
 		}
 		return age;
+	}
+	
+	public boolean exists(Authentication auth,MetaData data) throws MetaDataException {
+		try {
+			Account account = getAccountInfo(auth);
+			switch(data.getType()) {
+			case DB:
+				switch(data.getType().getSubType()) {
+				case DATABASE:
+					return account.findDatabaseInfo(data) != null;
+				case TABLE:
+					return account.findTableInfo(data) != null;
+				case AGE:
+					break;
+				}
+				break;
+			case CACHE:
+				break;
+			}
+		} catch (Exception e) {
+			throw new MetaDataException(ErrorCodes.META_DATA_ERROR);
+		}
+		return false;
+	}
+	
+	public void removeDb(Authentication auth,MetaData data ) throws MetaDataException {
+		try {
+			Account account = getAccountInfo(auth);
+			DatabaseInfo dbInfo = account.findDatabaseInfo(data);
+			dbInfo.delete();
+			account.refresh();
+		} catch (Exception e) {
+			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
+		}
+		
+	}
+	
+	public void removeTable(Authentication auth,MetaData data) throws MetaDataException {
+		try {
+			Account account = getAccountInfo(auth);
+			TableInfo table = account.findTableInfo(data);
+			table.delete();
+			account.refresh();
+		} catch (Exception e) {
+			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
+		}
 	}
 }

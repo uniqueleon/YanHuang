@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.aztec.autumn.common.utils.BasePropertiesConfig;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaDataRegister;
@@ -190,6 +191,7 @@ public class MetaDataInitiator implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments appArgs) throws Exception {
 		// TODO Auto-generated method stub
+		System.setProperty(BasePropertiesConfig.DEFAUTL_SYSTEM_PROPERTY_FILE,"conf/deadsea_base.properties");
 		String[] args = appArgs.getSourceArgs();
 		if (args.length < 6) {
 			System.err.println(" Should provide 6 parameters at least!");

@@ -39,7 +39,9 @@ public class DatabaseInfo extends ZkConfig{
 	public DatabaseInfo(String prefix,int no) throws IOException, KeeperException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		super(prefix + GlobalConst.ZOOKEEPER_PATH_SPLITOR + no, ConfigFormat.JSON);
-		initDb();
+		if(!isDeprecated) {
+			initDb();
+		}
 	}
 	
 	private void initDb() throws IOException, KeeperException, InterruptedException {
@@ -98,7 +100,6 @@ public class DatabaseInfo extends ZkConfig{
 		this.no = no;
 	}
 
-
 	private class TableReloader implements TimeLimitedCallable {
 
 		public Object call() throws Exception {
@@ -115,9 +116,7 @@ public class DatabaseInfo extends ZkConfig{
 		public void loadTables() throws IOException, KeeperException, InterruptedException {
 			
 			tables = Lists.newArrayList();
-			if(tableNum == null) {
-				tableNum = 0;
-			}
+			tableNum = getSubNodes().size();
 			for(int i = 0;i < tableNum ;i++) {
 				tables.add(new TableInfo(znode,i));
 			}
@@ -162,4 +161,14 @@ public class DatabaseInfo extends ZkConfig{
 			throw new MetaDataException(2);
 		}
 	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		for(TableInfo table : tables) {
+			table.destroy();
+		}
+	}
+	
+	
 }

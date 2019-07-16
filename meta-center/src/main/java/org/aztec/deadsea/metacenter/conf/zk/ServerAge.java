@@ -73,6 +73,9 @@ public class ServerAge  extends ZkConfig{
 
 
 	private void initInfo() {
+		if(isDeprecated) {
+			return;
+		}
 		callBacks = Lists.newArrayList();
 		callBacks.add(new ServerReloader());
 		appendWatcher(new CallableWatcher(callBacks, null));

@@ -129,8 +129,30 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 
 	@Override
 	public void remove(Authentication auth, MetaData data) throws DeadSeaException {
-		// TODO Auto-generated method stub
-		
+		helper.assertAuth(auth);
+		if (auth.isAuthenticated()) {
+			switch (data.getType()) {
+			case DB:
+				switch (data.getType().getSubType()) {
+				case DATABASE:
+
+					helper.removeDb(auth, data);
+					break;
+				case TABLE:
+					helper.removeTable(auth, data);
+					break;
+				case AGE:
+					break;
+				}
+			case CACHE:
+				break;
+			}
+		}
+	}
+
+	@Override
+	public boolean exists(Authentication auth, MetaData data) throws DeadSeaException {
+		return helper.exists(auth, data);
 	}
 
 }

@@ -72,6 +72,8 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 			SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
 			System.out.println(sResult.isSuccess());
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
+
+			System.exit(0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

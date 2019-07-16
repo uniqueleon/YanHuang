@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
 
 public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 
-	protected static enum ExecuteType{
+	public static enum ExecuteType{
 		EXEC,QUERY,UPDATE;
 	}
 
@@ -39,6 +39,10 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 	protected MetaDataRegister metaRegister;
 	@Autowired
 	protected ShardingConfigurationFactory confFactory;
+	
+	protected GenerationParameter gp;
+	
+	protected ExecuteType type;
 
 	public SqlGeneratorBuilder getBuilder() {
 		return builder;
@@ -87,7 +91,8 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 	
 	protected SqlExecuteResult execute(String sql,ExecuteMode mode,ExecuteType type) throws ShardingSqlException {
 		try {
-			GenerationParameter gp = builder.getGenerationParam(sql);
+			this.type = type;
+			gp = builder.getGenerationParam(sql);
 			ShardingSqlGenerator sqlGen = builder.build(gp);
 			List<String> multiSql = Lists.newArrayList();
 			List<String> rollback = Lists.newArrayList();

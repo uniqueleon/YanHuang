@@ -9,6 +9,7 @@ public interface SqlMetaData {
 
 	public boolean shard();
 	public Integer getShardSize();
+	public String getSourceSql();
 	public String getRawSql();
 	public SqlType getSqlType();
 	public Table getTable();

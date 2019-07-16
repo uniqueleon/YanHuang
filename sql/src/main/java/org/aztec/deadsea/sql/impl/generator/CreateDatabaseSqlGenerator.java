@@ -36,7 +36,7 @@ public class CreateDatabaseSqlGenerator implements ShardingSqlGenerator {
 		String rawDbName = param.getSqlMetaData().getDatabase().name();
 		Integer shardSize = param.getSqlMetaData().getShardSize();
 		List<String> shardDbs = SqlUtils.getMultiDatabaseNames(rawDbName, shardSize);
-		String rawSql = param.getSqlMetaData().getRawSql();
+		String rawSql = param.getSqlMetaData().getSourceSql();
 		for(int i = 0;i < shardDbs.size();i++) {
 			retSql.add(rawSql.replace(rawDbName, shardDbs.get(i)));
 		}

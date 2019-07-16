@@ -5,6 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.aztec.deadsea.common.DeadSeaException;
+import org.aztec.deadsea.common.entity.DatabaseDTO;
+import org.aztec.deadsea.common.entity.TableDTO;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
@@ -13,8 +15,6 @@ import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.SqlUtils;
-import org.aztec.deadsea.sql.conf.DatabaseScheme;
-import org.aztec.deadsea.sql.conf.TableScheme;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +55,13 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 		ShardingConfiguration conf = factory.getConfiguration();
 		List<String> retString = Lists.newArrayList();
 		try {
-			String rawSql = param.getSqlMetaData().getRawSql();
+			String rawSql = param.getSqlMetaData().getSourceSql();
 			SqlMetaData metaData = param.getSqlMetaData();
 			Table table = metaData.getTable();
-			DatabaseScheme db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
-			TableScheme ts = new TableScheme(table.name(), table.alias(), 
+			DatabaseDTO db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
+			TableDTO ts = new TableDTO(0,table.name(), 
 					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(), db);
-			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.size(),ts.size(),db.getName(),ts.getName());
+			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.getSize(),ts.getSize(),db.getName(),ts.getName());
 			String replaceTarget = getReplaceTarget(rawSql);
 			for(int i = 0;i < dbTables.size();i++) {
 				retString.add(rawSql.replace(replaceTarget, dbTables.get(i)));
