@@ -23,22 +23,22 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.Lists;
 
 @Component
-public class CreateTableGenerator implements ShardingSqlGenerator {
+public class InsertTableGenerator implements ShardingSqlGenerator {
 	
 	@Autowired
 	private ShardingConfigurationFactory factory;
 
 	private static Pattern tableNamePattern = Pattern
-			.compile("[C|c][R|r][E|e][A|a][T|t][E|e]\\s+[T|t][A|a][B|b][L|l][E|e]\\s+[\\.*\\`*\\w+[_+\\w+]+\\`*]+\\s+\\(");
+			.compile("[I|i][N|n][S|s][E|e][R|r][T|t]\\s+[I|i][N|n][T|t][O|o]\\s+[\\.*\\`*\\w+[_+\\w+]+\\`*]+\\s+\\[V|v][A|a][L|l][U|u][E|e]");
 			//.compile("[C|c][R|r][E|e][A|a][T|t][E|e]\\s*[T|t][A|a][B|b][L|l][E|e]");
 
-	public CreateTableGenerator() {
+	public InsertTableGenerator() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public boolean accept(GenerationParameter param) {
 		// TODO Auto-generated method stub
-		return param.getSqlMetaData().getSqlType().equals(SqlType.CREATE_TABLE);
+		return param.getSqlMetaData().getSqlType().equals(SqlType.INSERT);
 	}
 
 	public String generate(GenerationParameter param) {

@@ -7,25 +7,24 @@ import org.aztec.deadsea.sql.impl.druid.DruidSqlParser;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
+import com.alibaba.druid.sql.ast.statement.SQLInsertStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlInsertStatement;
 
 @Component
-public class CreateTableSqlParser implements DruidSqlParser {
+public class InsertTableSqlParser implements DruidSqlParser {
 
-	public CreateTableSqlParser() {
-		// TODO Auto-generated constructor stub
+	public InsertTableSqlParser() {
 	}
 
 	public boolean accept(SQLStatement sql) {
-		return sql instanceof SQLCreateTableStatement;
+		return sql instanceof SQLInsertStatement;
 	}
 
 	public DruidMetaData parse(SQLStatement sql) throws ShardingSqlException {
-		
-		SQLCreateTableStatement scts = (SQLCreateTableStatement) sql;
-		DruidMetaData mData = ParserHelper.getMetaData(sql.toString(), scts.getTableSource());
-		mData.setType(SqlType.CREATE_TABLE);
+        MySqlInsertStatement insert = (MySqlInsertStatement)sql;
+		DruidMetaData mData =  ParserHelper.getMetaData(sql.toString(), insert.getTableSource());
+		mData.setType(SqlType.INSERT);
 		return mData;
 	}
-
+	
 }

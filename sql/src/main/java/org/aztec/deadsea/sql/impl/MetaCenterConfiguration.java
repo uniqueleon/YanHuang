@@ -21,10 +21,12 @@ import org.aztec.deadsea.sql.Asserts;
 import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
+import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.conf.AuthorityScheme;
 import org.aztec.deadsea.sql.conf.LocalAuthConfiguration;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.meta.Database;
+import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.stereotype.Component;
 
@@ -79,7 +81,7 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		List<MetaData> ages = metaDatas.get(MetaDataRegister.MetaDataMapKeys.SERVER_AGE);
 		MetaData targetAge = age == null ? ages.get(ages.size() - 1) : ages.get(age);
 		ShardingAge shardAge = targetAge.cast();
-		ServerRegistration registration = serverRegistor.getRegistration(auth, shardAge);
+		ServerRegistration registration = serverRegistor.getServerRegistration(auth, shardAge);
 		List<RealServer> realServers = registration.getAllServers();
 		AuthorityScheme authScheme = getAuthScheme(globalInfo.getAccessString());
 		List<ServerScheme> schemes = Lists.newArrayList();
@@ -146,13 +148,27 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		List<MetaData> dbMetaDatas = metaDatas.get(MetaDataMapKeys.DATA_BASE_KEY);
 		for(MetaData mData : dbMetaDatas) {
 			DatabaseDTO dbDto = mData.cast();
-			if(dbDto.getName().equals(database.name())) {
+			String dbName = dbDto.getName().replaceAll("`", "");
+			if(dbName.equals(database.name().replaceAll("`", ""))) {
 				return dbDto;
 			}
 		}
 		return null;
 	}
-	
-	
+
+	@Override
+	public List<ServerScheme> getOperationTarget(SqlMetaData metaData) throws DeadSeaException {
+		// TODO Auto-generated method stub
+		ServerRegistration serverRegistration = serverRegistor.getServerRegistration(auth, getCurrentAge());
+		switch(metaData.getSqlType()) {
+		case INSERT:
+			 
+		case QUERY:
+			
+		case UPDATE:
+			
+		}
+		return null;
+	}
 
 }

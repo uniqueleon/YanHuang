@@ -8,14 +8,9 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-import org.aztec.deadsea.common.Authentication;
-import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.sql.ConnectionConfiguration;
-import org.aztec.deadsea.sql.GenerationParameter;
-import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.SqlExecuteResult;
-import org.aztec.deadsea.sql.conf.MetaDataTransformer;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.impl.BaseSqlExecResult;
 import org.aztec.deadsea.sql.impl.DruidConnectPropertyPlaceHolder;

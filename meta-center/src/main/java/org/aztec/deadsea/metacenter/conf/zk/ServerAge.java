@@ -2,29 +2,26 @@ package org.aztec.deadsea.metacenter.conf.zk;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
+import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
-import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataConstant;
+import org.aztec.deadsea.common.ShardingAge;
+import org.aztec.deadsea.common.VirtualServer;
 import org.aztec.deadsea.common.entity.ServerAgeDTO;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
-import org.aztec.deadsea.metacenter.MetaCenterLogger;
 
 import com.google.common.collect.Lists;
 
 public class ServerAge  extends ZkConfig{
 	
 	private Integer age;
-	private Integer size;
+	@Ignored
+	private Integer serverNum;
 	private Long valve;
 	private Long lastValve;
 	@Ignored
@@ -32,12 +29,11 @@ public class ServerAge  extends ZkConfig{
 	@Ignored
 	private List<RealServerInfo> servers;
 	
-	public ServerAge(int age,int size,Long valve,Long lastValve) throws IOException, KeeperException, InterruptedException {
+	public ServerAge(int age,Long valve,Long lastValve) throws IOException, KeeperException, InterruptedException {
 		super(String.format(MetaCenterConst.ZkConfigPaths.REAL_SERVER_AGE_INFO,new Object[] {age}), ConfigFormat.JSON);
 		this.age = age;
 		this.valve = valve;
 		this.lastValve = lastValve;
-		this.size = size;
 		initInfo();
 	}
 	
@@ -77,52 +73,25 @@ public class ServerAge  extends ZkConfig{
 			return;
 		}
 		callBacks = Lists.newArrayList();
-		callBacks.add(new ServerReloader());
+		callBacks.add(new ServerReloader(this));
 		appendWatcher(new CallableWatcher(callBacks, null));
-		final ExecutorService service = Executors.newFixedThreadPool(1);
-		for(TimeLimitedCallable task : callBacks) {
-			try {
-				Future future = service.submit(task);
-				future.get(task.getTime(), task.getUnit());
-			} catch (Exception e) {
-				MetaCenterLogger.error(e.getMessage());
-			}
-		}
 	}
 	
 
-	private class ServerReloader implements TimeLimitedCallable{
-
-		public Object call() throws Exception {
-			if(!CollectionUtils.isEmpty(servers)) {
-				for(RealServerInfo server : servers) {
-					server.destroy();
-				}
-				servers.clear();
-			}
-			loadServer();
-			return null;
-		}
+	private class ServerReloader extends AbstractSubNodeReloader {
 		
-		public  void loadServer() throws IOException, KeeperException, InterruptedException {
-			servers = Lists.newArrayList();
-			for(int i = 0;i < size ;i++) {
-				servers.add(new RealServerInfo(age,i));
-			}
+		public ServerReloader(ZkConfig parent) {
+			super(parent);
 		}
 
+		public ZkConfig loadChild(int index) throws Exception {
+			return new RealServerInfo(age,index);
+		}
+
+		@Override
 		public Long getTime() {
 			BaseInfo baseInfo = BaseInfo.getInstance();
 			return baseInfo.getLoadServerTimeout();
-		}
-
-		public TimeUnit getUnit() {
-			return TimeUnit.MILLISECONDS;
-		}
-
-		public void interupt() {
-			// TODO Auto-generated method stub
-			
 		}
 		
 	}
@@ -132,16 +101,31 @@ public class ServerAge  extends ZkConfig{
 		return servers;
 	}
 
-	public Integer getSize() {
-		return size;
-	}
-
-	public void setSize(Integer size) {
-		this.size = size;
-	}
 	
-	public MetaData toMetaData() {
-		ServerAgeDTO ageDto = new ServerAgeDTO(MetaDataConstant.DEFAULT_SERVER_AGE_NAME_PREFIX + age, size);
+	public ShardingAge toMetaData() {
+		ServerAgeDTO ageDto = new ServerAgeDTO(age, MetaDataConstant.DEFAULT_SERVER_AGE_NAME_PREFIX + age, serverNum,
+				valve, lastValve);
 		return ageDto;
 	}
+
+	public void save(boolean cascade) throws Exception {
+		super.save();
+		try {
+			if(cascade) {
+				for(RealServerInfo vs : servers) {
+					vs.save(true);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.delete();
+		}
+	}
+
+	public void setServers(List<RealServerInfo> servers) {
+		this.servers = servers;
+	}
+	
+	
+	
 }

@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface VirtualServer {
 
-	
-	public List<ShardData> find(Route route);
+	public RealServer getLocation();
+	public void setLocation(RealServer server);
+	public List<ShardData> route(RoutingInfo route);
 	public <T> T cast(Class<T> castClass);
 }

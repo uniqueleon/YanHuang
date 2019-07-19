@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
 public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 
 	public static enum ExecuteType{
-		EXEC,QUERY,UPDATE;
+		EXEC,QUERY,UPDATE,INSERT;
 	}
 
 	@Autowired
@@ -41,6 +41,8 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 	protected ShardingConfigurationFactory confFactory;
 	
 	protected GenerationParameter gp;
+	
+	protected ShardingConfiguration conf;
 	
 	protected ExecuteType type;
 
@@ -108,11 +110,10 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 				rollback.addAll(sqlGen.generateRollback(gp));
 				break;
 			}
-			ShardingConfiguration conf = confFactory.getConfiguration();
+			conf = confFactory.getConfiguration();
 			ShardingAge age = conf.getCurrentAge();
 			List<ServerScheme> servers = conf.getRealServers(age.getNo());
 			SqlExecuteResult result = doExecute(multiSql,rollback, servers,type);
-			
 			if(type.equals(ExecuteType.EXEC) && result.isSuccess()) {
 				registMetaData(conf.getAuth(), conf, gp);
 			}
@@ -130,8 +131,7 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 	}
 	
 	protected void registMetaData(Authentication auth,ShardingConfiguration conf,GenerationParameter genParam) throws DeadSeaException {
-		metaRegister.regist(auth, MetaDataTransformer.transfer(auth, conf, genParam));
-		
+		metaRegister.regist(auth, MetaDataTransformer.transfer(auth, conf, genParam,false));
 	}
 	
 	protected String getConnectionID(ServerScheme server) {

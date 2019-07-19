@@ -1,5 +1,7 @@
 package org.aztec.deadsea.sql.conf;
 
+import org.aztec.deadsea.common.VirtualServer;
+
 public class ServerScheme {
 	
 	private String host;
@@ -10,6 +12,7 @@ public class ServerScheme {
 	private boolean virtual;
 	private int age;
 	private AuthorityScheme authority;
+	private VirtualServer vs;
 	
 	public ServerScheme() {
 		
@@ -49,4 +52,42 @@ public class ServerScheme {
 	public AuthorityScheme getAuthority() {
 		return authority;
 	}
+
+	public Long[] getRanges() {
+		return ranges;
+	}
+
+	public void setRanges(Long[] ranges) {
+		this.ranges = ranges;
+	}
+
+	public Long getModulus() {
+		return modulus;
+	}
+
+	public void setModulus(Long modulus) {
+		this.modulus = modulus;
+	}
+
+	public boolean isVirtual() {
+		return virtual;
+	}
+
+	public void setVirtual(boolean virtual) {
+		this.virtual = virtual;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public void setAuthority(AuthorityScheme authority) {
+		this.authority = authority;
+	}
+	
+	
 }

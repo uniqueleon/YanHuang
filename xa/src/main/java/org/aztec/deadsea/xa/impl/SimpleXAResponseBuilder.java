@@ -1,10 +1,9 @@
 package org.aztec.deadsea.xa.impl;
 
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import org.aztec.deadsea.common.xa.TransactionPhase;
-import org.aztec.deadsea.common.xa.XAException;
-import org.aztec.deadsea.common.xa.XAException.ErrorCodes;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
 import org.springframework.stereotype.Component;
@@ -16,45 +15,41 @@ public class SimpleXAResponseBuilder implements XAResponseBuilder {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private String getHost() throws UnknownHostException {
-		return IpUtils.getLocalHostName();
+	private String getHost()  {
+		try {
+			return IpUtils.getLocalHostName();
+		} catch (UnknownHostException e) {
+			return "";
+		}
 	}
 	
-	private Integer getRunningPort() {
-		return 0;
+
+	@Override
+	public XAResponse buildSuccess(String tx, int assignmentNo, TransactionPhase phase) {
+		SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, true, false, false);
+		xaResp.setNo(assignmentNo);
+		return xaResp;
 	}
 
 	@Override
-	public XAResponse buildSuccess(String tx, int assignmentNo, TransactionPhase phase) throws XAException {
-		try {
-			SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, true, false, false);
-			xaResp.setNo(assignmentNo);
-			return xaResp;
-		} catch (UnknownHostException e) {
-			throw new XAException(ErrorCodes.GET_LOCAL_HOST_INFO_ERROR);
-		}
+	public XAResponse buildFail(String tx, int assignmentNo, Throwable t, TransactionPhase phase) {
+		SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, false, true, false);
+		xaResp.setNo(assignmentNo);
+		return xaResp;
 	}
 
 	@Override
-	public XAResponse buildFail(String tx, int assignmentNo, Throwable t, TransactionPhase phase) throws XAException {
-		try {
-			SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, false, false, false);
-			xaResp.setNo(assignmentNo);
-			return xaResp;
-		} catch (UnknownHostException e) {
-			throw new XAException(ErrorCodes.GET_LOCAL_HOST_INFO_ERROR);
-		}
+	public XAResponse buildFail(String tx, int assignmentNo, int errorCode, TransactionPhase phase) {
+		SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, assignmentNo,errorCode);
+		xaResp.setNo(assignmentNo);
+		return xaResp;
 	}
 
 	@Override
-	public XAResponse buildFail(String tx, int assignmentNo, int errorCode, TransactionPhase phase) throws XAException {
-		try {
-			SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase, assignmentNo,errorCode);
-			xaResp.setNo(assignmentNo);
-			return xaResp;
-		} catch (UnknownHostException e) {
-			throw new XAException(ErrorCodes.GET_LOCAL_HOST_INFO_ERROR);
-		}
+	public XAResponse buildFromMap(String tx, Map<String, Object> contents, TransactionPhase phase) {
+		SimpleXAResponse xaResp = new SimpleXAResponse(getHost(), tx, phase,(boolean)contents.get("ok"),(boolean)contents.get("fail"),(boolean)contents.get("missed"));
+		xaResp.setNo((int)contents.get("no"));
+		return xaResp;
 	}
 
 }

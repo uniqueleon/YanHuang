@@ -30,9 +30,10 @@ public class XAHelper implements DistributedTransactionManager{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public <T> T submit(int quorum,Map<String,Object> attachments,TransactionResultBuilder<T> builder) throws XAException{
+	public <T> T submit(int quorum,
+			Map<String,Object> attachments,TransactionResultBuilder<T> builder) throws XAException{
 		String txId = UUID.randomUUID().toString();
-		XAProposal proposal = factory.createProposal(txId, XAConstant.XA_PROPOSAL_TYPES.XA_SQL,quorum, attachments);
+		XAProposal proposal = factory.createProposal(txId, XAConstant.XA_PROPOSAL_TYPES.CREATE_SQL,quorum, attachments);
 		coordinator.prepare(proposal, this);
 		XARecord<T> record = new XARecord<T>(proposal,null,builder);
 		records.put(txId, record);
@@ -79,30 +80,30 @@ public class XAHelper implements DistributedTransactionManager{
 		System.out.println("receive " + responses.getCurrentPhase() + " MSG!");
 		XARecord record = records.get(responses.getTxID());
 		Object result;
-		if(responses.isPassed()) {
-			switch(responses.getCurrentPhase()) {
-			case PREPARE:
+		switch(responses.getCurrentPhase()) {
+		case PREPARE:
+			if(responses.isPassed()) {
 				coordinator.commit(record.getProposal());
-				break;
-			case COMMIT:
+			}
+			else {
+				coordinator.rollback(record.getProposal());
+			}
+			break;
+		case COMMIT:
+			if(responses.isPassed()) {
 				result = record.getResultBuilder().buildCommit(responses);
 				record.setExecResult(result);
 				synchronized (record) {
 					record.notifyAll();
 				}
-				break;
-			case ROLLBACK:
-				coordinator.rollback(record.getProposal());
-				result = record.getResultBuilder().buildRollBack(responses);
-				record.setExecResult(result);
-				synchronized (record) {
-					record.notifyAll();
-				}
 			}
-		}
-		else {
-			coordinator.rollback(record.getProposal());
+			else {
+				coordinator.rollback(record.getProposal());
+			}
+			break;
+		case ROLLBACK:
 			result = record.getResultBuilder().buildRollBack(responses);
+			record.setExecResult(result);
 			synchronized (record) {
 				record.notifyAll();
 			}

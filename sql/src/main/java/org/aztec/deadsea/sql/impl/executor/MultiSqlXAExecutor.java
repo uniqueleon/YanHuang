@@ -40,6 +40,8 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 		attachments.put(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL, rollbacks);
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQLS, gp.getSqlMetaData().getRawSql());
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE, type.name());
+		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.GENENRATION_PARAMS,gp);
+		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.SHARDING_CONFIGURATION, conf);
 		return manager.submit(quorum, attachments, new TransactionResultBuilder<SqlExecuteResult>() {
 
 			@Override

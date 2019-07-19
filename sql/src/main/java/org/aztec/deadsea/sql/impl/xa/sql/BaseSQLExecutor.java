@@ -1,26 +1,22 @@
-package org.aztec.deadsea.sql.impl.xa;
+package org.aztec.deadsea.sql.impl.xa.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
 import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
-import org.aztec.deadsea.common.xa.XAException;
 import org.aztec.deadsea.common.xa.XAExecutor;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
 import org.aztec.deadsea.sql.impl.druid.DruidConnector;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 
-@Component
-public class XASQLExecutor implements XAExecutor {
+public abstract class BaseSQLExecutor implements XAExecutor {
 
 	private static final Map<String, Connection> connections = Maps.newConcurrentMap();
 	
@@ -28,14 +24,14 @@ public class XASQLExecutor implements XAExecutor {
 	@Autowired
 	private XAResponseBuilder builder;
 
-	public XASQLExecutor() {
+	public BaseSQLExecutor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	
+	protected abstract void doPrepare(XAContext context,List<String> sqls,Connection connection) throws Exception;
 
 	@Override
-	public XAResponse prepare(XAContext context) throws XAException {
+	public XAResponse prepare(XAContext context) {
 		// TODO Auto-generated method stub
 		// Connection conn = get
 		try {
@@ -43,11 +39,8 @@ public class XASQLExecutor implements XAExecutor {
 			Connection conn = connector.getConnection(getConnectArgs(context));
 			connections.put(context.getTransactionID(), conn);
 			conn.setAutoCommit(false);
-			Statement stm = conn.createStatement();
 			List<String> sqls = (List<String>) context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
-			for(String sql : sqls) {
-				stm.execute(sql);
-			}
+			doPrepare(context, sqls, conn);
 			XAResponse response = builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
 					context.getCurrentPhase());
 			return response;
@@ -58,14 +51,14 @@ public class XASQLExecutor implements XAExecutor {
 		}
 	}
 	
-	public String[] getConnectArgs(XAContext context) {
+	protected String[] getConnectArgs(XAContext context) {
 		List<List<String>> allArgs = (List<List<String>>)context.get(XAConstant.CONTEXT_KEYS.CONNECT_ARGS);
 		List<String> retArgList =  allArgs.get(context.getAssignmentNo());
 		return retArgList.toArray(new String[retArgList.size()]);
 	}
 
 	@Override
-	public XAResponse commit(XAContext context) throws XAException {
+	public XAResponse commit(XAContext context) {
 		// TODO Auto-generated method stub
 		try {
 			Connection connection = connections.get(context.getTransactionID());
@@ -81,9 +74,13 @@ public class XASQLExecutor implements XAExecutor {
 	}
 
 	@Override
-	public XAResponse rollback(XAContext context) throws XAException {
+	public XAResponse rollback(XAContext context) {
 		try {
 			Connection connection = connections.get(context.getTransactionID());
+			if(connection == null) {
+				return builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
+						context.getCurrentPhase());
+			}
 			connection.rollback();
 			Object sqlObject = context.get(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL);
 			if(sqlObject != null) {
@@ -104,10 +101,5 @@ public class XASQLExecutor implements XAExecutor {
 	}
 
 
-
-	@Override
-	public boolean canHandle(XAContext context) throws XAException {
-		return context.getContextType().equals(XAConstant.XA_PROPOSAL_TYPES.XA_SQL);
-	}
 
 }

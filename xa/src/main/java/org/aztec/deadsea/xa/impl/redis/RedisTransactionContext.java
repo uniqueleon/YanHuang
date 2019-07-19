@@ -2,6 +2,7 @@ package org.aztec.deadsea.xa.impl.redis;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.aztec.autumn.common.utils.CacheException;
@@ -25,6 +26,7 @@ public class RedisTransactionContext implements XAContext {
 	private TransactionPhase phase;
 	private static List<String> allTxIds = Lists.newCopyOnWriteArrayList();
 	private Map<String, Object> contextObjs = Maps.newConcurrentMap();
+	private static final Map<String,Map<String, Object>> localMaps = Maps.newConcurrentMap();
 	private String txID;
 	private Integer assignmentID;
 	private Integer quorum;
@@ -70,11 +72,21 @@ public class RedisTransactionContext implements XAContext {
 		this.phase = phase;
 		restoreContext();
 	}
+	
 
 	private void newContext(XAProposal proposal, TransactionPhase phase) throws Exception {
-
 		
-		contextObjs.putAll(proposal.getContent());
+		Map<String,Object> newLocalMap = Maps.newConcurrentMap();
+		
+		for(Entry<String,Object> content : proposal.getContent().entrySet()) {
+			if(content.getKey().startsWith(XAConstant.CONTEXT_LOCAL_KEYS.LOCAL_CONTEXT_PERFIX)) {
+				newLocalMap.put(content.getKey(),content.getValue());
+			}
+			else {
+				contextObjs.put(content.getKey(), content.getValue());
+			}
+		}
+		
 		contextObjs.put(XAConstant.CONTEXT_KEYS.PHASE, phase.name());
 		contextObjs.put(XAConstant.CONTEXT_KEYS.TYPE, proposal.getType());
 	}
@@ -158,6 +170,28 @@ public class RedisTransactionContext implements XAContext {
 	@Override
 	public String getContextType() {
 		return type;
+	}
+
+	@Override
+	public Object getLocal(String key) {
+		Map<String,Object> dataMap = getTxLocalData();
+		return dataMap.get(key);
+	}
+	
+	public Map<String,Object> getTxLocalData(){
+		return localMaps.get(txID);
+	}
+	
+	@Override
+	public void setLocal(String key, Object value) {
+		Map<String,Object> dataMap = getTxLocalData();
+		dataMap.put(key, value);
+	}
+
+	@Override
+	public void removeLocal(String key) {
+		Map<String,Object> dataMap = getTxLocalData();
+		dataMap.remove(key);
 	}
 
 }

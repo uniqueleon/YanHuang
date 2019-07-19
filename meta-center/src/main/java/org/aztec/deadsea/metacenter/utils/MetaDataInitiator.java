@@ -89,7 +89,7 @@ public class MetaDataInitiator implements ApplicationRunner {
 			SimpleRealServer sRealServer = new SimpleRealServer(age.getNo(), initData.getHostName(), 0,initData.getPort(), RealServerType.SOCKET);
 			sRealServer.setNodes(vServers);
 			realServers.add(sRealServer);
-			register.regist(auth, age, realServers);
+			register.registServer(auth, age, realServers);
 		} catch (Exception e) {
 			throw new DeadSeaException(e.getMessage(), ErrorCodes.META_DATA_PERSIT_ERROR);
 		}

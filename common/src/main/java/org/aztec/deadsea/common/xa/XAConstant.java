@@ -20,6 +20,13 @@ public interface XAConstant {
 		public static final String TRANSACTIONS_SEQ_LIMIT = "XA_REDIS_TX_SEQ_NO_LIMIT";
 	}
 	
+	
+	public static interface CONTEXT_LOCAL_KEYS{
+		public static final String LOCAL_CONTEXT_PERFIX = "LOCAL###";
+		public static final String GENENRATION_PARAMS = LOCAL_CONTEXT_PERFIX + "gen_params";
+		public static final String SHARDING_CONFIGURATION = LOCAL_CONTEXT_PERFIX + "shardConf";
+	}
+	
 	public static interface CONTEXT_KEYS{
 		public static final String TYPE = "type";
 		public static final String PHASE = "phase";
@@ -41,6 +48,6 @@ public interface XAConstant {
 	}
 	
 	public static interface XA_PROPOSAL_TYPES {
-		public static final String XA_SQL = "XA_SQL_EXECUTOR";
+		public static final String CREATE_SQL = "XA_CREATE_SQL_EXECUTOR";
 	}
 }

@@ -66,8 +66,11 @@ public class RedisTxAckSubscriber implements CacheDataSubscriber {
 		}
 		try {
 			Map<String, Object> dataMap = jsonUtil.json2Object(newMsg, Map.class);
-			XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer) dataMap.get("no"),
-					currentPhase);
+			XAResponse response = builder.buildFromMap(proposal.getTxID(), dataMap,currentPhase);
+			/*
+			 * XAResponse response = builder.buildSuccess(proposal.getTxID(), (Integer)
+			 * dataMap.get("no"), currentPhase);
+			 */
 			responses.add(response);
 			synchronized (lockObj) {
 				lockObj.notify();

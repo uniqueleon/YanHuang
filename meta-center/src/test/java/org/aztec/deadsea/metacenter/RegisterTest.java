@@ -5,9 +5,15 @@ import java.util.List;
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
+import org.aztec.deadsea.common.ServerRegister;
+import org.aztec.deadsea.common.VirtualServer;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
+import org.aztec.deadsea.common.entity.ModulusVirtualNode;
+import org.aztec.deadsea.common.entity.RealServerType;
+import org.aztec.deadsea.common.entity.SimpleRealServer;
 import org.aztec.deadsea.metacenter.conf.BaseConfDefaultValues;
 import org.aztec.deadsea.metacenter.conf.zk.BaseInfo;
+import org.aztec.deadsea.metacenter.conf.zk.ServerAge;
 import org.aztec.deadsea.metacenter.impl.ZookeeperRegister;
 
 import com.beust.jcommander.internal.Lists;
@@ -44,10 +50,16 @@ public class RegisterTest {
 	public static void registServer() {
 		try {
 			ZookeeperRegister register = new ZookeeperRegister();
+			ServerRegister sr = register;
 			Authentication auth = register.auth("liming", "lm1234");
 			List<RealServer> newServers = Lists.newArrayList();
-			/*newServers.add(new SimpleRealServer("db1.aztec.com", 0, 3306, RealServerType.SOCKET));
-			register.regist(auth,newServers);*/
+			RealServer rs = new SimpleRealServer(0,"db1.aztec.com", 0, 3306, RealServerType.SOCKET);
+			List<VirtualServer> mvn = Lists.newArrayList();
+			mvn.add(new ModulusVirtualNode(1l,new Long[] {0l,1l}));
+			rs.setNodes(mvn);
+			newServers.add(rs);
+			ServerAge sa = new ServerAge(0,0l,1000000l);
+			register.registServer(auth,sa.toMetaData(),newServers);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,10 +119,10 @@ public class RegisterTest {
 	public static void main(String[] args) {
 		//testAddAuth();
 		//testAuth();
-		//registServer();
+		registServer();
 		//registDatabase();
 		//registBaseInfo();
-		updateDatabase();
+		//updateDatabase();
 		System.exit(0);
 	}
 

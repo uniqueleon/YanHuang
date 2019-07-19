@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.zookeeper.KeeperException;
 import org.aztec.deadsea.common.Authentication;
+import org.aztec.deadsea.common.DataID;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
@@ -15,6 +16,7 @@ import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.common.entity.SimpleRegistration;
+import org.aztec.deadsea.common.impl.ModerateScaler;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.conf.zk.Account;
 import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
@@ -38,22 +40,22 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	
 	
 
-	public void regist(Authentication auth,ShardingAge age,List<RealServer> newServers) throws MetaDataException {
-		helper.regist(auth, age, newServers);
+	public void registServer(Authentication auth,ShardingAge age,List<RealServer> newServers) throws MetaDataException {
+		helper.registServer(auth, age, newServers);
 	}
 
 
-	public ServerRegistration getRegistration(Authentication auth,ShardingAge age) throws DeadSeaException {
+	public ServerRegistration getServerRegistration(Authentication auth,ShardingAge age) throws DeadSeaException {
 		helper.assertAuth(auth);
 		SimpleRegistration registration = new SimpleRegistration();
 		ServerAge serverAge = helper.getAge(age.getNo());
 		List<RealServerInfo> serverDatas = serverAge.getServers();
 		List<RealServer> serverMetaDatas = Lists.newArrayList();
 		for(int i = 0;i < serverDatas.size();i++) {
-			serverMetaDatas.add(serverDatas.get(i).toDto());
+			serverMetaDatas.add(serverDatas.get(i).toMetaData());
 		}
 		registration.setAllServers(serverMetaDatas);
-		//registration.setCalculator(new D);
+		registration.setCalculator(new ModerateScaler(0l, currentSize, realSize, databaseSize, tableSize));
 		return registration;
 	}
 
@@ -123,7 +125,7 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	}
 
 	@Override
-	public void update(Authentication auth,ShardingAge age,List<RealServer> newServers) throws DeadSeaException {
+	public void updateServer(Authentication auth,ShardingAge age,List<RealServer> newServers) throws DeadSeaException {
 		helper.update(auth, age, newServers);
 	}
 
@@ -154,5 +156,6 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	public boolean exists(Authentication auth, MetaData data) throws DeadSeaException {
 		return helper.exists(auth, data);
 	}
+
 
 }

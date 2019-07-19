@@ -11,15 +11,21 @@ import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.utils.security.CodeCipher;
 import org.aztec.autumn.common.zk.ZkUtils;
 import org.aztec.deadsea.common.Authentication;
+import org.aztec.deadsea.common.DataID;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
+import org.aztec.deadsea.common.ServerRegistration;
+import org.aztec.deadsea.common.ServerScaler;
 import org.aztec.deadsea.common.ShardingAge;
+import org.aztec.deadsea.common.VirtualServer;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.common.entity.ShardAgeDTO;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
+import org.aztec.deadsea.common.entity.SimpleRegistration;
 import org.aztec.deadsea.common.entity.TableDTO;
+import org.aztec.deadsea.common.impl.ModerateScaler;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 import org.aztec.deadsea.metacenter.MetaCenterLogger;
 import org.aztec.deadsea.metacenter.MetaDataException;
@@ -31,6 +37,7 @@ import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
 import org.aztec.deadsea.metacenter.conf.zk.ServerAge;
 import org.aztec.deadsea.metacenter.conf.zk.ShardingAgeInfo;
 import org.aztec.deadsea.metacenter.conf.zk.TableInfo;
+import org.aztec.deadsea.metacenter.conf.zk.VirtualNodeInfo;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -38,22 +45,26 @@ import com.google.common.collect.Maps;
 public class ZkRegistHelper {
 
 	private CodeCipher cipher = new CodeCipher();
-	
+
 	private static final Map<String, Account> accounts = Maps.newConcurrentMap();
 
-	private static final Map<Integer,ServerAge> ages = Maps.newConcurrentMap();
-	
+	private static final Map<Integer, ServerAge> ages = Maps.newConcurrentMap();
+
 	private static final BaseInfo baseInfo = BaseInfo.getInstance();
+	
+	private static final ModerateScaler scaler = null;
+	
+	
 
 	public ZkRegistHelper() throws IOException, KeeperException, InterruptedException {
 		initData();
 	}
-	
+
 	private void initData() throws IOException, KeeperException, InterruptedException {
-		if(baseInfo.getMaxAge() != null) {
-			for(int i = 0;i <= baseInfo.getMaxAge();i++) {
+		if (baseInfo.getMaxAge() != null) {
+			for (int i = 0; i <= baseInfo.getMaxAge(); i++) {
 				ServerAge age = new ServerAge(i);
-				if(!age.isDeprecated()) {
+				if (!age.isDeprecated()) {
 					ages.put(age.getAge(), age);
 				}
 			}
@@ -65,47 +76,46 @@ public class ZkRegistHelper {
 			Account account = getAccountInfo(auth);
 			DatabaseDTO db = data.cast();
 			DatabaseInfo dbInfo = account.findDatabaseInfo(data);
-			if(data.getName() != null) {
+			if (data.getName() != null) {
 				dbInfo.setName(data.getName());
 			}
-			if(data.getSize() != null) {
+			if (data.getSize() != null) {
 				dbInfo.setSize(data.getSize());
 			}
-			if(data.shard() != null) {
+			if (data.shard() != null) {
 				dbInfo.setShard(data.shard());
 			}
-			if(db.getTableNum() != null) {
+			if (db.getTableNum() != null) {
 				dbInfo.setTableNum(db.getTableNum());
 			}
 			dbInfo.save();
-			//only to triger server synchorization!
+			// only to triger server synchorization!
 			account.save();
 		} catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
-	
-	
-	public Account getAccountInfo(Authentication auth) throws Exception{
+
+	public Account getAccountInfo(Authentication auth) throws Exception {
 
 		Account account = accounts.get(auth.getUUID());
-		//account.refresh();
+		// account.refresh();
 		return account;
 	}
-	
+
 	public void updateTable(Authentication auth, MetaData data) throws MetaDataException {
 
 		try {
 			Account account = getAccountInfo(auth);
 			TableDTO tbData = data.cast();
 			TableInfo table = account.findTableInfo(data);
-			if(data.getName() != null) {
+			if (data.getName() != null) {
 				table.setName(data.getName());
 			}
-			if(table.getSize() != null) {
+			if (table.getSize() != null) {
 				table.setSize(data.getSize());
 			}
-			if(data.shard() != null) {
+			if (data.shard() != null) {
 				table.setShard(data.shard());
 			}
 			table.setAgeNum(tbData.getAgeNum());
@@ -117,14 +127,12 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
-	
-
 
 	public void registAge(Authentication auth, MetaData data) throws MetaDataException {
 
 		String tablePrefix = String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO,
 				new Object[] { auth.getUUID(), data.getParent().getParent().getSeqNo(), data.getParent().getSeqNo() });
-		
+
 		try {
 			TableInfo table = accounts.get(auth.getUUID()).getDatabases().get(data.getParent().getParent().getSeqNo())
 					.getTables().get(data.getParent().getSeqNo());
@@ -138,11 +146,11 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
-	
+
 	public void validateMetaData(Authentication auth, MetaData data) throws MetaDataException {
 
 		assertAuth(auth);
-		switch(data.getType().getSubType()) {
+		switch (data.getType().getSubType()) {
 		case DATABASE:
 			DatabaseDTO db = data.cast();
 			String path = String.format(MetaCenterConst.ZkConfigPaths.DATABASE_INFO,
@@ -165,8 +173,8 @@ public class ZkRegistHelper {
 			}
 			break;
 		case AGE:
-			String tablePrefix = String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO,
-					new Object[] { auth.getUUID(), data.getParent().getParent().getSeqNo(), data.getParent().getSeqNo() });
+			String tablePrefix = String.format(MetaCenterConst.ZkConfigPaths.SHARDING_AGE_INFO, new Object[] {
+					auth.getUUID(), data.getParent().getParent().getSeqNo(), data.getParent().getSeqNo() });
 			if (!ZkUtils.isNodeExists(tablePrefix)) {
 				throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
 			}
@@ -178,8 +186,8 @@ public class ZkRegistHelper {
 
 		try {
 			Account account = getAccountInfo(auth);
-			
-			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(),account.getDbNum());
+
+			DatabaseInfo dbInfo = new DatabaseInfo(account.getDataID(), account.getDbNum());
 			dbInfo.setName(data.getName());
 			dbInfo.setSize(data.getSize());
 			dbInfo.setShard(data.shard());
@@ -208,29 +216,25 @@ public class ZkRegistHelper {
 			table.setRecordSeqNo(0l);
 			table.save();
 			DatabaseInfo db = account.findDatabaseInfo(data.getParent());
-			db.setTableNum(db.getTableNum() + 1);
+			db.refresh();
 			db.save();
 		} catch (Exception e) {
 
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
-	
-	
 
 	public void assertAuth(Authentication auth) throws MetaDataException {
 		if (!auth.isAuthenticated()) {
 			throw new MetaDataException(ErrorCodes.NOT_AUTHORIZED);
 		}
 	}
-	
-	
-	
+
 	public Map<String, List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException {
 		assertAuth(auth);
 		Map<String, List<MetaData>> dataMap = Maps.newHashMap();
 		List<MetaData> ageList = Lists.newArrayList();
-		for(int i = 0;i < ages.size();i++) {
+		for (int i = 0; i < ages.size(); i++) {
 			ageList.add(ages.get(i).toMetaData());
 		}
 		dataMap.put(MetaDataRegister.MetaDataMapKeys.SERVER_AGE, ageList);
@@ -241,15 +245,15 @@ public class ZkRegistHelper {
 		Account account = accounts.get(base64);
 		List<DatabaseInfo> databases = account.getDatabases();
 		List<MetaData> dbs = Lists.newArrayList();
-		if(databases != null) {
-			for(DatabaseInfo dbInfo : databases) {
+		if (databases != null) {
+			for (DatabaseInfo dbInfo : databases) {
 				dbs.add(dbInfo.toMetaData());
 			}
 		}
 		dataMap.put(MetaDataRegister.MetaDataMapKeys.DATA_BASE_KEY, dbs);
 		return dataMap;
 	}
-	
+
 	public Authentication auth(String username, String password) throws DeadSeaException {
 		String base64 = cipher.encodeBase64(username);
 		String node = String.format(MetaCenterConst.ZkConfigPaths.BASE_AUTHENTICATIONS_INFO, new Object[] { base64 });
@@ -274,8 +278,7 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.AUTHENTICATE_FAIL);
 		}
 	}
-	
-	
+
 	public Account addauth(String username, String password) throws DeadSeaException {
 
 		String base64 = cipher.encodeBase64(username);
@@ -300,46 +303,48 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.AUTHENTICATION_DUPLICATE_ERROR);
 		}
 	}
-	
-	private void validateRegistServers(ShardingAge age,List<RealServer> newServers) throws MetaDataException {
-		
+
+	private void validateRegistServers(ShardingAge age, List<RealServer> newServers) throws MetaDataException {
+
 		ServerAge serverAge = ages.get(age.getNo());
-		if(serverAge != null) {
+		if (serverAge != null) {
 			throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
 		}
-		/*for(RealServer server : newServers) {
-			if(serverAge.getSize() > server.getNo()) {
-				throw new MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS);
-			}
-		}*/
+		/*
+		 * for(RealServer server : newServers) { if(serverAge.getSize() >
+		 * server.getNo()) { throw new
+		 * MetaDataException(ErrorCodes.META_DATA_ALREADY_EXISTS); } }
+		 */
 	}
-	
-	public void regist(Authentication auth,ShardingAge age,List<RealServer> newServers) throws MetaDataException {
+
+	public void registServer(Authentication auth, ShardingAge age, List<RealServer> newServers)
+			throws MetaDataException {
 		assertAuth(auth);
-		validateRegistServers(age,newServers);
+		validateRegistServers(age, newServers);
 		try {
 			if (CollectionUtils.isNotEmpty(newServers)) {
-				ServerAge newAge = new ServerAge(age.getNo(),newServers.size(),age.valve(),age.lastValve());
-				newAge.save();
+				ServerAge newAge = new ServerAge(age.getNo(), age.valve(), age.lastValve());
+				List<RealServerInfo> ageServers = Lists.newArrayList();
 				for (RealServer realServer : newServers) {
-					RealServerInfo serverInfo = new RealServerInfo(age.getNo(),realServer.getNo(), realServer.getHost(),
-							realServer.getPort(), realServer.getProxyPort());
+					RealServerInfo serverInfo = new RealServerInfo(age.getNo(), realServer.getNo(),
+							realServer.getHost(), realServer.getPort(), realServer.getProxyPort());
 					serverInfo.setVirtualServerInfo(realServer.getNodes());
-					serverInfo.save();
-					ages.put(age.getNo(), newAge);
+					ageServers.add(serverInfo);
 				}
+				newAge.setServers(ageServers);
+				newAge.save(true);
+				ages.put(age.getNo(), newAge);
 			}
 		} catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
-	
-	
-	public void update(Authentication auth,ShardingAge age,List<RealServer> newServers) throws DeadSeaException {
+
+	public void update(Authentication auth, ShardingAge age, List<RealServer> newServers) throws DeadSeaException {
 		// TODO Auto-generated method stub
 
 		assertAuth(auth);
-		
+
 		try {
 			ServerAge serverAge = ages.get(age.getNo());
 			if (serverAge == null) {
@@ -364,13 +369,14 @@ public class ZkRegistHelper {
 		}
 	}
 
-	private void validateUpdateServers(Authentication auth,ServerAge serverAge,ShardingAge age,List<RealServer> newServers) throws MetaDataException {
+	private void validateUpdateServers(Authentication auth, ServerAge serverAge, ShardingAge age,
+			List<RealServer> newServers) throws MetaDataException {
 		try {
 			List<RealServerInfo> registedServers = serverAge.getServers();
-			for(int i = 0;i < registedServers.size();i++) {
+			for (int i = 0; i < registedServers.size(); i++) {
 				RealServer server = newServers.get(i);
 				RealServerInfo rsi = registedServers.get(i);
-				if(server.getNo() >= serverAge.getSize()) {
+				if (server.getNo() >= serverAge.getServers().size()) {
 					throw new MetaDataException(ErrorCodes.META_DATA_INFO_CONFLICT);
 				}
 			}
@@ -378,10 +384,10 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.META_DATA_NOT_EXISTS);
 		}
 	}
-	
+
 	public ServerAge getAge(Integer ageNo) throws MetaDataException {
 		ServerAge age = ages.get(ageNo);
-		if(age == null) {
+		if (age == null) {
 			try {
 				age = new ServerAge(ageNo);
 			} catch (Exception e) {
@@ -390,13 +396,13 @@ public class ZkRegistHelper {
 		}
 		return age;
 	}
-	
-	public boolean exists(Authentication auth,MetaData data) throws MetaDataException {
+
+	public boolean exists(Authentication auth, MetaData data) throws MetaDataException {
 		try {
 			Account account = getAccountInfo(auth);
-			switch(data.getType()) {
+			switch (data.getType()) {
 			case DB:
-				switch(data.getType().getSubType()) {
+				switch (data.getType().getSubType()) {
 				case DATABASE:
 					return account.findDatabaseInfo(data) != null;
 				case TABLE:
@@ -413,8 +419,8 @@ public class ZkRegistHelper {
 		}
 		return false;
 	}
-	
-	public void removeDb(Authentication auth,MetaData data ) throws MetaDataException {
+
+	public void removeDb(Authentication auth, MetaData data) throws MetaDataException {
 		try {
 			Account account = getAccountInfo(auth);
 			DatabaseInfo dbInfo = account.findDatabaseInfo(data);
@@ -423,10 +429,10 @@ public class ZkRegistHelper {
 		} catch (Exception e) {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
-		
+
 	}
-	
-	public void removeTable(Authentication auth,MetaData data) throws MetaDataException {
+
+	public void removeTable(Authentication auth, MetaData data) throws MetaDataException {
 		try {
 			Account account = getAccountInfo(auth);
 			TableInfo table = account.findTableInfo(data);
@@ -436,4 +442,28 @@ public class ZkRegistHelper {
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);
 		}
 	}
+	
+	
+	public ServerRegistration getServerRegistration(Authentication auth,ShardingAge age) throws DeadSeaException {
+		assertAuth(auth);
+		SimpleRegistration registration = new SimpleRegistration();
+		ServerAge serverAge = getAge(age.getNo());
+		//int currentSize = serverDatas
+		List<RealServerInfo> serverDatas = serverAge.getServers();
+		List<RealServer> serverMetaDatas = Lists.newArrayList();
+		for(int i = 0;i < serverDatas.size();i++) {
+			serverMetaDatas.add(serverDatas.get(i).toMetaData());
+		}
+		long tableSize = 0l;
+		registration.setAllServers(serverMetaDatas);
+		//registration.setCalculator(new ModerateScaler(0l, currentSize, realSize, databaseSize, tableSize));
+		return registration;
+	}
+	
+	/*
+	 * public ServerScaler getScaler(List<RealServerInfo> serverList) {
+	 * 
+	 * }
+	 */
+	
 }

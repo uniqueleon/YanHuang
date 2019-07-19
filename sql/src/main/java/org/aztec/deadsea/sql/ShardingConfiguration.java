@@ -9,6 +9,7 @@ import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.common.entity.TableDTO;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.meta.Database;
+import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 
 public interface ShardingConfiguration {
@@ -19,4 +20,5 @@ public interface ShardingConfiguration {
 	public List<List<ServerScheme>> getAllRealServers() throws DeadSeaException;
 	public ShardingAge getCurrentAge() throws DeadSeaException;
 	public Authentication getAuth() throws DeadSeaException;
+	public List<ServerScheme> getOperationTarget(SqlMetaData metaData) throws DeadSeaException;
 }

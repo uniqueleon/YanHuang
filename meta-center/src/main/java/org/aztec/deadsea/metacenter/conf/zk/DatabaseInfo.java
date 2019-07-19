@@ -1,12 +1,9 @@
 package org.aztec.deadsea.metacenter.conf.zk;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
+import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
@@ -27,7 +24,7 @@ public class DatabaseInfo extends ZkConfig{
 	
 	//分库数
 	private Integer size;
-	
+	@Ignored
 	private Integer tableNum;
 	
 	private boolean shard;
@@ -36,7 +33,7 @@ public class DatabaseInfo extends ZkConfig{
 	@Ignored
 	private List<TimeLimitedCallable> callbacks; 
 	
-	public DatabaseInfo(String prefix,int no) throws IOException, KeeperException, InterruptedException {
+	public DatabaseInfo(String prefix,int no) throws Exception {
 		// TODO Auto-generated constructor stub
 		super(prefix + GlobalConst.ZOOKEEPER_PATH_SPLITOR + no, ConfigFormat.JSON);
 		if(!isDeprecated) {
@@ -44,12 +41,17 @@ public class DatabaseInfo extends ZkConfig{
 		}
 	}
 	
-	private void initDb() throws IOException, KeeperException, InterruptedException {
+	private void initDb() throws Exception {
 		callbacks = Lists.newArrayList();
-		TableReloader reloader = new TableReloader();
+		TableReloader reloader = new TableReloader(this);
 		callbacks.add(reloader);
-		reloader.loadTables();
+		reloader.load();
 		appendWatcher(new CallableWatcher(callbacks, null));
+	}
+	
+	public void refresh() throws Exception {
+		TableReloader loader = (TableReloader) callbacks.get(0);
+		loader.load();
 	}
 	
 	public List<TableInfo> getTables() {
@@ -100,40 +102,23 @@ public class DatabaseInfo extends ZkConfig{
 		this.no = no;
 	}
 
-	private class TableReloader implements TimeLimitedCallable {
+	private class TableReloader extends AbstractSubNodeReloader {
 
-		public Object call() throws Exception {
-			if(!CollectionUtils.isEmpty(tables)) {
-				for(TableInfo table : tables) {
-					table.destroy();
-				}
-				tables.clear();
-			}
-			loadTables();
-			return null;
+		public TableReloader(ZkConfig parent) {
+			super(parent);
+			// TODO Auto-generated constructor stub
 		}
-		
-		public void loadTables() throws IOException, KeeperException, InterruptedException {
-			
-			tables = Lists.newArrayList();
-			tableNum = getSubNodes().size();
-			for(int i = 0;i < tableNum ;i++) {
-				tables.add(new TableInfo(znode,i));
-			}
-		}
+
 
 		public Long getTime() {
 			BaseInfo baseInfo = BaseInfo.getInstance();
 			return baseInfo.getLoadTableTimeout();
 		}
 
-		public TimeUnit getUnit() {
-			return TimeUnit.MILLISECONDS;
-		}
 
-		public void interupt() {
-			// TODO Auto-generated method stub
-			
+		@Override
+		protected ZkConfig loadChild(int index) throws Exception {
+			return new TableInfo(znode,index);
 		}
 		
 	}

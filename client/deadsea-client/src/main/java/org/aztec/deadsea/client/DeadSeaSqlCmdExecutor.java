@@ -61,22 +61,25 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='InnoDB'";
 			//String sql = "create table `lmDb1`.`lmTest`(id int primary key auto_increment)engine='shardDB'";
 			//String sql = "SELECT * FROM base_item_0001 WHERE id IN (4266266,4266264)";
-			String sql = "create shard(11) database `lmDb`";
+			//String sql = "create shard(11) database `lmDb`";
 			if(args.getOptionValues("conf") != null ) {
 				List<String> confFiles = args.getOptionValues("conf");
 				if(confFiles.size() > 0) {
 					System.setProperty(BasePropertiesConfig.DEFAUTL_SYSTEM_PROPERTY_FILE,confFiles.get(0));
 				}
 			}
-			//String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
+			String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
 			SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
 			System.out.println(sResult.isSuccess());
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
 
-			System.exit(0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally {
+
+			System.exit(0);
 		}
 	}
 }

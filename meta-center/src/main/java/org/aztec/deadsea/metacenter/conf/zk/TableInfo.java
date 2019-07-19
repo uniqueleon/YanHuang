@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
+import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
@@ -21,6 +22,7 @@ public class TableInfo extends ZkConfig {
 	private Integer no;
 	private String name;
 	private Integer size;
+	@Ignored
 	private Integer ageNum;
 	private Boolean shard;
 	private Long recordSeqNo;
@@ -30,19 +32,19 @@ public class TableInfo extends ZkConfig {
 	@Ignored
 	private List<TimeLimitedCallable> callbacks; 
 	
-	public TableInfo(String dbPrefix,int no) throws IOException, KeeperException, InterruptedException {
+	public TableInfo(String dbPrefix,int no) throws Exception {
 		super(dbPrefix + GlobalConst.ZOOKEEPER_PATH_SPLITOR + no,ConfigFormat.JSON);
 		initTable();
 	}
 	
 	
-	public TableInfo(String path) throws IOException, KeeperException, InterruptedException {
+	public TableInfo(String path) throws Exception {
 		super(path,ConfigFormat.JSON);
 		initTable();
 	}
 	
 	public TableInfo(String dbPrefix,Integer no, String name, Integer size, Boolean shard,
-			List<ShardingAgeInfo> ages) throws IOException, KeeperException, InterruptedException {
+			List<ShardingAgeInfo> ages) throws Exception {
 		super(dbPrefix + GlobalConst.ZOOKEEPER_PATH_SPLITOR + no, ConfigFormat.JSON);
 		this.no = no;
 		this.name = name;
@@ -52,11 +54,14 @@ public class TableInfo extends ZkConfig {
 		initTable();
 	}
 
-	private void initTable() throws IOException, KeeperException, InterruptedException {
-		AgeReloader loader = new AgeReloader();
-		callbacks.add(loader);
-		loader.loadAges();
-		appendWatcher(new CallableWatcher(callbacks, null));
+	private void initTable() throws Exception {
+		if(!isDeprecated){
+			callbacks = Lists.newArrayList();
+			AgeReloader loader = new AgeReloader(this);
+			callbacks.add(loader);
+			loader.load();
+			appendWatcher(new CallableWatcher(callbacks, null));
+		}
 	}
 
 
@@ -126,29 +131,13 @@ public class TableInfo extends ZkConfig {
 	}
 
 
-	private class AgeReloader implements TimeLimitedCallable {
+	private class AgeReloader extends AbstractSubNodeReloader {
 
-		public Object call() throws Exception {
-			if(!CollectionUtils.isEmpty(ages)) {
-				for(ShardingAgeInfo age : ages) {
-					age.destroy();
-				}
-				ages.clear();
-			}
-			loadAges();
-			return null;
+		public AgeReloader(ZkConfig parent) {
+			super(parent);
+			// TODO Auto-generated constructor stub
 		}
-		
-		public void loadAges() throws IOException, KeeperException, InterruptedException {
-			
-			ages = Lists.newArrayList();
-			ageNum = getSubNodes().size();
-			
-			for(int i = 0;i < ageNum ;i++) {
-				ages.add(new ShardingAgeInfo(znode,i));
-			}
-		}
-
+	
 		public Long getTime() {
 			BaseInfo baseInfo = BaseInfo.getInstance();
 			return baseInfo.getLoadTableTimeout();
@@ -158,9 +147,9 @@ public class TableInfo extends ZkConfig {
 			return TimeUnit.MILLISECONDS;
 		}
 
-		public void interupt() {
-			// TODO Auto-generated method stub
-			
+		@Override
+		protected ZkConfig loadChild(int index) throws Exception {
+			return new ShardingAgeInfo(znode, index);
 		}
 		
 	}

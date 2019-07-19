@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.zookeeper.KeeperException;
+import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
 import org.aztec.autumn.common.zk.Ignored;
 import org.aztec.autumn.common.zk.TimeLimitedCallable;
@@ -20,6 +21,7 @@ public class Account extends ZkConfig{
 	private String username;
 	private String password;
 	private String uuid;
+	@Ignored
 	private Integer dbNum;
 	
 	@Ignored
@@ -29,17 +31,17 @@ public class Account extends ZkConfig{
 	
 	DatabaseReloader loader;
 
-	public Account(String uuid) throws IOException, KeeperException, InterruptedException {
+	public Account(String uuid) throws Exception {
 		// TODO Auto-generated constructor stub
 		super(String.format(MetaCenterConst.ZkConfigPaths.BASE_AUTHENTICATIONS_INFO, new Object[] {uuid}), ConfigFormat.JSON);
 		initAccount();
 	}
 	
-	private void initAccount() throws IOException, KeeperException, InterruptedException  {
+	private void initAccount() throws Exception  {
 		if(!isDeprecated) {
 			callBacks = Lists.newArrayList();
-			loader = new DatabaseReloader();
-			loader.loadDatabases();
+			loader = new DatabaseReloader(this);
+			loader.load();
 			callBacks.add(loader);
 			dbNum = getSubNodes().size();
 			appendWatcher(new CallableWatcher(callBacks, null));
@@ -87,27 +89,11 @@ public class Account extends ZkConfig{
 	}
 	
 
-	private class DatabaseReloader implements TimeLimitedCallable {
+	private class DatabaseReloader extends AbstractSubNodeReloader {
 
-		public Object call() throws Exception {
-			if(!CollectionUtils.isEmpty(databases)) {
-				for(DatabaseInfo database : databases) {
-					database.destroy();
-				}
-				databases.clear();
-			}
-			loadDatabases();
-			return null;
-		}
-		
-		public void loadDatabases() throws IOException, KeeperException, InterruptedException {
-			
-			databases = Lists.newArrayList();
-			List<String> subNodeNames = getSubNodes();
-			dbNum = subNodeNames.size();
-			for(int i = 0;i < dbNum ;i++) {
-				databases.add(new DatabaseInfo(znode,i));
-			}
+		public DatabaseReloader(ZkConfig parent) {
+			super(parent);
+			// TODO Auto-generated constructor stub
 		}
 
 		public Long getTime() {
@@ -115,19 +101,16 @@ public class Account extends ZkConfig{
 			return baseInfo.getLoadTableTimeout();
 		}
 
-		public TimeUnit getUnit() {
-			return TimeUnit.MILLISECONDS;
-		}
-
-		public void interupt() {
+		@Override
+		protected ZkConfig loadChild(int index) throws Exception {
 			// TODO Auto-generated method stub
-			
+			return new DatabaseInfo(znode,index);
 		}
 		
 	}
 	
 	public void refresh() throws Exception {
-		loader.loadDatabases();
+		loader.load();
 		dbNum = getSubNodes().size();
 		save();
 	}

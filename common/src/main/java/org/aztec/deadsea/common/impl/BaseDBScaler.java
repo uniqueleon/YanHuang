@@ -15,7 +15,7 @@ public abstract class BaseDBScaler implements ServerScaler {
 	protected final AtomicLong currentValve = new AtomicLong(0);
 	protected final AtomicLong dataSize = new AtomicLong(0);
 
-	public BaseDBScaler(Long dataSize,int currentSize,int realSize,int databaseSize,int tableSize) {
+	public BaseDBScaler(Long dataSize,long currentSize,long realSize,long databaseSize,long tableSize) {
 		this.currentSize.set(currentSize);
 		this.databaseSize.set(databaseSize);
 		this.tableSize.set(tableSize);
@@ -45,7 +45,7 @@ public abstract class BaseDBScaler implements ServerScaler {
 	public long getNextSize() {
 		
 		if(realSize.get() == 1) {
-			return 2;
+			return 4;
 		}
 		long realSize = getActualSize();
 		long nextRealSize = getNextActualSize();

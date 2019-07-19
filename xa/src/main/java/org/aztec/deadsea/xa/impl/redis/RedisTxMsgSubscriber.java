@@ -52,16 +52,21 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 			String pubChannel = null;
 			Integer assignmentNo = getAssignmentNo(txID);
 			String msg = null;
+			boolean isFail = false;
 			while(assignmentNo != null) {
 				XAResponse response = null;
 				context.setAssignmentNo(assignmentNo);
 				for (XAExecutor executor : executors) {
+					if(isFail) break;
 					if(!executor.canHandle(context)) {
 						continue;
 					}
 					switch (phase) {
 					case PREPARE:
 						response = executor.prepare(context);
+						if(response.isFail()) {
+							isFail = true;
+						}
 						context.persist();
 						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[0];
 						break;

@@ -35,7 +35,7 @@ public class SimpleRegistration implements ServerRegistration {
 		return allServers;
 	}
 
-	public ServerScaler getCalculator() {
+	public ServerScaler getScaler() {
 		return calculator;
 	}
 

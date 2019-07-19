@@ -13,4 +13,7 @@ public interface XAContext {
 	public Integer getQuorum();
 	public void setAssignmentNo(Integer no);
 	public String getContextType();
+	public Object getLocal(String key);
+	public void setLocal(String key,Object value);
+	public void removeLocal(String key);
 }
