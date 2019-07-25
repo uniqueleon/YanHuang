@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
 @Scope("singleton")
 public class DruidConnector implements DatabaseConnector{
 	
-	private Map<String,DataSource> pool = Maps.newConcurrentMap();
+	private final static Map<String,Connection> pool = Maps.newConcurrentMap();
 	
 	public DruidConnector() {
 		// TODO Auto-generated constructor stub
@@ -51,7 +51,10 @@ public class DruidConnector implements DatabaseConnector{
 		
 		try {
 			if (pool.containsKey(conf.getId())) {
-				return pool.get(conf.getId()).getConnection();
+				Connection conn = pool.get(conf.getId());
+				if(!conn.isClosed()) {
+					return pool.get(conf.getId());
+				}
 			}
 			Properties prop = new Properties();
 			ByteArrayInputStream bis = new ByteArrayInputStream(conf.getText().getBytes("UTF-8"));
@@ -60,8 +63,9 @@ public class DruidConnector implements DatabaseConnector{
 			driverName = driverName.trim();
 			Class.forName(driverName);
 			DataSource ds = DruidDataSourceFactory.createDataSource(prop);
-			pool.put(conf.getId(), ds);
-			return ds.getConnection();
+			Connection newConn = ds.getConnection();
+			pool.put(conf.getId(), newConn);
+			return newConn;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ShardingSqlException(ErrorCodes.META_DATA_ERROR);

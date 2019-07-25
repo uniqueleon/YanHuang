@@ -1,7 +1,8 @@
-package org.aztec.deadsea.xa.impl.redis;
+package org.aztec.deadsea.xa.impl.redis.handler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executors;
 
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
-import org.aztec.deadsea.common.xa.ProposalFactory;
+import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
@@ -18,21 +19,23 @@ import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
 import org.aztec.deadsea.xa.impl.SimpleXAResponseSet;
+import org.aztec.deadsea.xa.impl.redis.RedisTxMsgHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
 
 @Component
-public class RedisTxAckSubscriber implements RedisTxMsgHandler {
+public class ResponsesHandler implements RedisTxMsgHandler {
 
 	
 	private final static Map<String,List<XAResponse>> allResponses = Maps.newConcurrentMap();
 	protected boolean unsubscribed = false;
 	private final static Map<String,TransactionPhase> lastPhases = Maps.newConcurrentMap();
 	
-	private final static Stack<XAProposal> notifyStacks = new Stack<XAProposal>();
+	private final static Queue<XAProposal> notifyQueues = Queues.newConcurrentLinkedQueue();
 	private JsonUtils jsonUtil;
 	@Autowired
 	private List<XAPhaseListener> listeners;
@@ -40,15 +43,14 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 	private XAResponseBuilder builder;
 	
 	private final static Map<String,XAProposal> proposals = Maps.newConcurrentMap();
+	public final static ExecutorService es = Executors.newFixedThreadPool(1);
 
-	private Object lockObj = new Object();
 	
 	private PhaseNotifyThread notifyThread;
 
-	public RedisTxAckSubscriber() {
+	public ResponsesHandler() {
 
 		jsonUtil = UtilsFactory.getInstance().getJsonUtils();
-		ExecutorService es = Executors.newFixedThreadPool(1);
 		notifyThread  = new PhaseNotifyThread();
 		es.submit(notifyThread);
 	}
@@ -58,6 +60,7 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 			Map<String,Object> dataMap) {
 		
 		try {
+			DeadSeaLogger.info(XAConstant.LOG_KEY, "receive responses for [" + proposal.getTxID() + "]");
 			String txID = proposal.getTxID();
 			TransactionPhase lastPhase = currentPhase;
 			List<XAResponse> responses = Lists.newArrayList();
@@ -70,13 +73,10 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 			XAResponse response = builder.buildFromMap(proposal.getTxID(), dataMap,currentPhase);
 			responses.add(response);
 			lastPhases.put(txID, lastPhase);
-			synchronized (notifyStacks) {
-				notifyStacks.push(proposal);
-			}
-			synchronized (lockObj) {
-				lockObj.notify();
-			}
+			notifyQueues.add(proposal);
 			allResponses.put(txID, responses);
+
+			DeadSeaLogger.info(XAConstant.LOG_KEY, "Responses for [" + proposal.getTxID() + "] handle finished!");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,29 +100,34 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 	public class PhaseNotifyThread implements Callable {
 
 		private boolean runnable = true;
+		
+		public PhaseNotifyThread() {
+			
+		}
 
 		@Override
 		public Object call() throws Exception {
 
 			while (runnable) {
-				if(runnable) {
-					synchronized (lockObj) {
-						lockObj.wait();
+				try {
+					if(!runnable) {
+						return null;
 					}
-				}
-				if(!runnable) {
-					return null;
-				}
-				synchronized (notifyStacks) {
-					while(!notifyStacks.isEmpty()) {
-						XAProposal proposal = notifyStacks.pop();
-						TransactionPhase lastPhase = lastPhases.get(proposal.getTxID());
-						List<XAResponse> responses = allResponses.get(proposal.getTxID());
-						for (XAPhaseListener listener : listeners) {
-							listener.listen(
-									new SimpleXAResponseSet(lastPhase, proposal.getTxID(), responses, proposal.getQuorum()));
+
+						while(!notifyQueues.isEmpty()) {
+							XAProposal proposal = notifyQueues.poll();
+							DeadSeaLogger.info(XAConstant.LOG_KEY, "Activate listener for [" + proposal.getTxID() + "]");
+							TransactionPhase lastPhase = lastPhases.get(proposal.getTxID());
+							List<XAResponse> responses = allResponses.get(proposal.getTxID());
+							for (XAPhaseListener listener : listeners) {
+								listener.listen(
+										new SimpleXAResponseSet(lastPhase, proposal.getTxID(), responses, proposal.getQuorum()));
+							}
+							DeadSeaLogger.info(XAConstant.LOG_KEY, "Activate listener for [" + proposal.getTxID() + "] finished!");
 						}
-					}
+					Thread.currentThread().sleep(1);
+				} catch (Exception e) {
+					DeadSeaLogger.error(e.getMessage(), e);
 				}
 			}
 			return null;
@@ -130,9 +135,6 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 
 		public void stop() {
 			this.runnable = false;
-			synchronized (lockObj) {
-				lockObj.notifyAll();
-			}
 		}
 	}
 	
@@ -150,7 +152,7 @@ public class RedisTxAckSubscriber implements RedisTxMsgHandler {
 	public boolean accept(String channel, XAProposal proposal) {
 		String[] channelPrefix = getChannelPrefix();
 		for(String pref:channelPrefix) {
-			if(channel.startsWith(pref)) {
+			if(channel.equals(pref)) {
 				return true;
 			}
 		}

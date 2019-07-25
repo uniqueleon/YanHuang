@@ -63,4 +63,6 @@ public interface XAConstant {
 		public static final String CREATE_SQL = "XA_CREATE_SQL_EXECUTOR";
 		public static final String INSERT_SQL = "XA_CREATE_SQL_EXECUTOR";
 	}
+	
+	public static final String LOG_KEY = "DEADSEA_SQL";
 }

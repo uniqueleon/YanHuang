@@ -3,6 +3,7 @@ package org.aztec.deadsea.xa.impl;
 import java.util.Map;
 import java.util.UUID;
 
+import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.xa.DistributedTransactionManager;
 import org.aztec.deadsea.common.xa.ProposalFactory;
 import org.aztec.deadsea.common.xa.XAConstant;
@@ -79,7 +80,8 @@ public class XAHelper implements DistributedTransactionManager{
 
 	@Override
 	public void listen(XAResponseSet responses) throws XAException {
-		System.out.println("receive " + responses.getCurrentPhase() + " MSG!");
+
+		DeadSeaLogger.info(XAConstant.LOG_KEY, "receive " + responses.getCurrentPhase() + " RESPONSE[" + responses.getCurrentPhase() + "]!");
 		XARecord record = records.get(responses.getTxID());
 		Object result;
 		switch(responses.getCurrentPhase()) {
@@ -111,6 +113,9 @@ public class XAHelper implements DistributedTransactionManager{
 			synchronized (record) {
 				record.notifyAll();
 			}
+			break;
 		}
+		DeadSeaLogger.info(XAConstant.LOG_KEY, "Receive " + responses.getCurrentPhase() + " RESPONSE[" + responses.getCurrentPhase() + "] finished!");
+		
 	}
 }

@@ -1,4 +1,4 @@
-package org.aztec.deadsea.xa.impl.redis;
+package org.aztec.deadsea.xa.impl.redis.handler;
 
 import java.util.List;
 import java.util.Map;
@@ -14,11 +14,12 @@ import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XAExecutor;
 import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
+import org.aztec.deadsea.xa.impl.redis.RedisTxMsgHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
+public class ExecutorHandler implements RedisTxMsgHandler {
 
 	@Autowired
 	private List<XAExecutor> executors;
@@ -26,7 +27,7 @@ public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
 	private CacheUtils cacheUtil;
 	private JsonUtils jsonUtil;
 
-	public RedisTxMsgSubscriber() throws Exception {
+	public ExecutorHandler() throws Exception {
 
 		cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 		jsonUtil = UtilsFactory.getInstance().getJsonUtils();
@@ -37,6 +38,7 @@ public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
 			Map<String,Object> dataMap) {
 		// TODO Auto-generated method stub
 		try {
+			DeadSeaLogger.info(XAConstant.LOG_KEY, "Execute for [" + proposal.getTxID() + "]");
 			TransactionPhase phase = currentPhase;
 			String txID = proposal.getTxID();
 			String pubChannel = null;
@@ -78,6 +80,7 @@ public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
 				assignmentNo = getAssignmentNo(txID);
 			}
 			cacheUtil.publish(pubChannel, msg);
+			DeadSeaLogger.info(XAConstant.LOG_KEY, "Execute for [" + proposal.getTxID() + "] finished!");
 		} catch (Exception e) {
 			DeadSeaLogger.error("[XA]", e);
 		}
@@ -114,7 +117,7 @@ public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
 	public boolean accept(String channel,XAProposal proposal) {
 		String[] channelPrefix = getChannelPrefix();
 		for(String pref:channelPrefix) {
-			if(channel.startsWith(pref)) {
+			if(channel.equals(pref)) {
 				return true;
 			}
 		}
