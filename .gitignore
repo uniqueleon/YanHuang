@@ -18,3 +18,5 @@ BCLOUD
 build.sh
 /*.log
 /*/*.log
+/common/.classpath
+/README.md.bak
