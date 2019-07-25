@@ -1,11 +1,8 @@
 package org.aztec.deadsea.metacenter.conf.zk;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
@@ -123,7 +120,7 @@ public class TableInfo extends ZkConfig {
 	}
 	
 	public MetaData toMetaData(MetaData db) {
-		TableDTO table = new TableDTO(no,name,size,shard,db.cast());
+		TableDTO table = new TableDTO(no,name,size,shard,recordSeqNo,db.cast());
 		for(ShardingAgeInfo sa : ages) {
 			table.getChilds().add(sa.toMetaData());
 		}
@@ -150,6 +147,11 @@ public class TableInfo extends ZkConfig {
 		@Override
 		protected ZkConfig loadChild(int index) throws Exception {
 			return new ShardingAgeInfo(znode, index);
+		}
+
+		@Override
+		protected void setChildrens(List children) throws Exception {
+			ages = children;
 		}
 		
 	}

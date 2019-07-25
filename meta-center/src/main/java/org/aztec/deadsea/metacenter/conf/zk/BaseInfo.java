@@ -24,6 +24,7 @@ public class BaseInfo extends ZkConfig {
 	private Long virtualNum;
 	private String globalAccessString;
 	private String type;
+	//private Integer acquiredBatchNum = 1000;
 	private static BaseInfo instance;
 	
 	static {

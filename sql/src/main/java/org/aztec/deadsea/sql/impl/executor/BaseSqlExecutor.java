@@ -7,8 +7,8 @@ import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.MetaDataRegister;
+import org.aztec.deadsea.common.RoutingInfoBuilder;
 import org.aztec.deadsea.common.ServerRegister;
-import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardSqlExecutor;
 import org.aztec.deadsea.sql.ShardingConfiguration;
@@ -39,6 +39,8 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 	protected MetaDataRegister metaRegister;
 	@Autowired
 	protected ShardingConfigurationFactory confFactory;
+	@Autowired
+	RoutingInfoBuilder routeBuilder;
 	
 	protected GenerationParameter gp;
 	
@@ -111,9 +113,7 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 				break;
 			}
 			conf = confFactory.getConfiguration();
-			ShardingAge age = conf.getCurrentAge();
-			List<ServerScheme> servers = conf.getRealServers(age.getNo());
-			SqlExecuteResult result = doExecute(multiSql,rollback, servers,type);
+			SqlExecuteResult result = doExecute(new XASqlExecuteParameter(multiSql, rollback, type, conf, routeBuilder, gp));
 			if(type.equals(ExecuteType.EXEC) && result.isSuccess()) {
 				registMetaData(conf.getAuth(), conf, gp);
 			}
@@ -130,8 +130,9 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 		}
 	}
 	
+	
 	protected void registMetaData(Authentication auth,ShardingConfiguration conf,GenerationParameter genParam) throws DeadSeaException {
-		metaRegister.regist(auth, MetaDataTransformer.transfer(auth, conf, genParam,false));
+		metaRegister.regist(auth, MetaDataTransformer.transferRegistData(conf, genParam,false));
 	}
 	
 	protected String getConnectionID(ServerScheme server) {
@@ -140,6 +141,5 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 		return builder.toString();
 	}
 	
-	protected abstract SqlExecuteResult doExecute(List<String> sqls,List<String> rollbacks,
-			List<ServerScheme> scheme,ExecuteType type) throws Exception;	
+	protected abstract SqlExecuteResult doExecute(XASqlExecuteParameter paramter) throws Exception;	
 }

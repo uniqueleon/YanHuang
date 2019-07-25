@@ -106,6 +106,12 @@ public class Account extends ZkConfig{
 			// TODO Auto-generated method stub
 			return new DatabaseInfo(znode,index);
 		}
+
+		@Override
+		protected void setChildrens(List children) throws Exception {
+			// TODO Auto-generated method stub
+			databases = children;
+		}
 		
 	}
 	

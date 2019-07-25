@@ -54,6 +54,7 @@ public class RealServerInfo extends ZkConfig {
 	private void initRealServer() throws Exception {
 		if(isDeprecated)
 			return;
+		callBacks = Lists.newArrayList();
 		VirtualNodeReloader loader = new VirtualNodeReloader(this);
 		loader.load();
 		callBacks.add(new VirtualNodeReloader(this));
@@ -76,6 +77,12 @@ public class RealServerInfo extends ZkConfig {
 		@Override
 		protected ZkConfig loadChild(int index) throws Exception {
 			return new VirtualNodeInfo(znode, index);
+		}
+
+		@Override
+		protected void setChildrens(List children) throws Exception {
+			// TODO Auto-generated method stub
+			nodes = children;
 		}
 		
 	}

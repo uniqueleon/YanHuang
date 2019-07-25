@@ -1,6 +1,7 @@
 package org.aztec.deadsea.metacenter.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,15 +12,12 @@ import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.utils.security.CodeCipher;
 import org.aztec.autumn.common.zk.ZkUtils;
 import org.aztec.deadsea.common.Authentication;
-import org.aztec.deadsea.common.DataID;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
 import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegistration;
-import org.aztec.deadsea.common.ServerScaler;
 import org.aztec.deadsea.common.ShardingAge;
-import org.aztec.deadsea.common.VirtualServer;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.common.entity.ShardAgeDTO;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
@@ -37,7 +35,6 @@ import org.aztec.deadsea.metacenter.conf.zk.RealServerInfo;
 import org.aztec.deadsea.metacenter.conf.zk.ServerAge;
 import org.aztec.deadsea.metacenter.conf.zk.ShardingAgeInfo;
 import org.aztec.deadsea.metacenter.conf.zk.TableInfo;
-import org.aztec.deadsea.metacenter.conf.zk.VirtualNodeInfo;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -56,11 +53,11 @@ public class ZkRegistHelper {
 	
 	
 
-	public ZkRegistHelper() throws IOException, KeeperException, InterruptedException {
+	public ZkRegistHelper() throws Exception {
 		initData();
 	}
 
-	private void initData() throws IOException, KeeperException, InterruptedException {
+	private void initData() throws Exception {
 		if (baseInfo.getMaxAge() != null) {
 			for (int i = 0; i <= baseInfo.getMaxAge(); i++) {
 				ServerAge age = new ServerAge(i);
@@ -445,25 +442,25 @@ public class ZkRegistHelper {
 	
 	
 	public ServerRegistration getServerRegistration(Authentication auth,ShardingAge age) throws DeadSeaException {
-		assertAuth(auth);
-		SimpleRegistration registration = new SimpleRegistration();
-		ServerAge serverAge = getAge(age.getNo());
-		//int currentSize = serverDatas
-		List<RealServerInfo> serverDatas = serverAge.getServers();
-		List<RealServer> serverMetaDatas = Lists.newArrayList();
-		for(int i = 0;i < serverDatas.size();i++) {
-			serverMetaDatas.add(serverDatas.get(i).toMetaData());
+		try {
+			assertAuth(auth);
+			SimpleRegistration registration = new SimpleRegistration();
+			ServerAge serverAge = getAge(age.getNo());
+			//int currentSize = serverDatas
+			List<RealServerInfo> serverDatas = serverAge.getServers();
+			List<RealServer> serverMetaDatas = Lists.newArrayList();
+			for(int i = 0;i < serverDatas.size();i++) {
+				serverMetaDatas.add(serverDatas.get(i).toMetaData());
+			}
+			registration.setAllServers(serverMetaDatas);
+			ServerScalerBuilder builder = new ServerScalerBuilder();
+			registration.setCalculator(builder.build(Lists.newArrayList(accounts.values()), serverAge));
+			return registration;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		long tableSize = 0l;
-		registration.setAllServers(serverMetaDatas);
-		//registration.setCalculator(new ModerateScaler(0l, currentSize, realSize, databaseSize, tableSize));
-		return registration;
 	}
 	
-	/*
-	 * public ServerScaler getScaler(List<RealServerInfo> serverList) {
-	 * 
-	 * }
-	 */
 	
 }

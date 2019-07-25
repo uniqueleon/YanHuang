@@ -14,6 +14,7 @@ public class BaseSqlMetaData implements SqlMetaData {
 
 	protected boolean shard;
 	protected Integer shardSize;
+	protected Long sequenceNo;
 	protected SqlType type;
 	protected String rawSql;
 	protected String sourceSql;
@@ -21,9 +22,11 @@ public class BaseSqlMetaData implements SqlMetaData {
 	protected Table table;
 	protected List<Condition> whereConditions;
 	protected List<Column> groupByColumns;
+	protected List<Column> insertColumns;
 	protected List<Condition> havingConditions;
 	protected List<Table> fromTables;
 	protected List<OrderByClause> orderByClauses;
+	protected List<Long> targetIds;
 
 	public BaseSqlMetaData() {
 		// TODO Auto-generated constructor stub
@@ -148,6 +151,31 @@ public class BaseSqlMetaData implements SqlMetaData {
 	@Override
 	public String getSourceSql() {
 		return sourceSql;
+	}
+
+	public List<Column> getInsertColumns() {
+		return insertColumns;
+	}
+
+	public void setInsertColumns(List<Column> insertColumns) {
+		this.insertColumns = insertColumns;
+	}
+
+	public List<Long> getTargetIds() {
+		return targetIds;
+	}
+
+	public void setTargetIds(List<Long> targetIds) {
+		this.targetIds = targetIds;
+	}
+
+	@Override
+	public Long getSequenceNo() {
+		return sequenceNo;
+	}
+
+	public void setSequenceNo(Long sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
 
 	

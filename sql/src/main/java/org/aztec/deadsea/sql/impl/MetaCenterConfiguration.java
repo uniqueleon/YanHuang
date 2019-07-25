@@ -21,7 +21,6 @@ import org.aztec.deadsea.sql.Asserts;
 import org.aztec.deadsea.sql.Asserts.CompareType;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
-import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.conf.AuthorityScheme;
 import org.aztec.deadsea.sql.conf.LocalAuthConfiguration;
 import org.aztec.deadsea.sql.conf.ServerScheme;
@@ -88,6 +87,7 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		for (RealServer rServer : realServers) {
 			ServerScheme serverScheme = new ServerScheme(rServer.getHost(), rServer.getPort(), rServer.getProxyPort(),
 					authScheme);
+			serverScheme.setNodes(rServer.getNodes());
 			schemes.add(serverScheme);
 		}
 		return schemes;
@@ -156,12 +156,14 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 		return null;
 	}
 
-	@Override
 	public List<ServerScheme> getOperationTarget(SqlMetaData metaData) throws DeadSeaException {
 		// TODO Auto-generated method stub
 		ServerRegistration serverRegistration = serverRegistor.getServerRegistration(auth, getCurrentAge());
+		//List<ServerScheme> serverScheme = 
 		switch(metaData.getSqlType()) {
 		case INSERT:
+			 TableDTO insertTable = getTargetTable(metaData.getTable());
+			 Long seqNo = insertTable.getRecordSeqNo();
 			 
 		case QUERY:
 			

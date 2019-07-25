@@ -2,6 +2,7 @@ package org.aztec.deadsea.metacenter.conf.zk;
 
 import java.util.List;
 
+import org.apache.zookeeper.KeeperException;
 import org.aztec.autumn.common.GlobalConst;
 import org.aztec.autumn.common.zk.AbstractSubNodeReloader;
 import org.aztec.autumn.common.zk.CallableWatcher;
@@ -120,10 +121,24 @@ public class DatabaseInfo extends ZkConfig{
 		protected ZkConfig loadChild(int index) throws Exception {
 			return new TableInfo(znode,index);
 		}
+
+
+		@Override
+		protected void setChildrens(List children) throws Exception {
+			// TODO Auto-generated method stub
+			tables = children;
+		}
 		
 	}
 	
 	public MetaData toMetaData() {
+		try {
+			if(tableNum == null) {
+				tableNum = getSubNodes().size();
+			}
+		} catch (Exception e) {
+			tableNum = 0;
+		}
 		DatabaseDTO db = new DatabaseDTO(no, name, size, tableNum, shard,Lists.newArrayList());
 		for(TableInfo t : tables) {
 			db.getChilds().add(t.toMetaData(db));

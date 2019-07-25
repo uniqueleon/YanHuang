@@ -1,23 +1,24 @@
 package org.aztec.deadsea.xa.impl.redis;
 
 import java.util.List;
+import java.util.Map;
 
 import org.aztec.autumn.common.utils.CacheException;
 import org.aztec.autumn.common.utils.CacheUtils;
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
-import org.aztec.autumn.common.utils.cache.CacheDataSubscriber;
 import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAConstant;
 import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XAExecutor;
+import org.aztec.deadsea.common.xa.XAProposal;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RedisTxMsgSubscriber implements CacheDataSubscriber {
+public class RedisTxMsgSubscriber implements RedisTxMsgHandler {
 
 	@Autowired
 	private List<XAExecutor> executors;
@@ -32,23 +33,12 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 	}
 
 	@Override
-	public void notify(String channel, String newMsg) {
+	public void handle(XAProposal proposal,TransactionPhase currentPhase,XAContext context,
+			Map<String,Object> dataMap) {
 		// TODO Auto-generated method stub
 		try {
-			String[] prefix = getChannelPrefix();
-			int index = -1;
-			for (int i = 0; i < prefix.length; i++) {
-				if (channel.startsWith(prefix[i])) {
-					index = i;
-				}
-			}
-			if (index == -1) {
-				return;
-			}
-			TransactionPhase phase = TransactionPhase.values()[index];
-			String txID = channel.substring(channel.lastIndexOf("_") + 1, channel.length());
-			XAContext context = new RedisTransactionContext(txID, phase);
-			
+			TransactionPhase phase = currentPhase;
+			String txID = proposal.getTxID();
 			String pubChannel = null;
 			Integer assignmentNo = getAssignmentNo(txID);
 			String msg = null;
@@ -68,19 +58,19 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 							isFail = true;
 						}
 						context.persist();
-						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[0];
+						pubChannel = XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[3];
 						break;
 					case COMMIT:
 						context.setCurrentPhase(TransactionPhase.COMMIT);
 						response = executor.commit(context);
 						context.persist();
-						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[1];
+						pubChannel = XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[4];
 						break;
 					case ROLLBACK:
 						context.setCurrentPhase(TransactionPhase.ROLLBACK);
 						response = executor.rollback(context);
 						context.persist();
-						pubChannel = RedisTxAckSubscriber.getSubscribeChannels(txID)[2];
+						pubChannel = XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[5];
 						break;
 					}
 				}
@@ -115,19 +105,20 @@ public class RedisTxMsgSubscriber implements CacheDataSubscriber {
 		return no;
 	}
 
-	@Override
-	public void unsubscribe() {
-		unsubscribe = true;
-	}
-
-	@Override
-	public boolean isUnsubscribed() {
-		return unsubscribe;
-	}
-
 	public static String[] getChannelPrefix() {
 		return new String[] { XAConstant.REDIS_CHANNLE_NAMES.PREPARE, XAConstant.REDIS_CHANNLE_NAMES.COMMIT,
 				XAConstant.REDIS_CHANNLE_NAMES.ROLLBACK };
+	}
+	
+	@Override
+	public boolean accept(String channel,XAProposal proposal) {
+		String[] channelPrefix = getChannelPrefix();
+		for(String pref:channelPrefix) {
+			if(channel.startsWith(pref)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

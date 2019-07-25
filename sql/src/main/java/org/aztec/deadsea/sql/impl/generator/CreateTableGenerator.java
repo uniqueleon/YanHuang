@@ -60,7 +60,7 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 			Table table = metaData.getTable();
 			DatabaseDTO db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
 			TableDTO ts = new TableDTO(0,table.name(), 
-					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(), db);
+					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(),0l, db);
 			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.getSize(),ts.getSize(),db.getName(),ts.getName());
 			String replaceTarget = getReplaceTarget(rawSql);
 			for(int i = 0;i < dbTables.size();i++) {
@@ -98,7 +98,7 @@ public class CreateTableGenerator implements ShardingSqlGenerator {
 			Table table = metaData.getTable();
 			DatabaseDTO db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
 			TableDTO ts = new TableDTO(0,table.name(), 
-					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(), db);
+					param.getSqlMetaData().getShardSize(), param.getSqlMetaData().shard(),0l, db);
 			List<String> dbTables = SqlUtils.getMultiDatabaseTableNames(db.getSize(),ts.getSize(),db.getName(),ts.getName());
 			String replaceTarget = "_TB_";
 			for(int i = 0;i < dbTables.size();i++) {

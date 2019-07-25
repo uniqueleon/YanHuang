@@ -11,7 +11,6 @@ import org.aztec.autumn.common.zk.TimeLimitedCallable;
 import org.aztec.autumn.common.zk.ZkConfig;
 import org.aztec.deadsea.common.MetaDataConstant;
 import org.aztec.deadsea.common.ShardingAge;
-import org.aztec.deadsea.common.VirtualServer;
 import org.aztec.deadsea.common.entity.ServerAgeDTO;
 import org.aztec.deadsea.metacenter.MetaCenterConst;
 
@@ -24,12 +23,17 @@ public class ServerAge  extends ZkConfig{
 	private Integer serverNum;
 	private Long valve;
 	private Long lastValve;
+	private Long nodeSize;
+	private Long dataSize;
+	private Long dbSize;
+	private Long tableSize;
+	private Boolean clean = false;
 	@Ignored
 	private List<TimeLimitedCallable>  callBacks;
 	@Ignored
 	private List<RealServerInfo> servers;
 	
-	public ServerAge(int age,Long valve,Long lastValve) throws IOException, KeeperException, InterruptedException {
+	public ServerAge(int age,Long valve,Long lastValve) throws Exception {
 		super(String.format(MetaCenterConst.ZkConfigPaths.REAL_SERVER_AGE_INFO,new Object[] {age}), ConfigFormat.JSON);
 		this.age = age;
 		this.valve = valve;
@@ -37,7 +41,7 @@ public class ServerAge  extends ZkConfig{
 		initInfo();
 	}
 	
-	public ServerAge(int age) throws IOException, KeeperException, InterruptedException {
+	public ServerAge(int age) throws Exception {
 		super(String.format(MetaCenterConst.ZkConfigPaths.REAL_SERVER_AGE_INFO,new Object[] {age}), ConfigFormat.JSON);
 		this.age = age;
 		initInfo();
@@ -68,12 +72,14 @@ public class ServerAge  extends ZkConfig{
 	}
 
 
-	private void initInfo() {
+	private void initInfo() throws Exception {
 		if(isDeprecated) {
 			return;
 		}
+		ServerReloader loader = new ServerReloader(this);
 		callBacks = Lists.newArrayList();
-		callBacks.add(new ServerReloader(this));
+		callBacks.add(loader);
+		loader.load();
 		appendWatcher(new CallableWatcher(callBacks, null));
 	}
 	
@@ -93,6 +99,11 @@ public class ServerAge  extends ZkConfig{
 			BaseInfo baseInfo = BaseInfo.getInstance();
 			return baseInfo.getLoadServerTimeout();
 		}
+
+		@Override
+		protected void setChildrens(List children) throws Exception {
+			servers = children;
+		}
 		
 	}
 	
@@ -103,8 +114,13 @@ public class ServerAge  extends ZkConfig{
 
 	
 	public ShardingAge toMetaData() {
+		try {
+			if(serverNum == null)serverNum = getSubNodes().size();
+		} catch (Exception e) {
+			serverNum = 0;
+		}
 		ServerAgeDTO ageDto = new ServerAgeDTO(age, MetaDataConstant.DEFAULT_SERVER_AGE_NAME_PREFIX + age, serverNum,
-				valve, lastValve);
+				valve == null ? 0 : valve , lastValve == null ? 0 :lastValve);
 		return ageDto;
 	}
 
@@ -125,7 +141,45 @@ public class ServerAge  extends ZkConfig{
 	public void setServers(List<RealServerInfo> servers) {
 		this.servers = servers;
 	}
-	
-	
+
+	public Long getNodeSize() {
+		return nodeSize;
+	}
+
+	public void setNodeSize(Long nodeSize) {
+		this.nodeSize = nodeSize;
+	}
+
+	public Long getDataSize() {
+		return dataSize;
+	}
+
+	public void setDataSize(Long dataSize) {
+		this.dataSize = dataSize;
+	}
+
+	public Long getDbSize() {
+		return dbSize;
+	}
+
+	public void setDbSize(Long dbSize) {
+		this.dbSize = dbSize;
+	}
+
+	public Long getTableSize() {
+		return tableSize;
+	}
+
+	public void setTableSize(Long tableSize) {
+		this.tableSize = tableSize;
+	}
+
+	public Boolean getClean() {
+		return clean;
+	}
+
+	public void setClean(Boolean clean) {
+		this.clean = clean;
+	}
 	
 }

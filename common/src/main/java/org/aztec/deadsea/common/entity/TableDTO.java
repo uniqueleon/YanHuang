@@ -6,11 +6,12 @@ public class TableDTO extends BaseMetaData{
 	private int ageNum;
 	private Long recordSeqNo;
 
-	public TableDTO(int no,String name,Integer size,boolean shard,DatabaseDTO base) {
+	public TableDTO(int no,String name,Integer size,boolean shard,Long recordSeqNo,DatabaseDTO base) {
 		super(no,name, size, shard);
 		this.type = MetaType.DB;
 		this.type.setSubType(MetaSubType.TABLE);
 		this.parent = base;
+		this.recordSeqNo = recordSeqNo;
 	}
 
 	public DatabaseDTO getDatabase() {

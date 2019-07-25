@@ -14,14 +14,14 @@ import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
-import org.aztec.deadsea.sql.ShardingConfigurationFactory;
-import org.aztec.deadsea.sql.SqlGeneratorBuilder;
 import org.aztec.deadsea.sql.conf.MetaDataTransformer;
 import org.aztec.deadsea.sql.impl.executor.BaseSqlExecutor.ExecuteType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(9999)
 public class MetaDataRegistExecutor implements XAExecutor {
 
 
@@ -48,13 +48,21 @@ public class MetaDataRegistExecutor implements XAExecutor {
 		// TODO Auto-generated method stub
 		try {
 			String sqlType = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			Long seqNo = Long.parseLong("" + context.get(XAConstant.CONTEXT_KEYS.SEQUENCE_NO));
 			if(sqlType.equals(ExecuteType.EXEC.name())) {
 				GenerationParameter gp = helper.getGenerationParam(context);
 				ShardingConfiguration conf = helper.getShardingConfiguration(context);
 				Authentication auth = conf.getAuth();
-				MetaData mData = MetaDataTransformer.transfer(auth, conf, gp,false);
-				if(!metaRegister.exists(auth, mData)) {
-					metaRegister.regist(auth, mData);
+				MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,false);
+				if(mData != null) {
+					if(!metaRegister.exists(auth, mData)) {
+						metaRegister.regist(auth, mData);
+					}
+				}
+				else {
+					gp.getSqlMetaData().setSequenceNo(seqNo);
+					mData = MetaDataTransformer.transferUpdateData(conf, gp,false);
+					metaRegister.update(auth, mData);
 				}
 			}
 			return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.PREPARE);
@@ -79,9 +87,11 @@ public class MetaDataRegistExecutor implements XAExecutor {
 				GenerationParameter gp = helper.getGenerationParam(context);
 				ShardingConfiguration conf = helper.getShardingConfiguration(context);
 				Authentication auth = conf.getAuth();
-				MetaData mData = MetaDataTransformer.transfer(auth, conf, gp,true);
-				if(metaRegister.exists(auth, mData)) {
-					metaRegister.remove(auth, mData);
+				MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,true);
+				if(mData != null) {
+					if(metaRegister.exists(auth, mData)) {
+						metaRegister.remove(auth, mData);
+					}
 				}
 			}
 			return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.ROLLBACK);

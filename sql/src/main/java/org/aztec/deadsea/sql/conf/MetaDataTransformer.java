@@ -1,5 +1,7 @@
 package org.aztec.deadsea.sql.conf;
 
+import javax.swing.text.TabExpander;
+
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
@@ -21,7 +23,7 @@ public class MetaDataTransformer {
 	public MetaDataTransformer() {
 	}
 
-	public static MetaData transfer(Authentication auth, ShardingConfiguration conf,
+	public static MetaData transferRegistData( ShardingConfiguration conf,
 			GenerationParameter genParam, boolean isAnti)
 			throws DeadSeaException {
 
@@ -39,7 +41,7 @@ public class MetaDataTransformer {
 			dbDto = conf.getDatabaseScheme(sqlMetaData.getDatabase());
 			Table table = sqlMetaData.getTable();
 			TableDTO tableDto = new TableDTO(dbDto.getTableNum(), table.name().replaceAll("`", ""), sqlMetaData.getShardSize(),
-					sqlMetaData.shard(), dbDto);
+					sqlMetaData.shard(),0l, dbDto);
 			return tableDto;
 		case DROP_TABLE:
 			tableDto = conf.getTargetTable(sqlMetaData.getTable());
@@ -50,4 +52,25 @@ public class MetaDataTransformer {
 		return null;
 	}
 
+	public static MetaData transferUpdateData(ShardingConfiguration conf,
+			GenerationParameter genParam, boolean isAnti)
+			throws DeadSeaException {
+
+		SqlMetaData sqlMetaData = genParam.getSqlMetaData();
+		SqlType sqlType = genParam.getSqlMetaData().getSqlType();
+		if(isAnti){
+			sqlType = sqlType.getAntiType();
+		}
+		TableDTO tableDto;
+		switch (sqlType) {
+		case INSERT:
+			tableDto = conf.getTargetTable(sqlMetaData.getTable());
+			tableDto.setRecordSeqNo(sqlMetaData.getSequenceNo());
+			return tableDto;
+		
+		default:
+			break;
+		}
+		return null;
+	}
 }

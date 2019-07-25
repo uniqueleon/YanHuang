@@ -13,6 +13,8 @@ public class ShardDataImpl implements ShardData {
 
 	public ShardDataImpl(DataID id,Object data) {
 		// TODO Auto-generated constructor stub
+		this.id = id;
+		this.data = data;
 	}
 
 	@Override

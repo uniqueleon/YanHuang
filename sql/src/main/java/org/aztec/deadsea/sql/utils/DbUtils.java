@@ -7,9 +7,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.aztec.autumn.common.utils.jdbc.JdbcConnector;
-import org.aztec.deadsea.sql.impl.druid.DruidConnector;
-
-import com.beust.jcommander.internal.Lists;
 
 public class DbUtils {
 
@@ -52,5 +49,8 @@ public class DbUtils {
 		return countSql.toString();
 	}
 
-	
+	public static void main(String[] args) {
+		long tableTotalSize = 1003 * 1003 * 1003l * 1003l * 1003l * 1003l;
+		System.out.println(tableTotalSize);
+	}
 }

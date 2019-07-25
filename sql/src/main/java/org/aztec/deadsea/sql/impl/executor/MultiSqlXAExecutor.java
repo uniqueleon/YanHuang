@@ -2,6 +2,7 @@ package org.aztec.deadsea.sql.impl.executor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
@@ -14,9 +15,11 @@ import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.SqlExecuteResult;
 import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.impl.BaseSqlExecResult;
+import org.aztec.deadsea.sql.impl.executor.XASqlExecuteParameter.SQLPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.Maps;
 
 @Component
@@ -31,16 +34,17 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 	}
 
 	@Override
-	protected SqlExecuteResult doExecute(List<String> sqls,List<String> rollbacks, List<ServerScheme> schemes, ExecuteType type) throws Exception {
-		
+	protected SqlExecuteResult doExecute(XASqlExecuteParameter executeParam) throws Exception {
+		List<ServerScheme> schemes = executeParam.getSchemes();
 		int quorum = schemes.size();
 		Map<String,Object> attachments = Maps.newHashMap();
 		attachments.put(XAConstant.CONTEXT_KEYS.CONNECT_ARGS, getConnectionArgs(schemes));
-		attachments.put(XAConstant.CONTEXT_KEYS.EXECUTE_SQL, sqls.toArray(new String[sqls.size()]));
-		attachments.put(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL, rollbacks);
+		attachments.put(XAConstant.CONTEXT_KEYS.EXECUTE_SQL, toList(executeParam, true));
+		attachments.put(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL, toList(executeParam, false));
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQLS, gp.getSqlMetaData().getRawSql());
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE, type.name());
 		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.GENENRATION_PARAMS,gp);
+		attachments.put(XAConstant.CONTEXT_KEYS.SEQUENCE_NO, gp.getSqlMetaData().getSequenceNo());
 		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.SHARDING_CONFIGURATION, conf);
 		return manager.submit(quorum, attachments, new TransactionResultBuilder<SqlExecuteResult>() {
 
@@ -57,6 +61,30 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 	}
 	
 	
+	private List<List<String>> toList(XASqlExecuteParameter param,boolean sql){
+		List<List<String>> retList = Lists.newArrayList();
+		param.getPairs().stream().forEach(t -> {
+			List<String> newList = Lists.newArrayList();
+			t.stream().forEach(q -> {
+				newList.add(sql ? q.getSql() : q.getRollback());
+			});
+			retList.add(newList);
+		});
+		return retList;
+	}
+	
+	private String[][] toArray(XASqlExecuteParameter param,boolean sql){
+		String[][] retSqls = new String[param.getPairs().size()][];
+		for(int i = 0;i < param.getPairs().size();i++) {
+			List<SQLPair> pair = param.getPairs().get(i);
+			String[] sqlArr = new String[pair.size()];
+			for(int j = 0;j < pair.size();j++) {
+				sqlArr[j] = sql ? pair.get(j).getSql(): pair.get(j).getRollback();
+			}
+			retSqls[i] = sqlArr;
+		}
+		return retSqls;
+	}
 	
 	private String[][] getConnectionArgs(List<ServerScheme> schemes){
 		String[][] args = new String[schemes.size()][];

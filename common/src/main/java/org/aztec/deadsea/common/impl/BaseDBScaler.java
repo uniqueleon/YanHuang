@@ -7,13 +7,13 @@ import org.aztec.deadsea.common.ServerScaler;
 
 public abstract class BaseDBScaler implements ServerScaler {
 	
-	protected final AtomicLong currentSize = new AtomicLong(0);
-	protected final AtomicLong databaseSize = new AtomicLong(0);
-	protected final AtomicLong tableSize = new AtomicLong(0);
-	protected final AtomicLong realSize = new AtomicLong(0);
-	protected final AtomicLong nextRealSize = new AtomicLong(0);
-	protected final AtomicLong currentValve = new AtomicLong(0);
-	protected final AtomicLong dataSize = new AtomicLong(0);
+	protected final static AtomicLong currentSize = new AtomicLong(0);
+	protected final static AtomicLong databaseSize = new AtomicLong(0);
+	protected final static AtomicLong tableSize = new AtomicLong(0);
+	protected final static AtomicLong realSize = new AtomicLong(0);
+	protected final static AtomicLong nextRealSize = new AtomicLong(0);
+	protected final static AtomicLong currentValve = new AtomicLong(0);
+	protected final static AtomicLong dataSize = new AtomicLong(0);
 
 	public BaseDBScaler(Long dataSize,long currentSize,long realSize,long databaseSize,long tableSize) {
 		this.currentSize.set(currentSize);

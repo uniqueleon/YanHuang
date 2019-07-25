@@ -31,7 +31,6 @@ public class RedisTransactionContext implements XAContext {
 	private Integer assignmentID;
 	private Integer quorum;
 	private String type;
-	
 
 	static {
 
@@ -86,7 +85,8 @@ public class RedisTransactionContext implements XAContext {
 				contextObjs.put(content.getKey(), content.getValue());
 			}
 		}
-		
+		contextObjs.put(XAConstant.CONTEXT_KEYS.PROPOSAL_ID, txID);
+		contextObjs.put(XAConstant.CONTEXT_KEYS.QUORUM, quorum);
 		contextObjs.put(XAConstant.CONTEXT_KEYS.PHASE, phase.name());
 		contextObjs.put(XAConstant.CONTEXT_KEYS.TYPE, proposal.getType());
 	}
@@ -106,6 +106,7 @@ public class RedisTransactionContext implements XAContext {
 				, String.class);
 		contextObjs = jsonUtil.json2Object(cacheContent, Map.class);
 		this.type = (String) contextObjs.get(XAConstant.CONTEXT_KEYS.TYPE);
+		this.quorum = (Integer) contextObjs.get(XAConstant.CONTEXT_KEYS.QUORUM);
 	}
 
 	@Override
@@ -175,7 +176,7 @@ public class RedisTransactionContext implements XAContext {
 	@Override
 	public Object getLocal(String key) {
 		Map<String,Object> dataMap = getTxLocalData();
-		return dataMap.get(key);
+		return dataMap == null ? null : dataMap.get(key);
 	}
 	
 	public Map<String,Object> getTxLocalData(){
@@ -193,5 +194,7 @@ public class RedisTransactionContext implements XAContext {
 		Map<String,Object> dataMap = getTxLocalData();
 		dataMap.remove(key);
 	}
+	
+	
 
 }

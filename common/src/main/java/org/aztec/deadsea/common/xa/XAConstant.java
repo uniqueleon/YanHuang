@@ -9,8 +9,17 @@ public interface XAConstant {
 		public static final String PREPARE = PREFIX + "PREPARE";
 		public static final String COMMIT = PREFIX + "COMMIT";
 		public static final String ROLLBACK = PREFIX + "ROLLBACK";
-		public static final String ACKOWNLEDGE = "ACK";
+		public static final String ACKOWNLEDGE = "_ACK";
 	}
+	
+	public static final String[] DEFAULT_REDIS_PUBLISH_CHANNELS = new String[] {
+			XAConstant.REDIS_CHANNLE_NAMES.PREPARE,
+			XAConstant.REDIS_CHANNLE_NAMES.COMMIT,
+			XAConstant.REDIS_CHANNLE_NAMES.ROLLBACK,
+			XAConstant.REDIS_CHANNLE_NAMES.PREPARE + XAConstant.REDIS_CHANNLE_NAMES.ACKOWNLEDGE,
+			XAConstant.REDIS_CHANNLE_NAMES.COMMIT + XAConstant.REDIS_CHANNLE_NAMES.ACKOWNLEDGE,
+			XAConstant.REDIS_CHANNLE_NAMES.ROLLBACK + XAConstant.REDIS_CHANNLE_NAMES.ACKOWNLEDGE,
+	};
 	
 	public static interface REDIS_KEY {
 		public static final String TRASACTION_INFO_PREFIX = "XA_REDIS_TX_";
@@ -35,6 +44,9 @@ public interface XAConstant {
 		public static final String ROLLBACK_SQL = "ROLLBACK_SQL";
 		public static final String RAW_SQLS = "RAW_SQL";
 		public static final String RAW_SQL_TYPE = "RAW_SQL_TYPE";
+		public static final String SEQUENCE_NO = "SEQUENCE_NO";
+		public static final String PROPOSAL_ID = "PROPOSAL_ID";
+		public static final String QUORUM = "TX_QUORUM";
 		public static interface META_CENTER_KEYS{
 			public static final String AUTH_USER_NAME = "META_CENTER_AUTH_USERNAME";
 			public static final String AUTH_PASSWORD = "META_CENTER_AUTH_PWD";
@@ -49,5 +61,6 @@ public interface XAConstant {
 	
 	public static interface XA_PROPOSAL_TYPES {
 		public static final String CREATE_SQL = "XA_CREATE_SQL_EXECUTOR";
+		public static final String INSERT_SQL = "XA_CREATE_SQL_EXECUTOR";
 	}
 }

@@ -39,8 +39,8 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 			Connection conn = connector.getConnection(getConnectArgs(context));
 			connections.put(context.getTransactionID(), conn);
 			conn.setAutoCommit(false);
-			List<String> sqls = (List<String>) context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
-			doPrepare(context, sqls, conn);
+			List<List<String>> sqls = (List<List<String>>) context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
+			doPrepare(context, sqls.get(context.getAssignmentNo()), conn);
 			XAResponse response = builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
 					context.getCurrentPhase());
 			return response;
@@ -84,7 +84,7 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 			connection.rollback();
 			Object sqlObject = context.get(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL);
 			if(sqlObject != null) {
-				List<String> sqlList = (List<String>) sqlObject;
+				List<String> sqlList = ((List<List<String>>) sqlObject).get(context.getAssignmentNo());
 				for(String sql : sqlList) {
 					PreparedStatement ps = connection.prepareStatement(sql);
 					ps.execute(sql);

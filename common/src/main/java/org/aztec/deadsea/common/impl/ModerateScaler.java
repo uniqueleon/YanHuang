@@ -19,23 +19,12 @@ import com.google.common.collect.Lists;
  */
 public class ModerateScaler extends BaseDBScaler {
 
-	public static ModerateScaler singleton;
-	public final static Object lockObj = new Object();
-
-	public static ModerateScaler getInstance(Object... args) {
-		if (singleton == null) {
-			synchronized (lockObj) {
-				if (singleton == null) {
-					singleton = new ModerateScaler((Long) args[0], (long) args[0], (long) args[0], (long) args[0],
-							(long) args[0]);
-				}
-			}
-		}
-		return singleton;
+	public ModerateScaler(Long dataSize, long nodeSize, long realSize, long databaseSize, long tableSize) {
+		super(dataSize, nodeSize, realSize, databaseSize, tableSize);
 	}
-
-	private ModerateScaler(Long dataSize, long currentSize, long realSize, long databaseSize, long tableSize) {
-		super(dataSize, currentSize, realSize, databaseSize, tableSize);
+	
+	public ModerateScaler(Long dataSize, long databaseSize, long tableSize) {
+		super(dataSize, 1l, 1l, databaseSize, tableSize);
 	}
 
 	// n' = n * (s + ds) / s * (ds - 1)

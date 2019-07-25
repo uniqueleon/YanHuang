@@ -1,5 +1,7 @@
 package org.aztec.deadsea.sql.conf;
 
+import java.util.List;
+
 import org.aztec.deadsea.common.VirtualServer;
 
 public class ServerScheme {
@@ -12,7 +14,7 @@ public class ServerScheme {
 	private boolean virtual;
 	private int age;
 	private AuthorityScheme authority;
-	private VirtualServer vs;
+	private List<VirtualServer> nodes;
 	
 	public ServerScheme() {
 		
@@ -87,6 +89,14 @@ public class ServerScheme {
 
 	public void setAuthority(AuthorityScheme authority) {
 		this.authority = authority;
+	}
+
+	public List<VirtualServer> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<VirtualServer> nodes) {
+		this.nodes = nodes;
 	}
 	
 	

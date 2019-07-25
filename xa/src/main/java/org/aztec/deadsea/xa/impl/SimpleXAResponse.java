@@ -107,5 +107,6 @@ public class SimpleXAResponse implements XAResponse {
 		this.errorCode = errorCode;
 	}
 
+
 	
 }

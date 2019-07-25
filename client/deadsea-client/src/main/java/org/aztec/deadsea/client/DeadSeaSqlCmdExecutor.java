@@ -24,6 +24,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @SpringBootConfiguration
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages= {
+		"org.aztec.deadsea.common.impl",
 		"org.aztec.deadsea.xa.impl",
 		"org.aztec.deadsea.xa.impl.redis",
 		"org.aztec.deadsea.sql.impl",
@@ -44,7 +45,6 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
     {
         try {
         	if(args.length > 1) {
-
 				System.setProperty(BasePropertiesConfig.DEFAUTL_SYSTEM_PROPERTY_FILE,args[1]);
 			}
 			SpringApplication sa = new SpringApplication(DeadSeaSqlCmdExecutor.class);
@@ -68,9 +68,12 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 					System.setProperty(BasePropertiesConfig.DEFAUTL_SYSTEM_PROPERTY_FILE,confFiles.get(0));
 				}
 			}
-			String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
-			SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
-			System.out.println(sResult.isSuccess());
+			//String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
+			for(int i = 0;i < 100;i++) {
+				String sql = "insert into `lmDb`.`account`(`name`) values('liming2')";
+				SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
+				System.out.println(sResult.isSuccess());
+			}
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
 
 		} catch (Exception e) {

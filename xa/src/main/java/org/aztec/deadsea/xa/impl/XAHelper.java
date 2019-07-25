@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 
+import io.netty.handler.codec.CorruptedFrameException;
+
 @Component
 //@Scope("prototype")
 public class XAHelper implements DistributedTransactionManager{
@@ -92,6 +94,7 @@ public class XAHelper implements DistributedTransactionManager{
 		case COMMIT:
 			if(responses.isPassed()) {
 				result = record.getResultBuilder().buildCommit(responses);
+				coordinator.finished(record.getProposal());
 				record.setExecResult(result);
 				synchronized (record) {
 					record.notifyAll();
@@ -103,6 +106,7 @@ public class XAHelper implements DistributedTransactionManager{
 			break;
 		case ROLLBACK:
 			result = record.getResultBuilder().buildRollBack(responses);
+			coordinator.finished(record.getProposal());
 			record.setExecResult(result);
 			synchronized (record) {
 				record.notifyAll();

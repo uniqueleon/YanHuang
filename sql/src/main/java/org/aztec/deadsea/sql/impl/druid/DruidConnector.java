@@ -16,7 +16,6 @@ import org.aztec.deadsea.sql.DatabaseConnector;
 import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.impl.BaseSqlExecResult;
 import org.aztec.deadsea.sql.impl.DruidConnectPropertyPlaceHolder;
-import org.aztec.deadsea.sql.impl.executor.LocalExecutor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +40,7 @@ public class DruidConnector implements DatabaseConnector{
 		connectParam.put(DruidConnectPropertyPlaceHolder.SERVER_PORT, args[1]);
 		connectParam.put(DruidConnectPropertyPlaceHolder.USER_NAME, args[2]);
 		connectParam.put(DruidConnectPropertyPlaceHolder.PASSWORD, args[3]);
-		InputStream tmplInput = LocalExecutor.class.getResource("/druid_connect.tmpl").openStream();
+		InputStream tmplInput = DruidConnector.class.getResource("/druid_connect.tmpl").openStream();
 		Connection connection = connector
 				.connect(new ConnectionConfiguration(args[0] + "_" + args[1], tmplInput, connectParam));
 		return connection;

@@ -20,10 +20,18 @@ public class DefaultRoutingInfoBuilder implements RoutingInfoBuilder{
 	}
 
 	@Override
-	public RoutingInfo build(List<Long> ids) {
+	public RoutingInfo build(List<Long> ids,Object dataObj) {
 		List<ShardData> datas = Lists.newArrayList();
-		for(Long id : ids) {
-			datas.add(new ShardDataImpl(new LongID(id), null));
+		if(List.class.isAssignableFrom(dataObj.getClass())) {
+			List objList = (List) dataObj;
+			for(int i = 0;i < ids.size();i++) {
+				datas.add(new ShardDataImpl(new LongID(ids.get(i)), objList.get(i)));
+			}
+		}
+		else {
+			for(Long id : ids) {
+				datas.add(new ShardDataImpl(new LongID(id), dataObj));
+			}
 		}
 		RoutingInfoImpl routeInfos = new RoutingInfoImpl(datas);
 		return routeInfos;
