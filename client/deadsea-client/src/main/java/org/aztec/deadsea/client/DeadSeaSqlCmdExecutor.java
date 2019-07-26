@@ -6,6 +6,7 @@ import org.aztec.autumn.common.utils.BasePropertiesConfig;
 import org.aztec.deadsea.common.sql.SQLTemplates;
 import org.aztec.deadsea.sql.ShardSqlExecutor;
 import org.aztec.deadsea.sql.ShardSqlExecutor.ExecuteMode;
+import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.SqlExecuteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -15,6 +16,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+import com.beust.jcommander.internal.Lists;
 
 /**
  * Hello world!
@@ -68,14 +71,21 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 					System.setProperty(BasePropertiesConfig.DEFAUTL_SYSTEM_PROPERTY_FILE,confFiles.get(0));
 				}
 			}
+			Long curTime = System.currentTimeMillis();
+			String sql = "insert into `lmDb`.`account`(`name`) values('liming2')";
 			//String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
-			for(int i = 0;i < 100;i++) {
-				String sql = "insert into `lmDb`.`account`(`name`) values('liming2')";
-				SqlExecuteResult sResult = executor.execute(sql, ExecuteMode.SINGLE);
-				System.out.println(sResult.isSuccess());
+			List<Thread> threads = Lists.newArrayList();
+			for(int i = 0;i < 10;i++) {
+				Thread execThread = new Thread(new MultiExecThread(sql));
+				execThread.setName("Main test-" + i);
+				execThread.start();
+				threads.add(execThread);
+			}
+			for(Thread thrd : threads) {
+				thrd.join();
 			}
 			System.out.println(String.format(SQLTemplates.CREATE_DATABASE, new Object[] {"lmtest","utf8","utf8_unicode_ci"}));
-
+			System.out.println("USE TIME:" + (System.currentTimeMillis() - curTime));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,6 +93,26 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 		finally {
 
 			System.exit(0);
+		}
+	}
+	
+	public class MultiExecThread implements Runnable{
+		String targetSql;
+
+		public MultiExecThread(String targetSql) {
+			super();
+			this.targetSql = targetSql;
+		}
+		
+		public void run() {
+
+			try {
+				SqlExecuteResult sResult = executor.execute(targetSql, ExecuteMode.SINGLE);
+				System.out.println(sResult.isSuccess());
+			} catch (ShardingSqlException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

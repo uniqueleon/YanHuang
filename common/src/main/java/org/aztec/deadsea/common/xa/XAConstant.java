@@ -12,6 +12,13 @@ public interface XAConstant {
 		public static final String ACKOWNLEDGE = "_ACK";
 	}
 	
+	public static interface REDIS_TX_CHANNELS {
+		public static final String TRANSACTIONS_UPDATE_CHANNEL = "DEADSEA_TX_UPDATES_NOTIFY";
+		public static final String UPDATE_SIGNAL_ADD = "add";
+		public static final String UPDATE_SIGNAL_REMOVE = "remove";
+		public static final String UPDATE_STRING_UPDATE = "update";
+	}
+	
 	public static final String[] DEFAULT_REDIS_PUBLISH_CHANNELS = new String[] {
 			XAConstant.REDIS_CHANNLE_NAMES.PREPARE,
 			XAConstant.REDIS_CHANNLE_NAMES.COMMIT,
@@ -23,11 +30,20 @@ public interface XAConstant {
 	
 	public static interface REDIS_KEY {
 		public static final String TRASACTION_INFO_PREFIX = "XA_REDIS_TX_";
-		public static final String TRANSACTIONS_ID = "XA_REDIS_TX_IDS";
+		public static final String ALL_TRANSACTIONS = "XA_REDIS_TX_IDS";
 		public static final String TRANSACTIONS_SEQ_NO_LOCK = "XA_REDIS_TX_SEQ_LOCK_";
 		public static final String TRANSACTIONS_SEQ_NO = "XA_REDIS_TX_SEQ_NO_";
 		public static final String TRANSACTIONS_SEQ_LIMIT = "XA_REDIS_TX_SEQ_NO_LIMIT";
+		public static final String TRANSACTIONS_SERVERS = "XA_REDIS_TX_SERVERS_";
 	}
+	
+	public static interface REDIS_LOCKS {
+
+		public static final String TRANSACTION_LOCK = "XA_REDIS_TX_ID_LOCK_";
+		public static final String TRANSACTIONS_LOCK = "XA_REDIS_TX_IDS_LOCK";
+		public static final long DEFAULT_LOCK_TIMEOUT = 10000;
+	}
+	
 	
 	
 	public static interface CONTEXT_LOCAL_KEYS{
@@ -45,6 +61,7 @@ public interface XAConstant {
 		public static final String RAW_SQLS = "RAW_SQL";
 		public static final String RAW_SQL_TYPE = "RAW_SQL_TYPE";
 		public static final String SEQUENCE_NO = "SEQUENCE_NO";
+		public static final String TX_SEQUENCE_NO = "TX_SEQUENCE_NO";
 		public static final String PROPOSAL_ID = "PROPOSAL_ID";
 		public static final String QUORUM = "TX_QUORUM";
 		public static interface META_CENTER_KEYS{

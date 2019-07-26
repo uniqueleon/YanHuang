@@ -65,6 +65,7 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 			connection.commit();
 			XAResponse response = builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
 					context.getCurrentPhase());
+			connection.close();
 			return response;
 		} catch (SQLException e) {
 			XAResponse response = builder.buildFail(context.getTransactionID(), context.getAssignmentNo(), e,
@@ -92,6 +93,7 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 			}
 			XAResponse response = builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
 					context.getCurrentPhase());
+			connection.close();
 			return response;
 		} catch (SQLException e) {
 			XAResponse response = builder.buildFail(context.getTransactionID(), context.getAssignmentNo(), e,

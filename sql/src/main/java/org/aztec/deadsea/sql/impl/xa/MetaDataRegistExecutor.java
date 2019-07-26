@@ -62,7 +62,9 @@ public class MetaDataRegistExecutor implements XAExecutor {
 				else {
 					gp.getSqlMetaData().setSequenceNo(seqNo);
 					mData = MetaDataTransformer.transferUpdateData(conf, gp,false);
-					metaRegister.update(auth, mData);
+					if(mData != null) {
+						metaRegister.update(auth, mData);
+					}
 				}
 			}
 			return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.PREPARE);

@@ -6,6 +6,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.aztec.autumn.common.utils.CacheException;
+import org.aztec.autumn.common.utils.CacheUtils;
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
 import org.aztec.autumn.common.utils.cache.CacheDataSubscriber;
@@ -31,11 +33,13 @@ public class RedisMsgDispatcher implements CacheDataSubscriber,BeanFactoryAware 
 	private ProposalFactory factory;
 	@Autowired
 	private List<RedisTxMsgHandler> handlers;
+
+	private CacheUtils cacheUtil ;
 	
 	private static final ExecutorService es = Executors.newFixedThreadPool(100);
 
-	public RedisMsgDispatcher() {
-		
+	public RedisMsgDispatcher() throws Exception {
+		cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 	}
 	
 
@@ -46,9 +50,17 @@ public class RedisMsgDispatcher implements CacheDataSubscriber,BeanFactoryAware 
 			TransactionPhase phase = getCurrentPhase(channel);
 			XAContext context = new RedisTransactionContext(txID, phase);
 			XAProposal proposal = factory.createProposal(context.getTransactionID(), context.getContextType(), context.getQuorum(), dataMap);
+			
 			for(RedisTxMsgHandler handler : handlers) {
 				if(handler.accept(channel, proposal)) {
-					es.submit(new RedisMsgHandlerThread(dataMap, phase, context, proposal,handler));
+					if(handler.isAssignable()) {
+						while(context.assign()) {
+							es.submit(new RedisMsgHandlerThread(dataMap, phase, context, proposal,handler));
+						}
+					}
+					else {
+						es.submit(new RedisMsgHandlerThread(dataMap, phase, context, proposal,handler));
+					}
 				}
 			}
 		} catch (Exception e) {

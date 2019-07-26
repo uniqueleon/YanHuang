@@ -32,6 +32,9 @@ public class MetaDataTransformer {
 		if(isAnti){
 			sqlType = sqlType.getAntiType();
 		}
+		if(sqlType == null) {
+			return null;
+		}
 		switch (sqlType) {
 		case CREATE_DATABASE:
 			DatabaseDTO dbDto = new DatabaseDTO(0, sqlMetaData.getDatabase().name().replaceAll("`", ""), sqlMetaData.getShardSize(), 0,
@@ -60,6 +63,9 @@ public class MetaDataTransformer {
 		SqlType sqlType = genParam.getSqlMetaData().getSqlType();
 		if(isAnti){
 			sqlType = sqlType.getAntiType();
+		}
+		if(sqlType == null) {
+			return null;
 		}
 		TableDTO tableDto;
 		switch (sqlType) {

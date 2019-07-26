@@ -10,6 +10,7 @@ import org.aztec.deadsea.common.xa.XAProposal;
 public interface RedisTxMsgHandler{
 
 	public boolean accept(String channel,XAProposal proposal);
+	public boolean isAssignable();
 	public void handle(XAProposal proposal,TransactionPhase phase,XAContext context,
 			Map<String,Object> datas);
 	

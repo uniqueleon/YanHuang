@@ -6,8 +6,10 @@ import org.aztec.autumn.common.utils.CacheException;
 import org.aztec.autumn.common.utils.CacheUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
 import org.aztec.autumn.common.utils.cache.CacheDataSubscriber;
+import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.xa.TransactionPhase;
 import org.aztec.deadsea.common.xa.XAConstant;
+import org.aztec.deadsea.common.xa.XAContext;
 import org.aztec.deadsea.common.xa.XACoordinator;
 import org.aztec.deadsea.common.xa.XAException;
 import org.aztec.deadsea.common.xa.XAPhaseListener;
@@ -35,7 +37,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	private void init() throws CacheException {
 		if (!inited.get()) {
 			synchronized (inited) {
-				if(subscriber != null) {
+				if(!inited.get() && subscriber != null) {
 					cacheUtil.subscribe(subscriber,XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS);
 					inited.set(true);
 				}
@@ -51,6 +53,8 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 			context.persist();
 			cacheUtil.publish(XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[0], proposal.toJson());
 		} catch (Exception e) {
+			DeadSeaLogger.error(XAConstant.LOG_KEY, e);
+			e.printStackTrace();
 			throw new XAException();
 		}
 	}
@@ -88,6 +92,13 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	@Override
 	public void finished(XAProposal proposal) throws XAException {
 		// TODO Auto-generated method stub
+
+		try {
+			XAContext context = new RedisTransactionContext(proposal.getTxID(), TransactionPhase.FINISHED);
+			context.destroy();
+		} catch (Exception e) {
+			DeadSeaLogger.error(XAConstant.LOG_KEY, e);
+		}
 	}
 
 }

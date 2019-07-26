@@ -3,7 +3,6 @@ package org.aztec.deadsea.xa.impl.redis.handler;
 import java.util.List;
 import java.util.Map;
 
-import org.aztec.autumn.common.utils.CacheException;
 import org.aztec.autumn.common.utils.CacheUtils;
 import org.aztec.autumn.common.utils.JsonUtils;
 import org.aztec.autumn.common.utils.UtilsFactory;
@@ -40,14 +39,13 @@ public class ExecutorHandler implements RedisTxMsgHandler {
 		try {
 			DeadSeaLogger.info(XAConstant.LOG_KEY, "Execute for [" + proposal.getTxID() + "]");
 			TransactionPhase phase = currentPhase;
-			String txID = proposal.getTxID();
 			String pubChannel = null;
-			Integer assignmentNo = getAssignmentNo(txID);
+			Integer assignmentNo = context.getAssignmentNo();
 			String msg = null;
 			boolean isFail = false;
-			while(assignmentNo != null) {
+			if(assignmentNo != null) {
 				XAResponse response = null;
-				context.setAssignmentNo(assignmentNo);
+
 				for (XAExecutor executor : executors) {
 					if(isFail) break;
 					if(!executor.canHandle(context)) {
@@ -77,36 +75,14 @@ public class ExecutorHandler implements RedisTxMsgHandler {
 					}
 				}
 				msg = jsonUtil.object2Json(response);
-				assignmentNo = getAssignmentNo(txID);
+				cacheUtil.publish(pubChannel, msg);
 			}
-			cacheUtil.publish(pubChannel, msg);
 			DeadSeaLogger.info(XAConstant.LOG_KEY, "Execute for [" + proposal.getTxID() + "] finished!");
 		} catch (Exception e) {
 			DeadSeaLogger.error("[XA]", e);
 		}
 	}
 	
-	public Integer getAssignmentNo(String txID) throws CacheException {
-		cacheUtil.lock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
-		Integer no = 0;
-		String seqNoKey = XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + txID;
-		String seqNoLimitKey = XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_LIMIT + txID;
-		String seqNoStr = cacheUtil.get(seqNoKey, String.class);
-		String seqLimitNo = cacheUtil.get(seqNoLimitKey, String.class);
-		Integer upperLimit = Integer.parseInt(seqLimitNo);
-		if(seqNoStr != null) {
-			no = Integer.parseInt(seqNoStr);
-			no ++;
-		}
-		if(no >= upperLimit) {
-			no = null;
-		}
-		else {
-			cacheUtil.cache(seqNoKey, no);
-		}
-		cacheUtil.unlock(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO_LOCK + txID);
-		return no;
-	}
 
 	public static String[] getChannelPrefix() {
 		return new String[] { XAConstant.REDIS_CHANNLE_NAMES.PREPARE, XAConstant.REDIS_CHANNLE_NAMES.COMMIT,
@@ -122,6 +98,11 @@ public class ExecutorHandler implements RedisTxMsgHandler {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isAssignable() {
+		return true;
 	}
 
 }

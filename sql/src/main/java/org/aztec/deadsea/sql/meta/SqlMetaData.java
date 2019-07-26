@@ -12,6 +12,8 @@ public interface SqlMetaData {
 	public boolean shard();
 	public Integer getShardSize();
 	public Long getSequenceNo();
+	public Long getLastSequenceNo();
+	public void setLastSequenceNo(Long seqNo);
 	public void setSequenceNo(Long seqNo);
 	public String getSourceSql();
 	public String getRawSql();

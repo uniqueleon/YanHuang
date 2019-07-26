@@ -17,7 +17,8 @@ public class DeadSeaLogger {
 	}
 	
 	public static void error(String prefix,Throwable e) {
-		logger.error(printStackTrace(prefix, e));
+		//logger.error(printStackTrace(prefix, e));
+		logger.error(prefix + e.getMessage(),e);
 	}
 	
 	public static void warn(String prefix,String msg) {

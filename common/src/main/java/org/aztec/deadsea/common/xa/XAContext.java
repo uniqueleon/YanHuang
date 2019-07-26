@@ -10,10 +10,12 @@ public interface XAContext {
 	public void setCurrentPhase(TransactionPhase phase);
 	public void persist() throws XAException;
 	public Integer getAssignmentNo();
+	public boolean assign() throws XAException;
 	public Integer getQuorum();
 	public void setAssignmentNo(Integer no);
 	public String getContextType();
 	public Object getLocal(String key);
 	public void setLocal(String key,Object value);
 	public void removeLocal(String key);
+	public void destroy();
 }

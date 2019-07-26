@@ -3,6 +3,7 @@ package org.aztec.deadsea.sql.meta;
 public class Table extends BaseMetaData  {
 	
 	Database db;
+	
 
 	public Table() {
 		// TODO Auto-generated constructor stub

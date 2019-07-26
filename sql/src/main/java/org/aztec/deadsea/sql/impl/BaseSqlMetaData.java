@@ -15,6 +15,7 @@ public class BaseSqlMetaData implements SqlMetaData {
 	protected boolean shard;
 	protected Integer shardSize;
 	protected Long sequenceNo;
+	protected Long lastSequenceNo;
 	protected SqlType type;
 	protected String rawSql;
 	protected String sourceSql;
@@ -178,5 +179,14 @@ public class BaseSqlMetaData implements SqlMetaData {
 		this.sequenceNo = sequenceNo;
 	}
 
+	@Override
+	public Long getLastSequenceNo() {
+		return lastSequenceNo;
+	}
+
+	@Override
+	public void setLastSequenceNo(Long seqNo) {
+		this.lastSequenceNo = seqNo;
+	}
 	
 }
