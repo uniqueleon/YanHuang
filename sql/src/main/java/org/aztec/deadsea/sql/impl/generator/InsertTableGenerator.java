@@ -13,9 +13,10 @@ import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
 import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
-import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
+import org.aztec.deadsea.sql.impl.Ordered_SN_Manager;
+import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class InsertTableGenerator implements ShardingSqlGenerator {
 	
 	@Autowired
 	private ShardingConfigurationFactory factory;
+	@Autowired
+	private Ordered_SN_Manager snManager;
 
 	private static Pattern tableNamePattern = Pattern
 			.compile("[I|i][N|n][S|s][E|e][R|r][T|t]\\s+[I|i][N|n][T|t][O|o]\\s+[\\.*\\`*\\w+[_+\\w+]+\\`*]+");
@@ -80,16 +83,52 @@ public class InsertTableGenerator implements ShardingSqlGenerator {
 		}
 		
 	}
+	
+	public String generateSingle(GenerationParameter param,Long seqNo) throws ShardingSqlException {
+		try {
+			ShardingConfiguration conf = factory.getConfiguration();
+			String rawSql = param.getSqlMetaData().getRawSql();
+			SqlMetaData metaData = param.getSqlMetaData();
+			DruidMetaData dMetaData = (DruidMetaData) metaData;
+			Table table = metaData.getTable();
+			DatabaseDTO db = conf.getDatabaseScheme(param.getSqlMetaData().getDatabase());
+			TableDTO ts = conf.getTargetTable(table);
+			Long dbRemainder = seqNo % db.getSize();
+			Long tableRemainder = seqNo % ts.getSize();
+			String dbName = metaData.getDatabase().name();
+			String tableName = metaData.getTable().name();
+			int leasePadding = StringUtils.getLeasePadding(ts.getSize());
+			String replaceStr = "`" + dbName + "_" + StringUtils.padding(true, "" + dbRemainder, leasePadding, '0') + "`";
+			replaceStr += "." + "`" + tableName + "_" + StringUtils.padding(true, "" + tableRemainder, leasePadding, '0') + "`";
+			String replaceTarget = getReplaceTarget(rawSql);
+			String newSql = injectId(rawSql, replaceTarget, seqNo);
+			newSql = newSql.replace(replaceTarget,replaceStr);
+			dMetaData.setSequenceNo(seqNo);
+			List<Long> targetIds  = Lists.newArrayList();
+			targetIds.add(seqNo);
+			dMetaData.setTargetIds(targetIds);
+			return newSql;
+		} catch (DeadSeaException e) {
+			throw new ShardingSqlException(ErrorCodes.UNKOWN_ERROR);
+		}
+		
+	}
 
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException {
 		List<String> retString = Lists.newArrayList();
+
 		try {
-			retString.add(generate(param));
+			/*
+			 * ShardingConfiguration conf = factory.getConfiguration(); List<Long> seqNo =
+			 * snManager.getSequenceNumbers(param.getSqlMetaData(), conf); for(int i = 0;i <
+			 * seqNo.size();i++) { retString.add(generateSingle(param,seqNo.get(i))); }
+			 */
 		} catch (Exception e) {
 			throw new ShardingSqlException(ErrorCodes.UNSUPPORT_OPERATION);
 		}
 		return retString;
 	}
+	
 	
 	public static String injectId(String rawSql,String replTarget,Long seqNo) {
 		int columnIndex = findIdColumnInsertPosition(rawSql, replTarget);
@@ -126,6 +165,7 @@ public class InsertTableGenerator implements ShardingSqlGenerator {
 	}
 
 	public static void main(String[] args) {
+		
 		String sql = "insert into `lm_db`.`lm_es_ook` (`name`) values (`targd`)";
 		String regex = "`?lm_db`?";
 		String replTarget = getReplaceTarget(sql);

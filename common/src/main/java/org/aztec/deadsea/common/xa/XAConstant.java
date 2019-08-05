@@ -35,6 +35,8 @@ public interface XAConstant {
 		public static final String TRANSACTIONS_SEQ_NO = "XA_REDIS_TX_SEQ_NO_";
 		public static final String TRANSACTIONS_SEQ_LIMIT = "XA_REDIS_TX_SEQ_NO_LIMIT";
 		public static final String TRANSACTIONS_SERVERS = "XA_REDIS_TX_SERVERS_";
+		public static final String REDIS_SQL_IDS = "";
+		//public static final String REALSERVER_
 	}
 	
 	public static interface REDIS_LOCKS {
@@ -64,6 +66,8 @@ public interface XAConstant {
 		public static final String TX_SEQUENCE_NO = "TX_SEQUENCE_NO";
 		public static final String PROPOSAL_ID = "PROPOSAL_ID";
 		public static final String QUORUM = "TX_QUORUM";
+		public static final String IS_ERROR_TOLERATE = "ERROR_TOLERATE";
+		public static final String TOLERATE_TIME = "TOLERATE_TIME";
 		public static interface META_CENTER_KEYS{
 			public static final String AUTH_USER_NAME = "META_CENTER_AUTH_USERNAME";
 			public static final String AUTH_PASSWORD = "META_CENTER_AUTH_PWD";

@@ -10,6 +10,8 @@ public interface SqlMetaData {
 	public List<Long> getTargetIds();
 	public void setTargetIds(List<Long> targetIds);
 	public boolean shard();
+	//public boolean errorTolerated();
+	//public int tolerateCount();
 	public Integer getShardSize();
 	public Long getSequenceNo();
 	public Long getLastSequenceNo();

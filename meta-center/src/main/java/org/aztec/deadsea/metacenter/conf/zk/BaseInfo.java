@@ -24,6 +24,7 @@ public class BaseInfo extends ZkConfig {
 	private Long virtualNum;
 	private String globalAccessString;
 	private String type;
+	private Long insertBatchNum = 10000l;
 	//private Integer acquiredBatchNum = 1000;
 	private static BaseInfo instance;
 	
@@ -132,9 +133,18 @@ public class BaseInfo extends ZkConfig {
 		this.globalAccessString = globalAccessString;
 	}
 	
+	public Long getInsertBatchNum() {
+		return insertBatchNum;
+	}
+
+	public void setInsertBatchNum(Long insertBatchNum) {
+		this.insertBatchNum = insertBatchNum;
+	}
+
 	public MetaData toMetaData() {
 		GlobalInfoDTO globalInfo = new GlobalInfoDTO(tableNum,maxAge,type,tableSize,globalAccessString);
 		globalInfo.setMaxAge(maxAge);
+		globalInfo.setInsertBatch(insertBatchNum);
 		return globalInfo;
 	}
 }

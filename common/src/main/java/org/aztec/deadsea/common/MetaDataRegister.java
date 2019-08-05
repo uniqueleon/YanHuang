@@ -3,6 +3,8 @@ package org.aztec.deadsea.common;
 import java.util.List;
 import java.util.Map;
 
+import org.aztec.deadsea.common.entity.GlobalInfoDTO;
+
 public interface MetaDataRegister {
 
 	public Authentication addauth(String username,String password) throws DeadSeaException;
@@ -12,7 +14,7 @@ public interface MetaDataRegister {
 	public void remove(Authentication auth,MetaData data) throws DeadSeaException;
 	public Map<String,List<MetaData>> getRegistedMetaDatas(Authentication auth) throws DeadSeaException;
 	public void update(Authentication auth,MetaData data) throws DeadSeaException;
-	
+	public GlobalInfoDTO getGlobalInfo() throws DeadSeaException;
 
 	public interface MetaDataMapKeys {
 		public static String GLOBAL_INFORMATION = "globalInfo";

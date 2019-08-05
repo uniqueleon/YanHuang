@@ -19,6 +19,7 @@ import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.ShardingAge;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
+import org.aztec.deadsea.common.entity.GlobalInfoDTO;
 import org.aztec.deadsea.common.entity.ShardAgeDTO;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.common.entity.SimpleRegistration;
@@ -462,5 +463,8 @@ public class ZkRegistHelper {
 		}
 	}
 	
+	public GlobalInfoDTO getGlobal() {
+		return baseInfo.toMetaData().cast();
+	}
 	
 }

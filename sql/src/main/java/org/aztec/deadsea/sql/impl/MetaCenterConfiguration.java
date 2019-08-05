@@ -27,12 +27,14 @@ import org.aztec.deadsea.sql.conf.ServerScheme;
 import org.aztec.deadsea.sql.meta.Database;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @Component(ShardingConfigurationFactory.DEFAULT_CONFIGURATION_BEAN_NAME)
+@Scope("singleton")
 public class MetaCenterConfiguration implements ShardingConfiguration {
 
 	private MetaDataRegister registor;
@@ -171,6 +173,11 @@ public class MetaCenterConfiguration implements ShardingConfiguration {
 			
 		}
 		return null;
+	}
+
+	@Override
+	public GlobalInfoDTO getGlobal() throws DeadSeaException {
+		return registor.getGlobalInfo();
 	}
 
 }

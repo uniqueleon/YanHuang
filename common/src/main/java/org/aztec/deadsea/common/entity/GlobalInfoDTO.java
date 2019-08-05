@@ -12,6 +12,8 @@ public class GlobalInfoDTO extends BaseMetaData implements MetaData{
 	private Integer maxAge;
 	private String type;
 	
+	private Long insertBatch = 10000l;
+	
 	private String accessString;
 
 	public GlobalInfoDTO(Integer tableNum,Integer maxAge,String type,Integer tableSize,String accessString) {
@@ -60,5 +62,11 @@ public class GlobalInfoDTO extends BaseMetaData implements MetaData{
 		this.accessString = accessString;
 	}
 
-	
+	public Long getInsertBatch() {
+		return insertBatch;
+	}
+
+	public void setInsertBatch(Long insertBatch) {
+		this.insertBatch = insertBatch;
+	}
 }

@@ -27,6 +27,7 @@ public class XASQLExecutor extends BaseSQLExecutor {
 	@Override
 	protected void doPrepare(XAContext context, List<String> sqls, Connection connection) throws Exception {
 		Statement stm = connection.createStatement();
+		context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
 		for(String sql : sqls) {
 			System.out.println(sql);
 			stm.execute(sql);

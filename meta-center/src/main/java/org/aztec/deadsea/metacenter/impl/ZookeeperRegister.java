@@ -11,6 +11,7 @@ import org.aztec.deadsea.common.RealServer;
 import org.aztec.deadsea.common.ServerRegister;
 import org.aztec.deadsea.common.ServerRegistration;
 import org.aztec.deadsea.common.ShardingAge;
+import org.aztec.deadsea.common.entity.GlobalInfoDTO;
 import org.aztec.deadsea.common.entity.SimpleAuthentication;
 import org.aztec.deadsea.metacenter.MetaDataException;
 import org.aztec.deadsea.metacenter.conf.zk.Account;
@@ -137,6 +138,11 @@ public class ZookeeperRegister implements ServerRegister, MetaDataRegister {
 	@Override
 	public boolean exists(Authentication auth, MetaData data) throws DeadSeaException {
 		return helper.exists(auth, data);
+	}
+
+	@Override
+	public GlobalInfoDTO getGlobalInfo() throws DeadSeaException {
+		return helper.getGlobal();
 	}
 
 
