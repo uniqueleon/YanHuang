@@ -33,8 +33,8 @@ public class ExecutorHelper {
 		Object localGp = context.getLocal(XAConstant.CONTEXT_LOCAL_KEYS.GENENRATION_PARAMS);
 		GenerationParameter gp = null;
 		if (localGp == null) {
-			String sql = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQLS);
-			String sqlType = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			String sql = context.get(XAConstant.CONTEXT_KEYS.RAW_SQLS);
+			String sqlType = context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
 			gp = builder.getGenerationParam(sql);
 		}
 		else {

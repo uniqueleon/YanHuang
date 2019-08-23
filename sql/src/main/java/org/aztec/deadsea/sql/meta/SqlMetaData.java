@@ -1,17 +1,21 @@
 package org.aztec.deadsea.sql.meta;
 
 import java.util.List;
+import java.util.Map;
 
 import org.aztec.deadsea.sql.SqlType;
 
 public interface SqlMetaData {
 
-
+	public Map<String,Object> getAdditionalInfos();
+	public void setAdditionalInfo(String key,Object obj);
 	public List<Long> getTargetIds();
 	public void setTargetIds(List<Long> targetIds);
 	public boolean shard();
+	public String getUUID();
 	//public boolean errorTolerated();
 	//public int tolerateCount();
+	//public ToleratedData 
 	public Integer getShardSize();
 	public Long getSequenceNo();
 	public Long getLastSequenceNo();

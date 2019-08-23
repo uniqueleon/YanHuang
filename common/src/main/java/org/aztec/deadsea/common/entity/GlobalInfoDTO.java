@@ -12,7 +12,7 @@ public class GlobalInfoDTO extends BaseMetaData implements MetaData{
 	private Integer maxAge;
 	private String type;
 	
-	private Long insertBatch = 10000l;
+	private Long insertBatch = 100l;
 	
 	private String accessString;
 

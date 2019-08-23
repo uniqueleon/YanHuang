@@ -89,6 +89,10 @@ public abstract class BaseSqlExecutor implements ShardSqlExecutor {
 		return execute(sql, mode, ExecuteType.QUERY);
 	}
 	
+	public SqlExecuteResult executeInsert(String sql,ExecuteMode mode) throws ShardingSqlException {
+		return execute(sql, mode, ExecuteType.INSERT);
+	}
+	
 	public SqlExecuteResult executeUpdate(String sql,ExecuteMode mode) throws ShardingSqlException {
 		return execute(sql, mode, ExecuteType.UPDATE);
 	}

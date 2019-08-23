@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
 
 public class RedisTransactionContext implements XAContext {
 
-	private static CacheUtils cacheUtil;
+	//private static CacheUtils cacheUtil;
 	private static JsonUtils jsonUtil;
 	private TransactionPhase phase;
 	private static Map<String, String> allTx = Maps.newConcurrentMap();
@@ -38,9 +38,10 @@ public class RedisTransactionContext implements XAContext {
 
 		try {
 			jsonUtil = UtilsFactory.getInstance().getJsonUtils();
-			cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
+			CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 			allTx = cacheUtil.hgetAll(XAConstant.REDIS_KEY.ALL_TRANSACTIONS);
 			cacheUtil.subscribe(msgSubscriber, XAConstant.REDIS_TX_CHANNELS.TRANSACTIONS_UPDATE_CHANNEL);
+			
 		} catch (Exception e) {
 			DeadSeaLogger.error("[XA]", e);
 		}
@@ -184,6 +185,7 @@ public class RedisTransactionContext implements XAContext {
 	}
 
 	public void updateTx(String curId, boolean append) throws CacheException {
+		CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 		try {
 			if (append) {
 				String content = toPersistContent();
@@ -221,32 +223,46 @@ public class RedisTransactionContext implements XAContext {
 	}
 	
 	public void validate(String localhost) throws Exception {
-		String remoteContent = cacheUtil.hget(XAConstant.REDIS_KEY.ALL_TRANSACTIONS, txID);
-		boolean conflict = false;
-		Map<String,Object> remoteData = jsonUtil.json2Object(remoteContent, Map.class);
-		Integer remoteAssignment = (Integer) remoteData.get(XAConstant.CONTEXT_KEYS.TX_SEQUENCE_NO);
-		if(remoteAssignment != null && remoteAssignment >= this.assignmentID) {
-			List<String> serverList = cacheUtil.listAll(getTxServerKey());
-			if(serverList.size() > assignmentID && !serverList.get(assignmentID).equals(localhost)) {
-				conflict = true;
+		CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
+		try {
+			String remoteContent = cacheUtil.hget(XAConstant.REDIS_KEY.ALL_TRANSACTIONS, txID);
+			boolean conflict = false;
+			Map<String,Object> remoteData = jsonUtil.json2Object(remoteContent, Map.class);
+			Integer remoteAssignment = (Integer) remoteData.get(XAConstant.CONTEXT_KEYS.TX_SEQUENCE_NO);
+			if(remoteAssignment != null && remoteAssignment >= this.assignmentID) {
+				List<String> serverList = cacheUtil.listAll(getTxServerKey());
+				if(serverList.size() > assignmentID && !serverList.get(assignmentID).equals(localhost)) {
+					conflict = true;
+				}
 			}
+			if(conflict) {
+				throw new CacheException(" CONTEXT CONFLICT WITH REMOTE SERVER!");
+			}
+		} catch (Exception e) {
+			throw e;
 		}
-		if(conflict) {
-			throw new CacheException(" CONTEXT CONFLICT WITH REMOTE SERVER!");
+		finally {
 		}
-		
+
 	}
 	
 	public void registTxServer(String localhost) throws CacheException {
-		if(assignmentID == null) {
-			return ;
+		CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
+		try {
+			if(assignmentID == null) {
+				return ;
+			}
+			String redisKey = getTxServerKey();
+			if(cacheUtil.exists(redisKey)) {
+				cacheUtil.lset(redisKey,assignmentID, localhost);
+			}else {
+				cacheUtil.lpush(redisKey, localhost);
+			}
+		} catch (Exception e) {
+			throw e;
+		}finally {
 		}
-		String redisKey = getTxServerKey();
-		if(cacheUtil.exists(redisKey)) {
-			cacheUtil.lset(redisKey,assignmentID, localhost);
-		}else {
-			cacheUtil.lpush(redisKey, localhost);
-		}
+
 	}
 	
 	public String getNotifyMsg(String curId,boolean append) {
@@ -277,15 +293,22 @@ public class RedisTransactionContext implements XAContext {
 		}
 
 		public void reloadTx(String msg) throws CacheException {
-			String[] msgArr = msg.split("_");
-			String curId = msgArr[1];
-			synchronized (allTx) {
-				switch(msgArr[0]){
-				case XAConstant.REDIS_TX_CHANNELS.UPDATE_SIGNAL_ADD:
-					allTx.put(curId, cacheUtil.hget(XAConstant.REDIS_TX_CHANNELS.TRANSACTIONS_UPDATE_CHANNEL,curId));
-				case XAConstant.REDIS_TX_CHANNELS.UPDATE_SIGNAL_REMOVE:
-					allTx.remove(curId);
+			CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
+			try {
+				String[] msgArr = msg.split("_");
+				String curId = msgArr[1];
+				synchronized (allTx) {
+					switch(msgArr[0]){
+					case XAConstant.REDIS_TX_CHANNELS.UPDATE_SIGNAL_ADD:
+						allTx.put(curId, cacheUtil.hget(XAConstant.REDIS_TX_CHANNELS.TRANSACTIONS_UPDATE_CHANNEL,curId));
+					case XAConstant.REDIS_TX_CHANNELS.UPDATE_SIGNAL_REMOVE:
+						allTx.remove(curId);
+					}
 				}
+			} catch (Exception e) {
+				throw e;
+			}
+			finally {
 			}
 		}
 

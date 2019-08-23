@@ -1,8 +1,5 @@
 package org.aztec.deadsea.sql.conf;
 
-import javax.swing.text.TabExpander;
-
-import org.aztec.deadsea.common.Authentication;
 import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;

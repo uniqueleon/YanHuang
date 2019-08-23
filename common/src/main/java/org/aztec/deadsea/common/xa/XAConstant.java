@@ -62,10 +62,11 @@ public interface XAConstant {
 		public static final String ROLLBACK_SQL = "ROLLBACK_SQL";
 		public static final String RAW_SQLS = "RAW_SQL";
 		public static final String RAW_SQL_TYPE = "RAW_SQL_TYPE";
-		public static final String SEQUENCE_NO = "SEQUENCE_NO";
+		public static final String TABLE_SEQUENCE_NO = "TABLE_SEQUENCE_NO";
 		public static final String TX_SEQUENCE_NO = "TX_SEQUENCE_NO";
 		public static final String PROPOSAL_ID = "PROPOSAL_ID";
 		public static final String QUORUM = "TX_QUORUM";
+		public static final String SQL_ID = "SQL_ID";
 		public static final String IS_ERROR_TOLERATE = "ERROR_TOLERATE";
 		public static final String TOLERATE_TIME = "TOLERATE_TIME";
 		public static interface META_CENTER_KEYS{

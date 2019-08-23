@@ -27,7 +27,7 @@ public class ServerAge  extends ZkConfig{
 	private Long dataSize;
 	private Long dbSize;
 	private Long tableSize;
-	private Boolean clean = false;
+	private Boolean clean;
 	@Ignored
 	private List<TimeLimitedCallable>  callBacks;
 	@Ignored

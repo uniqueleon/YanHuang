@@ -33,13 +33,10 @@ public class RedisMsgDispatcher implements CacheDataSubscriber,BeanFactoryAware 
 	private ProposalFactory factory;
 	@Autowired
 	private List<RedisTxMsgHandler> handlers;
-
-	private CacheUtils cacheUtil ;
 	
 	private static final ExecutorService es = Executors.newFixedThreadPool(100);
 
 	public RedisMsgDispatcher() throws Exception {
-		cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 	}
 	
 

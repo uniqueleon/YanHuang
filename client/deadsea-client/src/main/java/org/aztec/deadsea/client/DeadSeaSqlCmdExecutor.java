@@ -75,8 +75,8 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 			String sql = "insert into `lmDb`.`account`(`name`) values('liming2')";
 			//String sql = "create shard(13) table lmDb.account (id int primary key auto_increment,name varchar(20))engine='InnoDB'";
 			List<Thread> threads = Lists.newArrayList();
-			for(int i = 0;i < 10;i++) {
-				Thread execThread = new Thread(new MultiExecThread(sql));
+			for(int i = 0;i < 3;i++) {
+				Thread execThread = new Thread(new MultiExecThread(sql,ExecuteMode.SINGLE));
 				execThread.setName("Main test-" + i);
 				execThread.start();
 				threads.add(execThread);
@@ -98,16 +98,19 @@ public class DeadSeaSqlCmdExecutor implements ApplicationRunner
 	
 	public class MultiExecThread implements Runnable{
 		String targetSql;
+		ExecuteMode mode;
 
-		public MultiExecThread(String targetSql) {
+		public MultiExecThread(String targetSql,ExecuteMode mode) {
 			super();
 			this.targetSql = targetSql;
+			this.mode = mode;
 		}
 		
 		public void run() {
 
 			try {
-				SqlExecuteResult sResult = executor.execute(targetSql, ExecuteMode.SINGLE);
+				//SqlExecuteResult sResult = executor.execute(targetSql, mode);
+				SqlExecuteResult sResult = executor.executeInsert(targetSql, mode);
 				System.out.println(sResult.isSuccess());
 			} catch (ShardingSqlException e) {
 				// TODO Auto-generated catch block

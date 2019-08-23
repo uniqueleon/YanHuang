@@ -39,7 +39,7 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 			Connection conn = connector.getConnection(getConnectArgs(context));
 			connections.put(context.getTransactionID(), conn);
 			conn.setAutoCommit(false);
-			List<List<String>> sqls = (List<List<String>>) context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
+			List<List<String>> sqls = context.get(XAConstant.CONTEXT_KEYS.EXECUTE_SQL);
 			doPrepare(context, sqls.get(context.getAssignmentNo()), conn);
 			XAResponse response = builder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(),
 					context.getCurrentPhase());
@@ -52,7 +52,7 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 	}
 	
 	protected String[] getConnectArgs(XAContext context) {
-		List<List<String>> allArgs = (List<List<String>>)context.get(XAConstant.CONTEXT_KEYS.CONNECT_ARGS);
+		List<List<String>> allArgs = context.get(XAConstant.CONTEXT_KEYS.CONNECT_ARGS);
 		List<String> retArgList =  allArgs.get(context.getAssignmentNo());
 		return retArgList.toArray(new String[retArgList.size()]);
 	}
@@ -83,10 +83,10 @@ public abstract class BaseSQLExecutor implements XAExecutor {
 						context.getCurrentPhase());
 			}
 			connection.rollback();
-			Object sqlObject = context.get(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL);
-			if(sqlObject != null) {
-				List<String> sqlList = ((List<List<String>>) sqlObject).get(context.getAssignmentNo());
-				for(String sql : sqlList) {
+			List<List<String>> sqlList  = context.get(XAConstant.CONTEXT_KEYS.ROLLBACK_SQL);
+			if(sqlList.size() > context.getAssignmentNo()) {
+				List<String> rollbackSqls = sqlList.get(context.getAssignmentNo());
+				for(String sql : rollbackSqls) {
 					PreparedStatement ps = connection.prepareStatement(sql);
 					ps.execute(sql);
 				}

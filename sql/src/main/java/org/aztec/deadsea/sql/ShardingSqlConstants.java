@@ -8,4 +8,5 @@ public interface ShardingSqlConstants {
 	}
 	
 	public static final int SEQUENCE_NO_AQUIRED_BATCH = 1000;
+	public static final String LOG_PREFIX = "[SHARD_SQL]:";
 }

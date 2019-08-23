@@ -1,6 +1,8 @@
 package org.aztec.deadsea.sql.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.aztec.deadsea.sql.SqlType;
 import org.aztec.deadsea.sql.meta.Column;
@@ -10,8 +12,11 @@ import org.aztec.deadsea.sql.meta.OrderByClause;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
 
+import com.google.common.collect.Maps;
+
 public class BaseSqlMetaData implements SqlMetaData {
 
+	protected String uuid;
 	protected boolean shard;
 	protected Integer shardSize;
 	protected Long sequenceNo;
@@ -28,9 +33,11 @@ public class BaseSqlMetaData implements SqlMetaData {
 	protected List<Table> fromTables;
 	protected List<OrderByClause> orderByClauses;
 	protected List<Long> targetIds;
+	protected Map<String,Object> additionalInfos = Maps.newConcurrentMap();
 
 	public BaseSqlMetaData() {
 		// TODO Auto-generated constructor stub
+		uuid = UUID.randomUUID().toString();
 	}
 
 	public String getRawSql() {
@@ -187,6 +194,21 @@ public class BaseSqlMetaData implements SqlMetaData {
 	@Override
 	public void setLastSequenceNo(Long seqNo) {
 		this.lastSequenceNo = seqNo;
+	}
+
+	@Override
+	public Map<String, Object> getAdditionalInfos() {
+		return additionalInfos;
+	}
+
+	@Override
+	public void setAdditionalInfo(String key, Object obj) {
+		additionalInfos.put(key, obj);
+	}
+
+	@Override
+	public String getUUID() {
+		return uuid;
 	}
 	
 }

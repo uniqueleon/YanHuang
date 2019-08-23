@@ -1,6 +1,7 @@
 package org.aztec.deadsea.sql.impl.xa;
 
 import org.aztec.deadsea.common.Authentication;
+import org.aztec.deadsea.common.DeadSeaException;
 import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.MetaData;
 import org.aztec.deadsea.common.MetaDataRegister;
@@ -12,10 +13,13 @@ import org.aztec.deadsea.common.xa.XAException.ErrorCodes;
 import org.aztec.deadsea.common.xa.XAExecutor;
 import org.aztec.deadsea.common.xa.XAResponse;
 import org.aztec.deadsea.common.xa.XAResponseBuilder;
+import org.aztec.deadsea.sql.BatchSequenceNumberManager;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
+import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.conf.MetaDataTransformer;
 import org.aztec.deadsea.sql.impl.executor.BaseSqlExecutor.ExecuteType;
+import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -33,6 +37,8 @@ public class MetaDataRegistExecutor implements XAExecutor {
 	private XAResponseBuilder msgBuilder;
 	@Autowired
 	private ExecutorHelper helper;
+	@Autowired
+	BatchSequenceNumberManager sequenceNumberManger;
 	
 	public MetaDataRegistExecutor() {
 		// TODO Auto-generated constructor stub
@@ -47,24 +53,22 @@ public class MetaDataRegistExecutor implements XAExecutor {
 	public XAResponse prepare(XAContext context)  {
 		// TODO Auto-generated method stub
 		try {
-			String sqlType = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
-			Long seqNo = Long.parseLong("" + context.get(XAConstant.CONTEXT_KEYS.SEQUENCE_NO));
+			String sqlType = context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			GenerationParameter gp = helper.getGenerationParam(context);
+			ShardingConfiguration conf = helper.getShardingConfiguration(context);
+			Authentication auth = conf.getAuth();
+			MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,false);
+			SqlMetaData sqlMData = helper.getGenerationParam(context).getSqlMetaData();
 			if(sqlType.equals(ExecuteType.EXEC.name())) {
-				GenerationParameter gp = helper.getGenerationParam(context);
-				ShardingConfiguration conf = helper.getShardingConfiguration(context);
-				Authentication auth = conf.getAuth();
-				MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,false);
 				if(mData != null) {
 					if(!metaRegister.exists(auth, mData)) {
 						metaRegister.regist(auth, mData);
 					}
 				}
-				else {
-					gp.getSqlMetaData().setSequenceNo(seqNo);
-					mData = MetaDataTransformer.transferUpdateData(conf, gp,false);
-					if(mData != null) {
-						metaRegister.update(auth, mData);
-					}
+			}
+			else if (sqlType.equals(ExecuteType.INSERT.name())) {
+				if(!sequenceNumberManger.commit(sqlMData)) {
+					return msgBuilder.buildFail(context.getTransactionID(), context.getAssignmentNo(),ErrorCodes.UNKONW_ERROR, TransactionPhase.PREPARE);
 				}
 			}
 			return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.PREPARE);
@@ -76,6 +80,26 @@ public class MetaDataRegistExecutor implements XAExecutor {
 
 	@Override
 	public XAResponse commit(XAContext context)  {
+		try {
+			String sqlType = context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			if (sqlType.equals(ExecuteType.INSERT.name())) {
+				SqlMetaData metaData = helper.getGenerationParam(context).getSqlMetaData();
+				GenerationParameter gp = helper.getGenerationParam(context);
+				Long maxSeqNumber = sequenceNumberManger.getMaxSequenceNumber(metaData);
+				gp.getSqlMetaData().setSequenceNo(maxSeqNumber);
+				ShardingConfiguration conf = helper.getShardingConfiguration(context);
+				MetaData mData  = MetaDataTransformer.transferUpdateData(conf, gp,false);
+				if(mData != null) {
+					metaRegister.update(conf.getAuth(), mData);
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+
+		}
 		return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.PREPARE);
 	}
 
@@ -83,17 +107,22 @@ public class MetaDataRegistExecutor implements XAExecutor {
 	public XAResponse rollback(XAContext context) {
 
 		try {
-			String sqlType = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			String sqlType = context.get(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE);
+			GenerationParameter gp = helper.getGenerationParam(context);
+			ShardingConfiguration conf = helper.getShardingConfiguration(context);
+			Authentication auth = conf.getAuth();
+			MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,true);
 			if(sqlType.equals(ExecuteType.EXEC.name())) {
 				String sql = (String) context.get(XAConstant.CONTEXT_KEYS.RAW_SQLS);
-				GenerationParameter gp = helper.getGenerationParam(context);
-				ShardingConfiguration conf = helper.getShardingConfiguration(context);
-				Authentication auth = conf.getAuth();
-				MetaData mData = MetaDataTransformer.transferRegistData( conf, gp,true);
 				if(mData != null) {
 					if(metaRegister.exists(auth, mData)) {
 						metaRegister.remove(auth, mData);
 					}
+				}
+			}
+			else if(sqlType.equals(ExecuteType.INSERT.name())){
+				if(sequenceNumberManger.cancel(gp.getSqlMetaData())){
+					
 				}
 			}
 			return msgBuilder.buildSuccess(context.getTransactionID(), context.getAssignmentNo(), TransactionPhase.ROLLBACK);

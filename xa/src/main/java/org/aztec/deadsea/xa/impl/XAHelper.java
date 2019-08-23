@@ -33,10 +33,10 @@ public class XAHelper implements DistributedTransactionManager{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public <T> T submit(int quorum,
+	public <T> T submit(String type,int quorum,
 			Map<String,Object> attachments,TransactionResultBuilder<T> builder) throws XAException{
 		String txId = UUID.randomUUID().toString();
-		XAProposal proposal = factory.createProposal(txId, XAConstant.XA_PROPOSAL_TYPES.CREATE_SQL,quorum, attachments);
+		XAProposal proposal = factory.createProposal(txId, type,quorum, attachments);
 		coordinator.prepare(proposal, this);
 		XARecord<T> record = new XARecord<T>(proposal,null,builder);
 		records.put(txId, record);

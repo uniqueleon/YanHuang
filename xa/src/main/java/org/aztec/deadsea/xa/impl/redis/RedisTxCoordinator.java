@@ -26,18 +26,20 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	@Autowired
 	CacheDataSubscriber subscriber;
 	private BeanFactory bf;
-	private CacheUtils cacheUtil;
+	//private CacheUtils cacheUtil;
+	private static UtilsFactory factory = UtilsFactory.getInstance();
 	private static final AtomicBoolean inited = new AtomicBoolean(false);
 
 	public RedisTxCoordinator() throws Exception {
 		// TODO Auto-generated constructor stub
-		cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 	}
 	
 	private void init() throws CacheException {
 		if (!inited.get()) {
 			synchronized (inited) {
 				if(!inited.get() && subscriber != null) {
+
+					CacheUtils cacheUtil = UtilsFactory.getInstance().getDefaultCacheUtils();
 					cacheUtil.subscribe(subscriber,XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS);
 					inited.set(true);
 				}
@@ -48,6 +50,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	public void prepare(XAProposal proposal, XAPhaseListener aware) throws XAException {
 		try {
 			init();
+			CacheUtils cacheUtil = factory.getDefaultCacheUtils();
 			cacheUtil.cache(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_LIMIT + proposal.getTxID(), "" + proposal.getQuorum());
 			RedisTransactionContext context = new RedisTransactionContext(proposal, TransactionPhase.PREPARE);
 			context.persist();
@@ -63,6 +66,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	public void commit(XAProposal proposal) throws XAException {
 		try {
 			init();
+			CacheUtils cacheUtil = factory.getDefaultCacheUtils();
 			cacheUtil.remove(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + proposal.getTxID());
 			cacheUtil.publish(XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[1], proposal.toJson());
 			//cleanUp(proposal);
@@ -75,6 +79,7 @@ public class RedisTxCoordinator implements XACoordinator, BeanFactoryAware {
 	public void rollback(XAProposal proposal) throws XAException {
 		try {
 			init();
+			CacheUtils cacheUtil = factory.getDefaultCacheUtils();
 			cacheUtil.remove(XAConstant.REDIS_KEY.TRANSACTIONS_SEQ_NO + proposal.getTxID());
 			cacheUtil.publish(XAConstant.DEFAULT_REDIS_PUBLISH_CHANNELS[2], proposal.toJson());
 			//cleanUp(proposal);

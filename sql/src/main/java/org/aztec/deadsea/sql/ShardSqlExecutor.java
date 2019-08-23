@@ -34,4 +34,6 @@ public interface ShardSqlExecutor {
 	 */
 	public SqlExecuteResult executeUpdate(String sql,ExecuteMode execType) throws ShardingSqlException;
 	
+	public SqlExecuteResult executeInsert(String sql,ExecuteMode execType) throws ShardingSqlException;
+	
 }

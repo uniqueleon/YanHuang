@@ -215,7 +215,6 @@ public class ZkRegistHelper {
 			table.save();
 			DatabaseInfo db = account.findDatabaseInfo(data.getParent());
 			db.refresh();
-			db.save();
 		} catch (Exception e) {
 
 			throw new MetaDataException(ErrorCodes.META_DATA_PERSIT_ERROR);

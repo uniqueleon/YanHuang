@@ -6,8 +6,10 @@ import java.util.regex.Pattern;
 
 import org.aztec.autumn.common.utils.StringUtils;
 import org.aztec.deadsea.common.DeadSeaException;
+import org.aztec.deadsea.common.DeadSeaLogger;
 import org.aztec.deadsea.common.entity.DatabaseDTO;
 import org.aztec.deadsea.common.entity.TableDTO;
+import org.aztec.deadsea.sql.BatchSequenceNumberManager;
 import org.aztec.deadsea.sql.GenerationParameter;
 import org.aztec.deadsea.sql.ShardingConfiguration;
 import org.aztec.deadsea.sql.ShardingConfigurationFactory;
@@ -15,7 +17,6 @@ import org.aztec.deadsea.sql.ShardingSqlException;
 import org.aztec.deadsea.sql.ShardingSqlException.ErrorCodes;
 import org.aztec.deadsea.sql.ShardingSqlGenerator;
 import org.aztec.deadsea.sql.SqlType;
-import org.aztec.deadsea.sql.impl.Ordered_SN_Manager;
 import org.aztec.deadsea.sql.impl.druid.DruidMetaData;
 import org.aztec.deadsea.sql.meta.SqlMetaData;
 import org.aztec.deadsea.sql.meta.Table;
@@ -30,7 +31,7 @@ public class InsertTableGenerator implements ShardingSqlGenerator {
 	@Autowired
 	private ShardingConfigurationFactory factory;
 	@Autowired
-	private Ordered_SN_Manager snManager;
+	private BatchSequenceNumberManager snManager;
 
 	private static Pattern tableNamePattern = Pattern
 			.compile("[I|i][N|n][S|s][E|e][R|r][T|t]\\s+[I|i][N|n][T|t][O|o]\\s+[\\.*\\`*\\w+[_+\\w+]+\\`*]+");
@@ -113,17 +114,23 @@ public class InsertTableGenerator implements ShardingSqlGenerator {
 		}
 		
 	}
+	
+	public int getInsertBatch() {
+		return 1;
+	}
 
 	public List<String> generateMulti(GenerationParameter param) throws ShardingSqlException {
 		List<String> retString = Lists.newArrayList();
 
 		try {
-			/*
-			 * ShardingConfiguration conf = factory.getConfiguration(); List<Long> seqNo =
-			 * snManager.getSequenceNumbers(param.getSqlMetaData(), conf); for(int i = 0;i <
-			 * seqNo.size();i++) { retString.add(generateSingle(param,seqNo.get(i))); }
-			 */
+			ShardingConfiguration conf = factory.getConfiguration();
+			List<Long> seqNo = snManager.getSequenceNumbers(param.getSqlMetaData(), conf,getInsertBatch());
+			for (int i = 0; i < seqNo.size(); i++) {
+				retString.add(generateSingle(param, seqNo.get(i)));
+			}
+ 
 		} catch (Exception e) {
+			DeadSeaLogger.error(e.getMessage(), e);
 			throw new ShardingSqlException(ErrorCodes.UNSUPPORT_OPERATION);
 		}
 		return retString;

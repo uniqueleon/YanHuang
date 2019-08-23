@@ -32,6 +32,16 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 	public MultiSqlXAExecutor() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String getXAProposalType(ExecuteType type) {
+		switch(type) {
+		case EXEC:
+			return XAConstant.XA_PROPOSAL_TYPES.CREATE_SQL;
+		case INSERT:
+			return XAConstant.XA_PROPOSAL_TYPES.INSERT_SQL;
+		}
+		return null;
+	}
 
 	@Override
 	protected SqlExecuteResult doExecute(XASqlExecuteParameter executeParam) throws Exception {
@@ -44,9 +54,10 @@ public class MultiSqlXAExecutor extends BaseSqlExecutor{
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQLS, gp.getSqlMetaData().getRawSql());
 		attachments.put(XAConstant.CONTEXT_KEYS.RAW_SQL_TYPE, type.name());
 		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.GENENRATION_PARAMS,gp);
-		attachments.put(XAConstant.CONTEXT_KEYS.SEQUENCE_NO, gp.getSqlMetaData().getSequenceNo());
+		attachments.put(XAConstant.CONTEXT_KEYS.TABLE_SEQUENCE_NO, gp.getSqlMetaData().getSequenceNo() != null  ? gp.getSqlMetaData().getSequenceNo() : 0);
 		attachments.put(XAConstant.CONTEXT_LOCAL_KEYS.SHARDING_CONFIGURATION, conf);
-		return manager.submit(quorum, attachments, new TransactionResultBuilder<SqlExecuteResult>() {
+		return manager.submit(getXAProposalType(type),
+				quorum, attachments, new TransactionResultBuilder<SqlExecuteResult>() {
 
 			@Override
 			public SqlExecuteResult buildCommit(XAResponseSet responseSet) {
